@@ -1,0 +1,37 @@
+set dim = 2
+set global refinement = 7
+set degree = 1
+
+subsection Rectangular mesh
+  set x size = 50.0
+  set y size = 50.0
+  set z size = 50.0
+  set x subdivisions = 1
+  set y subdivisions = 1
+  set z subdivisions = 1
+end
+
+set time step = 1.0
+set number steps = 1000
+
+subsection output
+  set condition = EQUAL_SPACING
+  set number = 100
+end
+
+set boundary condition for c = Natural
+set boundary condition for p1 = Natural
+set boundary condition for p2 = Natural
+set Model constant interface_width = 1.0, DOUBLE
+set Model constant offset = 1e-4, DOUBLE
+set Model constant radius = 7.50, DOUBLE
+set Model constant c_init = 1.0, DOUBLE
+set Model constant c_ref = 0.1, DOUBLE
+set Model constant diffusivity = 0.1, DOUBLE
+
+subsection linear solver parameters: c
+  set tolerance type = AbsoluteResidual
+  set tolerance value = 1e-9
+  set max iterations = 10000
+  set preconditioner type = GMG
+end
