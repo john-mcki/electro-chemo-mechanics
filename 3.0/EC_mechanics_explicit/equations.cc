@@ -40,6 +40,12 @@ CustomAttributeLoader::load_variable_attributes()
   set_variable_name(4, "psi_2");
   set_variable_type(4, FieldInfo::TensorRank::Scalar);
   set_variable_equation_type(4, Constant);
+
+  set_variable_name(5, "particle_concentration");
+  set_variable_type(5, FieldInfo::TensorRank::Scalar);
+  set_variable_equation_type(5, ExplicitTimeDependent);
+  set_dependencies_value_term_rhs(5, "c,psi_1");
+  set_is_postprocessed_field(5, true);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -144,9 +150,9 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_lhs(
     {
       VectorGrad change_ux =
         variable_list.template get_symmetric_gradient<VectorGrad>(0, Change);
-      ScalarValue p = variable_list.template get_value<ScalarValue>(3);
+      ScalarValue psi = variable_list.template get_value<ScalarValue>(3);
       VectorGrad  stress;
-      compute_stress<dim, ScalarValue>(stiffness, p * change_ux, stress);
+      compute_stress<dim, ScalarValue>(stiffness, psi * change_ux, stress);
       variable_list.set_gradient_term(0, stress, Change);
     }
 }
@@ -158,7 +164,12 @@ CustomPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
   [[maybe_unused]] const dealii::Point<dim, dealii::VectorizedArray<number>> &q_point_loc,
   [[maybe_unused]] const dealii::VectorizedArray<number> &element_volume,
   [[maybe_unused]] Types::Index                           solve_block) const
-{}
+{
+  ScalarValue particle_concentration =
+    variable_list.template get_value<ScalarValue>(2) *
+    variable_list.template get_value<ScalarValue>(3); // Concentration * domain parameter
+  variable_list.set_value_term(5, particle_concentration);
+}
 
 #include "custom_pde.inst"
 
