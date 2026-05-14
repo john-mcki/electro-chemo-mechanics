@@ -183,13 +183,13 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_lhs(
       // Rate Terms
       ScalarValue app_pot_energy = F * del_phi;
       ScalarValue mech_energy    = omega * s;
-      ScalarValue conf_energy_x  = (1.0 / (c * c_ref)) * change_c;
-      ScalarValue eta =
-        app_pot_energy + mech_energy; // overpotential term, check conf_energy later
-      ScalarValue BV_exp_term  = std::exp(-eta / (RT));
-      ScalarValue LHS_c_term3  = -(psi_x_mag / psi) * i_0 / F *
-                                 (pow(BV_exp_term, alpha) * pow(conf_energy_x, -alpha) -
-                                  pow(BV_exp_term, -alpha) * pow(conf_energy_x, alpha));
+      ScalarValue conf_energy    = RT * std::log(c / c_ref);
+      ScalarValue eta = app_pot_energy + mech_energy +
+                        conf_energy; // overpotential term, check conf_energy later
+      ScalarValue BV_exp_term = exp(-eta / (RT));
+      ScalarValue LHS_c_term3 =
+        -(psi_x_mag / psi) * i_0 / F * change_c / c *
+        (alpha * pow(BV_exp_term, alpha) - (1.0 - alpha) * pow(BV_exp_term, -alpha));
       ScalarGrad  LHS_cx_term1 = diffusivity * change_cx;
       ScalarGrad  LHS_cx_term2 = (diffusivity * omega) / (RT) * (sx * change_c);
       ScalarValue eq_change_c = change_c + dt * (LHS_c_term1 + LHS_c_term2 + LHS_c_term3);

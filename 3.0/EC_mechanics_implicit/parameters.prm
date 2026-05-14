@@ -11,7 +11,7 @@ subsection Rectangular mesh
 end
 
 set time step = 1.0
-set number steps = 10000
+set number steps = 10
 
 subsection output
   set condition = EQUAL_SPACING
@@ -29,33 +29,33 @@ set boundary condition for psi_1 = Natural
 set boundary condition for psi_2 = Natural
 
 set Model constant radius = 5.0, DOUBLE
-set Model constant offset = 1.0e-4, DOUBLE
+set Model constant offset = 1.0e-2, DOUBLE
 set Model constant interface_width = 1.0, DOUBLE
 set Model constant c_init = 1.0, DOUBLE
 set Model constant c_ref = 0.1, DOUBLE
 
 set Model constant diffusivity = 0.1, DOUBLE
-set Model constant RT = 2494.2, DOUBLE # Temp = 300 Kelvin
+set Model constant RT = 2494.2, DOUBLE # Temp = 300 Kelvin, Unit - Joules
 set Model constant F = 96485.0, DOUBLE
-set Model constant omega = 0.0, DOUBLE
+set Model constant omega = 1.0, DOUBLE
 set Model constant poisson = 0.3, DOUBLE
 set Model constant youngs_modulus = 22.5, DOUBLE
 set Model constant stiffness = (22.5,0.3), isotropic elastic constants
 
 #Constants for EC
-set Model constant i_0 = 10.0, DOUBLE
-set Model constant del_phi = 2.0, DOUBLE
+set Model constant i_0 = 1.0, DOUBLE
+set Model constant del_phi = 0.0, DOUBLE #Unit - Volts
 
 subsection linear solver parameters: c
   set tolerance type = AbsoluteResidual
-  set tolerance value = 1e-2
+  set tolerance value = 1e-6
   set max iterations = 1000000
   set preconditioner type = None
 end
 
 subsection linear solver parameters: u
   set tolerance type = AbsoluteResidual
-  set tolerance value = 1e-5
-  set max iterations = 1000000
+  set tolerance value = 1e-9
+  set max iterations = 10000
   set preconditioner type = GMG
 end
