@@ -17,21 +17,21 @@ CustomAttributeLoader::load_variable_attributes()
   set_variable_name(0, "u");
   set_variable_type(0, FieldInfo::TensorRank::Vector);
   set_variable_equation_type(0, TimeIndependent);
-  set_dependencies_gradient_term_rhs(0, "grad(u),C,p1");
-  set_dependencies_gradient_term_lhs(0, "grad(change(u)),p1");
+  set_dependencies_gradient_term_rhs(0, "grad(u),c,psi_1");
+  set_dependencies_gradient_term_lhs(0, "grad(change(u)),psi_1");
 
-  set_variable_name(1, "S");
+  set_variable_name(1, "s");
   set_variable_type(1, FieldInfo::TensorRank::Scalar);
   set_variable_equation_type(1, Auxiliary);
-  set_dependencies_value_term_rhs(1, "grad(u),C,p1");
+  set_dependencies_value_term_rhs(1, "grad(u),c,psi_1");
 
-  set_variable_name(2, "C");
+  set_variable_name(2, "c");
   set_variable_type(2, FieldInfo::TensorRank::Scalar);
   set_variable_equation_type(2, ImplicitTimeDependent);
-  set_dependencies_value_term_rhs(2, "C,old_1(C),S,grad(S),p1,grad(p1)");
-  set_dependencies_gradient_term_rhs(2, "C,grad(C),grad(S),grad(p1)");
-  set_dependencies_value_term_lhs(2, "C,change(C),S,grad(S),p1,grad(p1)");
-  set_dependencies_gradient_term_lhs(2, "grad(change(C)),grad(S),grad(p1)");
+  set_dependencies_value_term_rhs(2, "c,old_1(c),s,grad(s),psi_1,grad(psi_1)");
+  set_dependencies_gradient_term_rhs(2, "c,grad(c),grad(s),grad(psi_1)");
+  set_dependencies_value_term_lhs(2, "c,change(c),s,grad(s),psi_1,grad(psi_1)");
+  set_dependencies_gradient_term_lhs(2, "grad(change(c)),grad(s),grad(psi_1)");
 
   set_variable_name(3, "psi_1");
   set_variable_type(3, FieldInfo::TensorRank::Scalar);
@@ -44,7 +44,7 @@ CustomAttributeLoader::load_variable_attributes()
   set_variable_name(5, "particle_concentration");
   set_variable_type(5, FieldInfo::TensorRank::Scalar);
   set_variable_equation_type(5, ExplicitTimeDependent);
-  set_dependencies_value_term_rhs(5, "C,p1");
+  set_dependencies_value_term_rhs(5, "c,psi_1");
   set_is_postprocessed_field(5, true);
 }
 
