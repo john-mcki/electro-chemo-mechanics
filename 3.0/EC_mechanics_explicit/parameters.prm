@@ -24,18 +24,19 @@ end
 #set boundary condition for u, z component = Natural, Natural, Natural, Natural, Dirichlet: 0.0, Dirichlet: 0.0
 set boundary condition for u, x component = Dirichlet: 0.0, Dirichlet: 0.0, Natural, Natural
 set boundary condition for u, y component = Natural, Natural, Dirichlet: 0.0, Dirichlet: 0.0
-set boundary condition for S = Natural
-set boundary condition for C = Natural
-set boundary condition for p1 = Natural
-set boundary condition for p2 = Natural
+set boundary condition for s = Natural
+set boundary condition for c = Natural
+set boundary condition for psi_1 = Natural
+set boundary condition for psi_2 = Natural
 
 #Geometry Parameters
 set Model constant radius = 7.5, DOUBLE
-#Set Model constant interface_width #NOT YET IMPLEMENTED
+set Model constant interface_width = 1.0, DOUBLE
+set Model constant offset = 1e-4, DOUBLE
 
 #Concentration/mass parameters
-set Model constant concentration_initial = 1.0, DOUBLE
-set Model constant C_ref = 0.1, DOUBLE
+set Model constant c_init = 1.0, DOUBLE
+set Model constant c_ref = 0.1, DOUBLE
 set Model constant diffusivity = 0.1, DOUBLE
 set Model constant kc = 0.1, DOUBLE
 
@@ -46,12 +47,13 @@ set Model constant youngs_modulus = 22.5, DOUBLE
 set Model constant stiffness = (22.5,0.3), isotropic elastic constants
 
 #Physical Constants (and Temperature)
-set Model constant Temp = 300.0, DOUBLE
-set Model constant R = 8.314, DOUBLE
-#set Model constant F = 96485.0, DOUBLE
+set Model constant RT = 2494.2, DOUBLE # Temp = 300 Kelvin
+set Model constant F = 96485.0, DOUBLE
+set Model constant i_0 = 10.0, DOUBLE
+set Model constant del_phi = 2.0, DOUBLE
 
 
-#subsection linear solver parameters: C
+#subsection linear solver parameters: c
 #  set tolerance value = 1e-6
 #  set max iterations = 100000
 #  set preconditioner type = None
