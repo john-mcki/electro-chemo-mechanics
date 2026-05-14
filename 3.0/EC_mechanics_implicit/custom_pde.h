@@ -135,25 +135,18 @@ private:
     get_user_inputs().get_user_constants().get_model_constant_double("offset");
   number interface_width =
     get_user_inputs().get_user_constants().get_model_constant_double("interface_width");
-  number concentration_initial =
-    get_user_inputs().get_user_constants().get_model_constant_double("concentration_initial");
-  number C_ref =
-    get_user_inputs().get_user_constants().get_model_constant_double("C_ref");
-  number i_0 =
-    get_user_inputs().get_user_constants().get_model_constant_double("i_0");
+  number c_init =
+    get_user_inputs().get_user_constants().get_model_constant_double("c_init");
+  number c_ref =
+    get_user_inputs().get_user_constants().get_model_constant_double("c_ref");
+  number i_0 = get_user_inputs().get_user_constants().get_model_constant_double("i_0");
   number del_phi =
     get_user_inputs().get_user_constants().get_model_constant_double("del_phi");
-
   number diffusivity =
     get_user_inputs().get_user_constants().get_model_constant_double("diffusivity");
-  number kc =
-    get_user_inputs().get_user_constants().get_model_constant_double("kc");
-  number Temp =
-    get_user_inputs().get_user_constants().get_model_constant_double("Temp");
-  number R =
-    get_user_inputs().get_user_constants().get_model_constant_double("R");
-  number F =
-    get_user_inputs().get_user_constants().get_model_constant_double("F");  
+  number kc = get_user_inputs().get_user_constants().get_model_constant_double("kc");
+  number RT = get_user_inputs().get_user_constants().get_model_constant_double("RT");
+  number F  = get_user_inputs().get_user_constants().get_model_constant_double("F");
   number omega =
     get_user_inputs().get_user_constants().get_model_constant_double("omega");
   number poisson =

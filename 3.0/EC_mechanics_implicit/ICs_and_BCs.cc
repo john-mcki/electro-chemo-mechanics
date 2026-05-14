@@ -25,23 +25,26 @@ CustomPDE<dim, degree, number>::set_initial_condition(
   [[maybe_unused]] number                   &scalar_value,
   [[maybe_unused]] number                   &vector_component_value) const
 {
-  const double dim_size = 
+  const double dim_size =
     this->get_user_inputs().get_spatial_discretization().get_size()[0];
-  std::vector<double> center = {dim_size/2,dim_size/2,dim_size/2};
-  double dist = 0.0;
+  std::vector<double> center = {dim_size / 2, dim_size / 2, dim_size / 2};
+  double              dist   = 0.0;
   for (unsigned int i = 0; i < dim; i++)
     {
       dist += (point[i] - center[i]) * (point[i] - center[i]);
     }
   dist = std::sqrt(dist);
-  double domain_parameter = 0.5 * (1.0 + offset) - 0.5 * (1 - offset) * std::tanh((dist * dist - radius * radius)/(interface_width * radius)); 
+  double domain_parameter =
+    0.5 * (1.0 + offset) -
+    0.5 * (1 - offset) *
+      std::tanh((dist * dist - radius * radius) / (interface_width * radius));
   if (index == 0)
     {
-      vector_component_value = 0.0; //initial displacement u
+      vector_component_value = 0.0; // initial displacement u
     }
   if (index == 2)
     {
-      scalar_value = concentration_initial * domain_parameter + (C_ref) * (1.0 - domain_parameter);
+      scalar_value = c_init * domain_parameter + (c_ref) * (1.0 - domain_parameter);
     }
   if (index == 3)
     {

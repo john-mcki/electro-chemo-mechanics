@@ -32,14 +32,15 @@ set boundary condition for p2 = Natural
 set Model constant radius = 5.0, DOUBLE
 set Model constant offset = 1.0e-4, DOUBLE
 set Model constant interface_width = 1.0, DOUBLE
-set Model constant concentration_initial = 1.0, DOUBLE
-
-set Model constant C_ref = 0.1, DOUBLE
+set Model constant c_init = 1.0, DOUBLE
+set Model constant c_ref = 0.1, DOUBLE
 
 set Model constant diffusivity = 0.1, DOUBLE
 set Model constant kc = 0.1, DOUBLE
 set Model constant Temp = 300.0, DOUBLE
 set Model constant R = 8.314, DOUBLE
+
+set Model constant RT = 2494.2, DOUBLE # Temp = 300 Kelvin
 set Model constant F = 96485, DOUBLE
 set Model constant omega = 0.0, DOUBLE
 set Model constant poisson = 0.3, DOUBLE

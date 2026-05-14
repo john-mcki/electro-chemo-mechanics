@@ -33,11 +33,11 @@ CustomAttributeLoader::load_variable_attributes()
   set_dependencies_value_term_lhs(2, "C,change(C),S,grad(S),p1,grad(p1)");
   set_dependencies_gradient_term_lhs(2, "grad(change(C)),grad(S),grad(p1)");
 
-  set_variable_name(3, "p1");
+  set_variable_name(3, "psi_1");
   set_variable_type(3, FieldInfo::TensorRank::Scalar);
   set_variable_equation_type(3, Constant);
 
-  set_variable_name(4, "p2");
+  set_variable_name(4, "psi_2");
   set_variable_type(4, FieldInfo::TensorRank::Scalar);
   set_variable_equation_type(4, Constant);
 
@@ -73,30 +73,30 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
   if (index == 0)
     {
       // Update the displacement
-      VectorGrad  ux = variable_list.template get_symmetric_gradient<VectorGrad>(0);
-      ScalarValue C  = variable_list.template get_value<ScalarValue>(2);
-      ScalarValue p  = variable_list.template get_value<ScalarValue>(3);
+      VectorGrad  ux  = variable_list.template get_symmetric_gradient<VectorGrad>(0);
+      ScalarValue c   = variable_list.template get_value<ScalarValue>(2);
+      ScalarValue psi = variable_list.template get_value<ScalarValue>(3);
       for (unsigned int i = 0; i < dim; i++)
         {
-          ux[i][i] -= omega / (3 * (youngs_modulus * 100)) * (C - C_ref);
+          ux[i][i] -= omega / (3.0 * (youngs_modulus * 100.0)) * (c - c_ref);
         }
       VectorGrad stress;
-      compute_stress<dim, ScalarValue>(stiffness, p * ux, stress);
+      compute_stress<dim, ScalarValue>(stiffness, psi * ux, stress);
       variable_list.set_gradient_term(0,
                                       -stress); // check sign if results are weird
     }
   if (index == 1)
     {
       // Store the hydrostatic stress
-      VectorGrad  ux = variable_list.template get_symmetric_gradient<VectorGrad>(0);
-      ScalarValue C  = variable_list.template get_value<ScalarValue>(2);
-      ScalarValue p  = variable_list.template get_value<ScalarValue>(3);
+      VectorGrad  ux  = variable_list.template get_symmetric_gradient<VectorGrad>(0);
+      ScalarValue c   = variable_list.template get_value<ScalarValue>(2);
+      ScalarValue psi = variable_list.template get_value<ScalarValue>(3);
       for (unsigned int i = 0; i < dim; i++)
         {
-          ux[i][i] -= omega / (3.0 * (youngs_modulus * 100.0)) * (C - C_ref);
+          ux[i][i] -= omega / (3.0 * (youngs_modulus * 100.0)) * (c - c_ref);
         }
       VectorGrad stress;
-      compute_stress<dim, ScalarValue>(stiffness, p * ux, stress);
+      compute_stress<dim, ScalarValue>(stiffness, psi * ux, stress);
       ScalarValue hydrostatic_stress(0.0);
       for (unsigned int i = 0; i < dim; i++)
         {
@@ -107,36 +107,36 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
   if (index == 2)
     {
       // Gradient of Hydrostatic Stress
-      ScalarValue S  = variable_list.template get_value<ScalarValue>(1);
-      ScalarGrad  Sx = variable_list.template get_gradient<ScalarGrad>(1);
+      ScalarValue s  = variable_list.template get_value<ScalarValue>(1);
+      ScalarGrad  sx = variable_list.template get_gradient<ScalarGrad>(1);
       // Concentration
-      ScalarValue C     = variable_list.template get_value<ScalarValue>(2);
-      ScalarGrad  Cx    = variable_list.template get_gradient<ScalarGrad>(2);
-      ScalarValue C_old = variable_list.template get_value<ScalarValue>(2, OldOne);
+      ScalarValue c     = variable_list.template get_value<ScalarValue>(2);
+      ScalarGrad  cx    = variable_list.template get_gradient<ScalarGrad>(2);
+      ScalarValue c_old = variable_list.template get_value<ScalarValue>(2, OldOne);
       // Order Parameter
-      ScalarValue p      = variable_list.template get_value<ScalarValue>(3);
-      ScalarGrad  px     = variable_list.template get_gradient<ScalarGrad>(3);
-      ScalarValue px_mag = px.norm() + offset;
-      ScalarValue dt     = this->get_timestep();
+      ScalarValue psi       = variable_list.template get_value<ScalarValue>(3);
+      ScalarGrad  psi_x     = variable_list.template get_gradient<ScalarGrad>(3);
+      ScalarValue psi_x_mag = psi_x.norm() + offset;
+      ScalarValue dt        = this->get_timestep();
       // Transport Terms
-      ScalarValue C_term1 = (diffusivity / p) * (px * Cx);
-      ScalarValue C_term2 = -px / p * Sx * diffusivity * (omega * C) / (R * Temp);
+      ScalarValue c_term1 = (diffusivity / psi) * (psi_x * cx);
+      ScalarValue c_term2 = -psi_x / psi * sx * diffusivity * (omega * c) / RT;
       // Rate Terms
       ScalarValue app_pot_energy = F * del_phi;
-      ScalarValue mech_energy    = omega * S;
-      ScalarValue conf_energy    = R * Temp * std::log(C / C_ref);
+      ScalarValue mech_energy    = omega * s;
+      ScalarValue conf_energy    = RT * std::log(c / c_ref);
       ScalarValue eta = app_pot_energy + mech_energy +
                         conf_energy; // overpotential term, check conf_energy later
-      ScalarValue BV_exp_term = exp(-eta / (R * Temp));
-      ScalarValue C_term3     = (px_mag / p) * i_0 / F *
+      ScalarValue BV_exp_term = exp(-eta / RT);
+      ScalarValue c_term3     = (psi_x_mag / psi) * i_0 / F *
                                 (pow(BV_exp_term, alpha) -
                                  pow(BV_exp_term, -alpha)); // Full BV reaction rate term
-      ScalarGrad  Cx_term1    = -diffusivity * Cx;
-      ScalarGrad  Cx_term2    = diffusivity * (omega * C) / (R * Temp) * Sx;
-      ScalarValue eq_C        = C_old - C + (dt * (C_term1 + C_term2 + C_term3));
-      ScalarGrad  eq_Cx       = dt * (Cx_term1 + Cx_term2);
-      variable_list.set_value_term(2, eq_C);
-      variable_list.set_gradient_term(2, eq_Cx);
+      ScalarGrad  cx_term1    = -diffusivity * cx;
+      ScalarGrad  cx_term2    = diffusivity * (omega * c) / RT * sx;
+      ScalarValue eq_c        = c_old - c + (dt * (c_term1 + c_term2 + c_term3));
+      ScalarGrad  eq_cx       = dt * (cx_term1 + cx_term2);
+      variable_list.set_value_term(2, eq_c);
+      variable_list.set_gradient_term(2, eq_cx);
     }
 }
 
@@ -157,53 +157,46 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_lhs(
     {
       VectorGrad change_ux =
         variable_list.template get_symmetric_gradient<VectorGrad>(0, Change);
-      ScalarValue p = variable_list.template get_value<ScalarValue>(3);
+      ScalarValue psi = variable_list.template get_value<ScalarValue>(3);
       VectorGrad  stress;
-      compute_stress<dim, ScalarValue>(stiffness, p * change_ux, stress);
+      compute_stress<dim, ScalarValue>(stiffness, psi * change_ux, stress);
       variable_list.set_gradient_term(0, stress, Change);
     }
   if (index == 2)
     {
       // Concentration to be changed
-      ScalarValue C         = variable_list.template get_value<ScalarValue>(2);
-      ScalarValue change_C  = variable_list.template get_value<ScalarValue>(2, Change);
-      ScalarGrad  change_Cx = variable_list.template get_gradient<ScalarGrad>(2, Change);
+      ScalarValue c         = variable_list.template get_value<ScalarValue>(2);
+      ScalarValue change_c  = variable_list.template get_value<ScalarValue>(2, Change);
+      ScalarGrad  change_cx = variable_list.template get_gradient<ScalarGrad>(2, Change);
       // Gradient of Hydrostatic Stress
-      ScalarValue S  = variable_list.template get_value<ScalarValue>(1);
-      ScalarGrad  Sx = variable_list.template get_gradient<ScalarGrad>(1);
+      ScalarValue s  = variable_list.template get_value<ScalarValue>(1);
+      ScalarGrad  sx = variable_list.template get_gradient<ScalarGrad>(1);
       // Order Parameter, needed but not changed
-      ScalarValue p      = variable_list.template get_value<ScalarValue>(3);
-      ScalarGrad  px     = variable_list.template get_gradient<ScalarGrad>(3);
-      ScalarValue px_mag = px.norm() + offset;
-      ScalarValue dt     = get_timestep();
+      ScalarValue psi       = variable_list.template get_value<ScalarValue>(3);
+      ScalarGrad  psi_x     = variable_list.template get_gradient<ScalarGrad>(3);
+      ScalarValue psi_x_mag = psi_x.norm() + offset;
+      ScalarValue dt        = get_timestep();
       // Transport Terms
-      ScalarValue LHS_C_term1 = -(diffusivity / p) * (px * change_Cx);
-      ScalarValue LHS_C_term2 =
-        (omega * diffusivity * change_C) / (R * Temp * p) * (px * Sx);
+      ScalarValue LHS_c_term1 = -(diffusivity / psi) * (psi_x * change_cx);
+      ScalarValue LHS_c_term2 =
+        (omega * diffusivity * change_c) / (RT * psi) * (psi_x * sx);
       // Rate Terms
       ScalarValue app_pot_energy = F * del_phi;
-      ScalarValue mech_energy    = omega * S;
-      ScalarValue conf_energy_x  = (1.0 / (C * C_ref)) * change_C;
+      ScalarValue mech_energy    = omega * s;
+      ScalarValue conf_energy_x  = (1.0 / (c * c_ref)) * change_c;
       ScalarValue eta =
         app_pot_energy + mech_energy; // overpotential term, check conf_energy later
-      // ScalarValue LHS_C_term3 = (px_mag/p) * kc * diffusivity * change_C; //No
-      // longer included due to change in boudnary condition ScalarValue
-      // LHS_C_term3 = -(px_mag/p) * i_0/F * std::sqrt(C_ref/C) * (2.0 *
-      // std::exp(-0.5 * del_phi) * std::exp((-0.5 * omega * S)/(R * Temp)) + 0.5
-      // * std::exp(0.5 * del_phi) * std::exp((0.5 * omega * S)/(R * Temp))) *
-      // change_C;
-
-      ScalarValue BV_exp_term  = std::exp(-eta / (R * Temp));
-      ScalarValue LHS_C_term3  = -(px_mag / p) * i_0 / F *
+      ScalarValue BV_exp_term  = std::exp(-eta / (RT));
+      ScalarValue LHS_c_term3  = -(psi_x_mag / psi) * i_0 / F *
                                  (pow(BV_exp_term, alpha) * pow(conf_energy_x, -alpha) -
                                   pow(BV_exp_term, -alpha) * pow(conf_energy_x, alpha));
-      ScalarGrad  LHS_Cx_term1 = diffusivity * change_Cx;
-      ScalarGrad  LHS_Cx_term2 = (diffusivity * omega) / (R * Temp) * (Sx * change_C);
-      ScalarValue eq_change_C = change_C + dt * (LHS_C_term1 + LHS_C_term2 + LHS_C_term3);
-      ScalarGrad  eq_change_Cx = dt * (LHS_Cx_term1 + LHS_Cx_term2);
+      ScalarGrad  LHS_cx_term1 = diffusivity * change_cx;
+      ScalarGrad  LHS_cx_term2 = (diffusivity * omega) / (RT) * (sx * change_c);
+      ScalarValue eq_change_c = change_c + dt * (LHS_c_term1 + LHS_c_term2 + LHS_c_term3);
+      ScalarGrad  eq_change_cx = dt * (LHS_cx_term1 + LHS_cx_term2);
 
-      variable_list.set_value_term(2, eq_change_C, Change);
-      variable_list.set_gradient_term(2, eq_change_Cx, Change);
+      variable_list.set_value_term(2, eq_change_c, Change);
+      variable_list.set_gradient_term(2, eq_change_cx, Change);
     }
 }
 
