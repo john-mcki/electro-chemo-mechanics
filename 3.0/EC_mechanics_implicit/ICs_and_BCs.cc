@@ -44,7 +44,7 @@ CustomPDE<dim, degree, number>::set_initial_condition(
     }
   if (index == 2)
     {
-      scalar_value = c_init * domain_parameter + (c_ref) * (1.0 - domain_parameter);
+      scalar_value = c_init * domain_parameter + c_ref * (1.0 - domain_parameter);
     }
   if (index == 3)
     {
