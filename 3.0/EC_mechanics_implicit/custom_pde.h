@@ -144,7 +144,6 @@ private:
     get_user_inputs().get_user_constants().get_model_constant_double("del_phi");
   number diffusivity =
     get_user_inputs().get_user_constants().get_model_constant_double("diffusivity");
-  number kc = get_user_inputs().get_user_constants().get_model_constant_double("kc");
   number RT = get_user_inputs().get_user_constants().get_model_constant_double("RT");
   number F  = get_user_inputs().get_user_constants().get_model_constant_double("F");
   number omega =
