@@ -46,6 +46,30 @@ CustomAttributeLoader::load_variable_attributes()
   set_variable_equation_type(5, ExplicitTimeDependent);
   set_dependencies_value_term_rhs(5, "c,psi_1");
   set_is_postprocessed_field(5, true);
+
+  set_variable_name(6, "f_config");
+  set_variable_type(6, FieldInfo::TensorRank::Scalar);
+  set_variable_equation_type(6, ExplicitTimeDependent);
+  set_dependencies_value_term_rhs(6, "c,psi_1");
+  set_is_postprocessed_field(6, true);
+
+  set_variable_name(7, "f_elec");
+  set_variable_type(7, FieldInfo::TensorRank::Scalar);
+  set_variable_equation_type(7, ExplicitTimeDependent);
+  set_dependencies_value_term_rhs(7, "psi_1");
+  set_is_postprocessed_field(7, true);
+
+  set_variable_name(8, "f_mech");
+  set_variable_type(8, FieldInfo::TensorRank::Scalar);
+  set_variable_equation_type(8, ExplicitTimeDependent);
+  set_dependencies_value_term_rhs(8, "s,psi_1");
+  set_is_postprocessed_field(8, true);
+
+  set_variable_name(9, "f_tot");
+  set_variable_type(9, FieldInfo::TensorRank::Scalar);
+  set_variable_equation_type(9, ExplicitTimeDependent);
+  // set_dependencies_value_term_rhs(9, "c,psi_1");
+  set_is_postprocessed_field(9, true);
 }
 
 template <unsigned int dim, unsigned int degree, typename number>
@@ -208,10 +232,22 @@ CustomPDE<dim, degree, number>::compute_postprocess_explicit_rhs(
   [[maybe_unused]] const dealii::VectorizedArray<number> &element_volume,
   [[maybe_unused]] Types::Index                           solve_block) const
 {
-  ScalarValue particle_concentration =
-    variable_list.template get_value<ScalarValue>(2) *
-    variable_list.template get_value<ScalarValue>(3); // Concentration * domain parameter
+  ScalarValue s   = variable_list.template get_value<ScalarValue>(1);
+  ScalarValue c   = variable_list.template get_value<ScalarValue>(2);
+  ScalarValue psi = variable_list.template get_value<ScalarValue>(3);
+
+  ScalarValue particle_concentration = c * psi; // Concentration * domain parameter
+
+  ScalarValue f_config = RT * std::log(c / c_ref) * psi;
+  ScalarValue f_elec   = F * del_phi * psi;
+  ScalarValue f_mech   = omega * s * psi;
+  ScalarValue f_tot    = f_config + f_elec + f_mech;
+
   variable_list.set_value_term(5, particle_concentration);
+  variable_list.set_value_term(6, f_config);
+  variable_list.set_value_term(7, f_elec);
+  variable_list.set_value_term(8, f_mech);
+  variable_list.set_value_term(9, f_tot);
 }
 
 #include "custom_pde.inst"

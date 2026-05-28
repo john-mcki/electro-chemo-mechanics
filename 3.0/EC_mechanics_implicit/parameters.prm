@@ -1,17 +1,17 @@
 set dim = 2
-set global refinement = 6
+set global refinement = 8
 
 subsection Rectangular mesh
-  set x size = 50.0
-  set y size = 50.0
-  set z size = 50.0
+  set x size = 500.0
+  set y size = 500.0
+  set z size = 500.0
   set x subdivisions = 1
   set y subdivisions = 1
   set z subdivisions = 1
 end
 
-set time step = 1.0
-set number steps = 10
+set time step = 1000.0
+set number steps = 1000
 
 subsection output
   set condition = EQUAL_SPACING
@@ -28,16 +28,16 @@ set boundary condition for c = Natural
 set boundary condition for psi_1 = Natural
 set boundary condition for psi_2 = Natural
 
-set Model constant radius = 5.0, DOUBLE
+set Model constant radius = 50.0, DOUBLE
 set Model constant offset = 1.0e-2, DOUBLE
-set Model constant interface_width = 1.0, DOUBLE
+set Model constant interface_width = 10.0, DOUBLE
 set Model constant c_init = 1.0, DOUBLE
 set Model constant c_ref = 0.1, DOUBLE
 
 set Model constant diffusivity = 0.1, DOUBLE
 set Model constant RT = 2494.2, DOUBLE # Temp = 300 Kelvin, Unit - Joules
 set Model constant F = 96485.0, DOUBLE
-set Model constant omega = 1.0, DOUBLE
+set Model constant omega = 100.0, DOUBLE
 set Model constant poisson = 0.3, DOUBLE
 set Model constant youngs_modulus = 22.5, DOUBLE
 set Model constant stiffness = (22.5,0.3), isotropic elastic constants
