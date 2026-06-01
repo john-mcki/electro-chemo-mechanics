@@ -1,0 +1,56 @@
+subsection Rectangular mesh
+  set x size = 100
+  set y size = 100
+  set z size = 100
+end
+
+set global refinement = 7
+
+set time step = 1.0e-4
+set number steps = 100
+
+subsection output
+  set condition = EQUAL_SPACING
+  set number = 100
+  set file type = vtu
+end
+
+subsection linear solver parameters: 0
+  set preconditioner           = Chebyshev
+  subsection Chebyshev
+    # The maximum number of CG iterations used to find the maximum eigenvalue.
+    set eigenvalue cg iterations = 10
+    # The smoother polynomial degree.
+    set smoother degree          = 5
+    # The smoothing range for eigenvalues.
+    set smoothing range          = 0.1
+  end
+  set solver_ids               = 0
+  set max iterations           = 1000
+  set tolerance type           = RMSEPerField
+  set tolerance value          = 1e-6
+end
+
+# Model Constants (for reference check calculation tab in NMC parameters google sheet)
+
+# Geometry is currently hard-coded
+set Model constant offset = 1e-4, DOUBLE
+
+set Model constant c0 = 1.0, DOUBLE
+set Model constant c_ref = 0.1, DOUBLE
+set Model constant diffusivity = 0.1, DOUBLE
+
+set Model constant i_0 = 10.0, DOUBLE
+set Model constant del_phi = 0.50, DOUBLE
+set Model constant alpha = 0.5, DOUBLE
+
+#Mechanics Parameters
+set Model constant vegard = 0.00, DOUBLE
+#set Model constant site_vol = 1e-11, DOUBLE
+set Model constant site_vol = 0.0, DOUBLE
+set Model constant poisson = 0.3, DOUBLE
+set Model constant youngs_modulus = 22.5, DOUBLE
+set Model constant stiffness = (22.5,0.3), isotropic elastic constants
+
+set Model constant RT = 2494.2, DOUBLE
+set Model constant F = 96485.0, DOUBLE
