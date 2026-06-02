@@ -5,30 +5,40 @@ subsection Rectangular mesh
 end
 
 set global refinement = 7
+set max refinement = 7
+set min refinement = 1
+set mesh adaptivity = true
 
-set time step = 1.0e-4
-set number steps = 100
+subsection refinement criterion: 0
+  set variables         = psi
+  set type              = value
+  set value lower bound = 1e-3
+  set value upper bound = 2
+end
+
+set time step = 2.5e-5
+set number steps = 1000
 
 subsection output
   set condition = EQUAL_SPACING
   set number = 100
+  set list = 1,2,3,4,5,6,7,8,9,10, 47, 48,49
   set file type = vtu
 end
 
 subsection linear solver parameters: 0
-  set preconditioner           = Chebyshev
-  subsection Chebyshev
-    # The maximum number of CG iterations used to find the maximum eigenvalue.
-    set eigenvalue cg iterations = 10
-    # The smoother polynomial degree.
-    set smoother degree          = 5
-    # The smoothing range for eigenvalues.
-    set smoothing range          = 0.1
-  end
   set solver_ids               = 0
-  set max iterations           = 1000
+
+  set max iterations           = 10000
   set tolerance type           = RMSEPerField
   set tolerance value          = 1e-6
+  set preconditioner           = Chebyshev
+
+  subsection Chebyshev
+    set eigenvalue cg iterations = 10
+    set smoother degree          = 5
+    set smoothing range          = 0.0001
+  end
 end
 
 # Model Constants (for reference check calculation tab in NMC parameters google sheet)
@@ -45,9 +55,9 @@ set Model constant del_phi = 0.50, DOUBLE
 set Model constant alpha = 0.5, DOUBLE
 
 #Mechanics Parameters
-set Model constant vegard = 0.00, DOUBLE
-#set Model constant site_vol = 1e-11, DOUBLE
-set Model constant site_vol = 0.0, DOUBLE
+set Model constant vegard = 0.01, DOUBLE
+set Model constant site_vol = 1e-11, DOUBLE
+#set Model constant site_vol = 0.0, DOUBLE
 set Model constant poisson = 0.3, DOUBLE
 set Model constant youngs_modulus = 22.5, DOUBLE
 set Model constant stiffness = (22.5,0.3), isotropic elastic constants

@@ -112,14 +112,14 @@ private:
         ScalarValue app_pot_energy = F * del_phi;
         ScalarValue mech_energy    = site_vol * s;
         ScalarValue conf_energy    = RT * std::log(c / c_ref);
-        ScalarValue eta = app_pot_energy + mech_energy +
+        ScalarValue eta            = app_pot_energy + mech_energy +
                           conf_energy; // overpotential term, check conf_energy later
         ScalarValue BV_exp_term = exp(-eta / (RT));
-        ScalarValue c_term3  = (psi_x_mag / psi) * i_0 / F *
-                               (pow(BV_exp_term, alpha) -
-                                pow(BV_exp_term, -alpha)); // Full BV reaction rate term
-        ScalarGrad  cx_term1 = -diffusivity * cx;
-        ScalarGrad  cx_term2 = diffusivity * (site_vol * c) / RT * sx;
+        ScalarValue c_term3     = (psi_x_mag / psi) * i_0 / F *
+                              (pow(BV_exp_term, alpha) -
+                               pow(BV_exp_term, -alpha)); // Full BV reaction rate term
+        ScalarGrad cx_term1 = -diffusivity * cx;
+        ScalarGrad cx_term2 = diffusivity * (site_vol * c) / RT * sx;
 
         ScalarValue eq_c  = c + dt * (c_term1 + c_term2 + c_term3);
         ScalarGrad  eqx_c = dt * (cx_term1 + cx_term2);
@@ -127,14 +127,12 @@ private:
         variable_list.set_value_term(2, eq_c);
         variable_list.set_gradient_term(2, eqx_c);
       }
-    if (solve_block_id == 0) // u
+    if (solve_block_id == 0) // u, s
       {
-        // VectorValue u   = variable_list.template get_value<Vector, Current>(0);
         ScalarValue c   = variable_list.template get_value<Scalar, Current>(2);
         ScalarValue psi = variable_list.template get_value<Scalar, Current>(3);
         VectorGrad  transformation_strain;
         ScalarValue eigenstrain = vegard * (c - c_ref);
-        // ScalarValue hydrostatic_stress(0.0);
 
         for (unsigned int i = 0; i < dim; i++)
           {
@@ -144,11 +142,7 @@ private:
         Mechanics::compute_stress<dim, ScalarValue>(stiffness,
                                                     psi * transformation_strain,
                                                     stress);
-        // hyrdrostatic_stress = 1.0 / 3.0 * std::trace(u);
-        // for (unsigned int i = 0; i < dim; i++)
-        //  {
-        //    hydrostatic_stress += 1.0 / 3.0 * stress[i][i];
-        //  }
+
         variable_list.set_gradient_term(0, -stress);
         variable_list.set_value_term(1, 0.0);
       }
@@ -167,7 +161,6 @@ private:
   {
     if (solve_block_id == 0) // mechanics - lhs
       {
-        // VectorValue u  = variable_list.template get_value<Vector, LHS>(0);
         VectorGrad  ux  = variable_list.template get_symmetric_gradient<Vector, LHS>(0);
         ScalarValue s   = variable_list.template get_value<Scalar, LHS>(1);
         ScalarValue psi = variable_list.template get_value<Scalar, Current>(3);
@@ -177,7 +170,6 @@ private:
         variable_list.set_value_term(1, s - dealii::trace(stress) / 3.0);
       }
     /*
-    if (solve_block_id == 1) // concentration - lhs
       {
         ScalarValue psi       = variable_list.template get_value<ScalarValue>(3);
         ScalarGrad  psi_x     = variable_list.template get_gradient<ScalarGrad>(3);
