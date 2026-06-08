@@ -73,18 +73,18 @@ CustomPDE<dim, degree, number>::compute_explicit_rhs(
   ScalarValue dt        = this->get_timestep();
   // Rate Terms
   ScalarValue app_pot_energy = F * del_phi;
-  ScalarValue mech_energy    = omega * s;
+  ScalarValue mech_energy    = site_vol * s;
   ScalarValue conf_energy    = RT * std::log(c / c_ref);
   ScalarValue eta            = app_pot_energy + mech_energy +
                                conf_energy; // overpotential term, check conf_energy later
   ScalarValue BV_exp_term    = exp(-eta / RT);
   ScalarValue c_term1        = (diffusivity / psi) * (psi_x * cx);
-  ScalarValue c_term2        = -psi_x / psi * sx * diffusivity * (omega * c) / RT;
+  ScalarValue c_term2 = -psi_x / psi * sx * diffusivity * (site_vol * vegard * c) / RT;
   ScalarValue c_term3 =
     (psi_x_mag / psi) * i_0 / F *
     (pow(BV_exp_term, alpha) - pow(BV_exp_term, -alpha)); // Full BV reaction rate term
   ScalarGrad  cx_term1 = -diffusivity * cx;
-  ScalarGrad  cx_term2 = diffusivity * (omega * c) / (RT) *sx;
+  ScalarGrad  cx_term2 = diffusivity * (site_vol * vegard * c) / (RT) *sx;
   ScalarValue eq_c     = c + (dt * (c_term1 + c_term2 + c_term3));
   ScalarGrad  eq_cx    = dt * (cx_term1 + cx_term2);
   variable_list.set_value_term(2, eq_c);
@@ -110,7 +110,7 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
       ScalarValue psi = variable_list.template get_value<ScalarValue>(3);
       for (unsigned int i = 0; i < dim; i++)
         {
-          ux[i][i] -= omega / (3.0 * (youngs_modulus * 100.0)) * (c - c_ref);
+          ux[i][i] -= (vegard / 3.0) * (c - c_ref);
         }
       VectorGrad stress;
       compute_stress<dim, ScalarValue>(stiffness, psi * ux, stress);
@@ -124,7 +124,7 @@ CustomPDE<dim, degree, number>::compute_nonexplicit_rhs(
       ScalarValue psi = variable_list.template get_value<ScalarValue>(3);
       for (unsigned int i = 0; i < dim; i++)
         {
-          ux[i][i] -= omega / (3.0 * (youngs_modulus * 100.0)) * (c - c_ref);
+          ux[i][i] -= (vegard / 3.0) * (c - c_ref);
         }
       VectorGrad stress;
       compute_stress<dim, ScalarValue>(stiffness, psi * ux, stress);
