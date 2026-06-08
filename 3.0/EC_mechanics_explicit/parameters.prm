@@ -1,5 +1,5 @@
 set dim = 2
-set global refinement = 7
+set global refinement = 8
 set degree = 1
 
 subsection Rectangular mesh
@@ -31,7 +31,7 @@ set boundary condition for psi_2 = Natural
 
 #Geometry Parameters
 set Model constant radius = 10.0, DOUBLE
-set Model constant interface_width = 1.0, DOUBLE
+set Model constant interface_width = 0.75, DOUBLE
 set Model constant offset = 1e-4, DOUBLE
 
 #Concentration/mass parameters

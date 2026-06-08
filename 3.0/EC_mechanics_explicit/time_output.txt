@@ -1,0 +1,23 @@
+3.0 explicit runs
+2-D 
+refine 5: 
+refine 6: 145.359942000 seconds
+refine 7: 275.587125000 seconds
+refine 8:
+3-D
+refine 5: 
+refine 6:
+refine 7:
+refine 8:
+
+4.0 explicit runs
+2-D 
+refine 5: 
+refine 6:
+refine 7:
+refine 8:
+3-D
+refine 5: 
+refine 6:
+refine 7:
+refine 8:
