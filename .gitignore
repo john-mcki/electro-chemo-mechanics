@@ -41,6 +41,7 @@ compile_commands.json
 # Executables
 main-release
 main-debug
+main
 *.sh
 
 # Output files

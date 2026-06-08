@@ -141,14 +141,19 @@ private:
     get_user_inputs().get_user_constants().get_model_constant_double("c_ref");
   number diffusivity =
     get_user_inputs().get_user_constants().get_model_constant_double("diffusivity");
-  number kc  = get_user_inputs().get_user_constants().get_model_constant_double("kc");
   number RT  = get_user_inputs().get_user_constants().get_model_constant_double("RT");
   number F   = get_user_inputs().get_user_constants().get_model_constant_double("F");
   number i_0 = get_user_inputs().get_user_constants().get_model_constant_double("i_0");
   number del_phi =
     get_user_inputs().get_user_constants().get_model_constant_double("del_phi");
-  number omega =
-    get_user_inputs().get_user_constants().get_model_constant_double("omega");
+  // number omega =
+  // get_user_inputs().get_user_constants().get_model_constant_double("omega");
+  number vegard =
+    get_user_inputs().get_user_constants().get_model_constant_double("vegard");
+  number site_vol =
+    get_user_inputs().get_user_constants().get_model_constant_double("site_vol");
+  number mol_vol =
+    get_user_inputs().get_user_constants().get_model_constant_double("mol_vol");
   number poisson =
     get_user_inputs().get_user_constants().get_model_constant_double("poisson");
   number youngs_modulus =
