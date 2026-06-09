@@ -37,25 +37,26 @@ main(int argc, char *argv[])
   constant_block.field_indices = {3};
 
   SolveBlock c_block;
-  c_block.id               = 1;
-  c_block.solve_type       = Explicit;
-  c_block.solve_timing     = Initialized;
-  c_block.field_indices    = {2};
+  c_block.id               = 0;
+  c_block.solve_type       = Newton;
+  c_block.solve_timing     = Uninitialized;
+  c_block.field_indices    = {0, 1, 2};
   c_block.dependencies_rhs = make_dependency_set(
     fields,
-    {"old_1(s)", "grad(old_1(s))", "old_1(c)", "grad(old_1(c))", "psi", "grad(psi)"});
-
-  SolveBlock u_block;
-  u_block.id               = 0;
-  u_block.solve_type       = Linear;
-  u_block.solve_timing     = Uninitialized;
-  u_block.field_indices    = {0, 1};
-  u_block.dependencies_rhs = make_dependency_set(fields, {"c", "psi"});
-  u_block.dependencies_lhs =
-    make_dependency_set(fields, {"lhs(s)", "grad(lhs(u))", "psi"});
+    {"grad(u)", "s", "grad(s)", "old_1(c)", "grad(c)", "c", "psi", "grad(psi)"});
+  c_block.dependencies_lhs = make_dependency_set(fields,
+                                                 {"grad(lhs(u))",
+                                                  "s",
+                                                  "grad(s)",
+                                                  "lhs(s)",
+                                                  "lhs(c)",
+                                                  "grad(lhs(c))",
+                                                  "c",
+                                                  "psi",
+                                                  "grad(psi)"});
 
   SolveBlock pp_block;
-  pp_block.id               = 2;
+  pp_block.id               = 1;
   pp_block.solve_type       = Explicit;
   pp_block.solve_timing     = PostProcess;
   pp_block.field_indices    = {4, 5, 6};

@@ -1,0 +1,70 @@
+subsection Rectangular mesh
+  set x size = 100
+  set y size = 100
+  set z size = 100
+end
+
+set global refinement = 7
+set max refinement = 7
+set min refinement = 1
+set mesh adaptivity = true
+
+subsection refinement criterion: 0
+  set variables         = psi
+  set type              = value
+  set value lower bound = 1e-3
+  set value upper bound = 2
+end
+
+set time step = 0.25
+set number steps = 100000
+
+subsection output
+  set condition = EQUAL_SPACING
+  set number = 100
+  #set list = 1,2,3,4,5,6,7,8,9,10
+  set file type = vtu
+end
+
+subsection linear solver parameters: 0
+  set solver_ids               = 0
+
+  set solver type              = bicgstab
+  set max iterations           = 10000
+  set tolerance type           = RMSEPerField
+  set tolerance value          = 1e-6
+  set preconditioner           = Chebyshev
+
+  subsection Chebyshev
+    set eigenvalue cg iterations = 10
+    set smoother degree          = 5
+    set smoothing range          = 0.0001
+  end
+end
+
+# Model Constants (for reference check calculation tab in NMC parameters google sheet)
+
+# Geometry is currently hard-coded
+set Model constant offset = 1e-4, DOUBLE
+
+set Model constant c0 = 1.0, DOUBLE
+set Model constant c_ref = 0.4, DOUBLE
+set Model constant diffusivity = 0.1, DOUBLE
+
+set Model constant i_0 = 00.0, DOUBLE
+set Model constant del_phi = 0.00, DOUBLE
+set Model constant alpha = 0.5, DOUBLE
+
+#Mechanics Parameters
+#set Model constant vegard = 0.001, DOUBLE
+#set Model constant site_vol = 4.867e-11, DOUBLE
+#set Model constant mol_vol = 2.931e13, DOUBLE
+set Model constant vegard = 0.0, DOUBLE
+set Model constant site_vol = 0.0, DOUBLE
+set Model constant mol_vol = 0.0, DOUBLE
+#set Model constant poisson = 0.3, DOUBLE
+#set Model constant youngs_modulus = 22.5, DOUBLE
+set Model constant stiffness = (200.0,0.3), isotropic elastic constants
+
+set Model constant RT = 2494.2, DOUBLE
+set Model constant F = 96485.0, DOUBLE

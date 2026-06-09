@@ -78,7 +78,7 @@ private:
       {
         scalar_value = domain_parameter;
       }
-  }
+  } // redudant, will not be called
 
   void
   set_dirichlet([[maybe_unused]] const unsigned int       &index,
@@ -104,90 +104,102 @@ private:
     using std::exp;
     using std::pow;
     using std::sqrt;
-    if (solve_block_id == 1) // c
+    if (solve_block_id == 0) // concentration and mechanics
       {
+        // Dsiplacement
+        VectorGrad u_grad =
+          variable_list.template get_symmetric_gradient<Vector, Current>(0);
         // Hydrostatic Stress
-        ScalarValue s  = variable_list.template get_value<Scalar, OldOne>(1);
-        ScalarGrad  sx = variable_list.template get_gradient<Scalar, OldOne>(1);
+        ScalarValue s_val  = variable_list.template get_value<Scalar, Current>(1);
+        ScalarGrad  s_grad = variable_list.template get_gradient<Scalar, Current>(1);
         // Concentration Terms
-        ScalarValue c  = variable_list.template get_value<Scalar, OldOne>(2);
-        ScalarGrad  cx = variable_list.template get_gradient<Scalar, OldOne>(2);
+        ScalarValue c_val  = variable_list.template get_value<Scalar, Current>(2);
+        ScalarValue c_old  = variable_list.template get_value<Scalar, OldOne>(2);
+        ScalarGrad  c_grad = variable_list.template get_gradient<Scalar, Current>(2);
         // Order Parameter
-        ScalarValue psi       = variable_list.template get_value<Scalar, Current>(3);
-        ScalarGrad  psi_x     = variable_list.template get_gradient<Scalar, Current>(3);
-        ScalarValue psi_x_mag = psi_x.norm() + offset;
-        ScalarValue dt        = sim_timer.get_timestep();
+        ScalarValue psi      = variable_list.template get_value<Scalar, Current>(3);
+        ScalarGrad  psi_grad = variable_list.template get_gradient<Scalar, Current>(3);
+        ScalarValue psi_grad_mag = psi_grad.norm() + offset;
+        // Time step
+        ScalarValue dt = sim_timer.get_timestep();
 
-        // Transport Terms
-        ScalarValue c_term1 = (diffusivity / psi) * (psi_x * cx);
-        ScalarValue c_term2 =
-          -psi_x / psi * sx * diffusivity * (site_vol * vegard * c) / (RT);
-        // Rate Terms
-        ScalarValue app_pot_energy = F * del_phi;
-        ScalarValue mech_energy    = site_vol * s;
-        ScalarValue conf_energy    = RT * std::log(c / c_ref);
-        ScalarValue eta = app_pot_energy + mech_energy +
-                          conf_energy; // overpotential term, check conf_energy later
-        ScalarValue BV_exp_term = exp(-eta / (RT));
-        ScalarValue c_term3  = (psi_x_mag / psi) * i_0 / F *
-                               (pow(BV_exp_term, alpha) -
-                                pow(BV_exp_term, -alpha)); // Full BV reaction rate term
-        ScalarGrad  cx_term1 = -diffusivity * cx;
-        ScalarGrad  cx_term2 = diffusivity * (site_vol * c) / RT * sx;
-
-        ScalarValue eq_c  = c + dt * (c_term1 + c_term2 + c_term3);
-        ScalarGrad  eqx_c = dt * (cx_term1 + cx_term2);
-
-        variable_list.set_value_term(2, eq_c);
-        variable_list.set_gradient_term(2, eqx_c);
-      }
-    if (solve_block_id == 0) // u, s
-      {
-        ScalarValue c   = variable_list.template get_value<Scalar, Current>(2);
-        ScalarValue psi = variable_list.template get_value<Scalar, Current>(3);
-        VectorGrad  transformation_strain;
-        ScalarValue eigenstrain = (vegard / 3.0) * (c - c_ref);
+        // Mechanics update
+        ScalarValue eigenstrain = (vegard / 3.0) * (c_val - c_ref);
 
         for (unsigned int i = 0; i < dim; i++)
           {
-            transformation_strain[i][i] = -eigenstrain;
+            u_grad[i][i] = -eigenstrain;
           }
         VectorGrad stress;
-        Mechanics::compute_stress<dim, ScalarValue>(stiffness,
-                                                    psi * transformation_strain,
-                                                    stress);
+        Mechanics::compute_stress<dim, ScalarValue>(stiffness, psi * u_grad, stress);
 
+        // Concentration update
+        ScalarValue c_term1 = (diffusivity / psi) * (psi_grad * c_grad);
+        ScalarValue c_term2 =
+          -psi_grad / psi * s_grad * diffusivity * (site_vol * vegard * c_val) / (RT);
+
+        // Rate Terms
+        ScalarValue app_pot_energy = F * del_phi;
+        ScalarValue mech_energy    = site_vol * s_val;
+        ScalarValue conf_energy    = RT * std::log(c_val / c_ref);
+        ScalarValue eta =
+          app_pot_energy + mech_energy + conf_energy; // overpotential term
+        ScalarValue BV_exp_term = exp(-eta / (RT));
+        ScalarValue c_term3  = (psi_grad_mag / psi) * i_0 / F *
+                               (pow(BV_exp_term, alpha) -
+                                pow(BV_exp_term, -alpha)); // Full BV reaction rate term
+        ScalarGrad  cx_term1 = -diffusivity * c_grad;
+        ScalarGrad  cx_term2 = diffusivity * (site_vol * c_val) / RT * s_grad;
+
+        // residual update
+        ScalarValue r_c_val  = c_old - dt * (c_term1 + c_term2 + c_term3);
+        ScalarGrad  r_c_grad = -dt * (cx_term1 + cx_term2);
+
+        // Update fields
         variable_list.set_gradient_term(0, -stress);
         variable_list.set_value_term(1, 0.0);
+        if (sim_timer.get_increment() == 0)
+          {
+            // variable_list.set_value_term(2, c_val - (c0 * psi));
+            variable_list.set_value_term(2, 0.0);
+          }
+        else
+          {
+            variable_list.set_value_term(2, r_c_val);
+          }
+        variable_list.set_gradient_term(2, r_c_grad);
       }
-    else if (solve_block_id == 2) // pp
+    else if (solve_block_id == 1) // pp
       {
-        // Calling Variables
-        VectorGrad ux = variable_list.template get_symmetric_gradient<Vector, Current>(0);
-        ScalarValue c = variable_list.template get_value<Scalar, Current>(2);
+        // Dsiplacement
+        VectorGrad u_grad =
+          variable_list.template get_symmetric_gradient<Vector, Current>(0);
+        // Concentration
+        ScalarValue c_val = variable_list.template get_value<Scalar, Current>(2);
+        // Order Parameter
         ScalarValue psi = variable_list.template get_value<Scalar, Current>(3);
 
         // Concentration inside the particle
-        variable_list.set_value_term(4, c * psi);
+        variable_list.set_value_term(4, c_val * psi);
 
         // Solution Free Energy (J/vol)
         ScalarValue conf_energy =
-          (RT * c * std::log(c)) / mol_vol; // check mol_vol vs site_vol
+          (RT * c_val * std::log(c_val)) / mol_vol; // check mol_vol vs site_vol
         variable_list.set_value_term(5, psi * conf_energy);
 
         // Mechanical Free Energy (J/vol)
         VectorGrad  transformation_strain;
-        ScalarValue eigenstrain = (vegard / 3.0) * (c - c_ref);
+        ScalarValue eigenstrain = (vegard / 3.0) * (c_val - c_ref);
         for (unsigned int i = 0; i < dim; i++)
           {
             transformation_strain[i][i] = -eigenstrain;
           }
         VectorGrad stress;
         Mechanics::compute_stress<dim, ScalarValue>(stiffness,
-                                                    ux - transformation_strain,
+                                                    u_grad - transformation_strain,
                                                     stress);
         ScalarValue mech_energy =
-          0.5 * dealii::scalar_product(stress, (ux - transformation_strain)) *
+          0.5 * dealii::scalar_product(stress, (u_grad - transformation_strain)) *
           (1.0e-9); // Conversion to J/vol in terms of microns
         variable_list.set_value_term(6, psi * mech_energy);
       }
@@ -198,15 +210,57 @@ private:
               [[maybe_unused]] const SimulationTimer               &sim_timer,
               [[maybe_unused]] unsigned int solve_block_id) const override
   {
-    if (solve_block_id == 0) // mechanics - lhs
+    static const ScalarValue alpha(0.5);
+    using std::exp;
+    using std::pow;
+    using std::sqrt;
+    if (solve_block_id == 0)
       {
-        VectorGrad  ux  = variable_list.template get_symmetric_gradient<Vector, LHS>(0);
-        ScalarValue s   = variable_list.template get_value<Scalar, LHS>(1);
-        ScalarValue psi = variable_list.template get_value<Scalar, Current>(3);
-        VectorGrad  stress;
-        Mechanics::compute_stress<dim, ScalarValue>(stiffness, psi * ux, stress);
+        // Calling Variables
+        ScalarValue s_val  = variable_list.template get_value<Scalar, Current>(1);
+        ScalarGrad  s_grad = variable_list.template get_gradient<Scalar, Current>(1);
+        ScalarValue c_val  = variable_list.template get_value<Scalar, Current>(2);
+
+        VectorGrad del_u_grad =
+          variable_list.template get_symmetric_gradient<Vector, LHS>(0);
+        ScalarValue del_s      = variable_list.template get_value<Scalar, LHS>(1);
+        ScalarValue del_c      = variable_list.template get_value<Scalar, LHS>(2);
+        ScalarGrad  del_c_grad = variable_list.template get_gradient<Scalar, LHS>(2);
+
+        ScalarValue psi       = variable_list.template get_value<Scalar, Current>(3);
+        ScalarGrad  psi_x     = variable_list.template get_gradient<Scalar, Current>(3);
+        ScalarValue psi_x_mag = psi_x.norm() + offset;
+        ScalarValue dt        = sim_timer.get_timestep();
+
+        // Mechanics - lhs
+        VectorGrad stress;
+        Mechanics::compute_stress<dim, ScalarValue>(stiffness, psi * del_u_grad, stress);
+
+        // Concentration - lhs
+        ScalarValue LHS_c_term1 = -(diffusivity / psi) * (psi_x * del_c_grad);
+        ScalarValue LHS_c_term2 =
+          (site_vol * diffusivity * del_c) / (RT * psi) * (psi_x * s_grad);
+        // Rate Terms
+        ScalarValue app_pot_energy = F * del_phi;
+        ScalarValue mech_energy    = site_vol * s_val;
+        ScalarValue conf_energy    = RT * std::log(c_val / c_ref);
+        ScalarValue eta = app_pot_energy + mech_energy +
+                          conf_energy; // overpotential term, check conf_energy later
+        ScalarValue BV_exp_term = exp(-eta / (RT));
+        ScalarValue LHS_c_term3 =
+          -(psi_x_mag / psi) * i_0 / F * del_c / c_val *
+          (alpha * pow(BV_exp_term, alpha) - (1.0 - alpha) * pow(BV_exp_term, -alpha));
+
+        ScalarGrad  LHS_cx_term1 = diffusivity * del_c_grad;
+        ScalarGrad  LHS_cx_term2 = (diffusivity * site_vol) / (RT) * (s_grad * del_c);
+        ScalarValue eq_change_c  = del_c + dt * (LHS_c_term1 + LHS_c_term2 + LHS_c_term3);
+        ScalarGrad  eq_change_cx = dt * (LHS_cx_term1 + LHS_cx_term2);
+
+        // Update fields
         variable_list.set_gradient_term(0, stress);
-        variable_list.set_value_term(1, s - dealii::trace(stress) / 3.0);
+        variable_list.set_value_term(1, s_val - dealii::trace(stress) / 3.0);
+        variable_list.set_value_term(2, eq_change_c);
+        variable_list.set_gradient_term(2, eq_change_cx);
       }
   }
 
