@@ -45,12 +45,12 @@ main(int argc, char *argv[])
     fields,
     {"grad(u)", "s", "grad(s)", "old_1(c)", "grad(c)", "c", "psi", "grad(psi)"});
   c_block.dependencies_lhs = make_dependency_set(fields,
-                                                 {"grad(lhs(u))",
+                                                 {"grad(change(u))",
                                                   "s",
                                                   "grad(s)",
-                                                  "lhs(s)",
-                                                  "lhs(c)",
-                                                  "grad(lhs(c))",
+                                                  "change(s)",
+                                                  "change(c)",
+                                                  "grad(change(c))",
                                                   "c",
                                                   "psi",
                                                   "grad(psi)"});
@@ -62,7 +62,6 @@ main(int argc, char *argv[])
   pp_block.field_indices    = {4, 5, 6};
   pp_block.dependencies_rhs = make_dependency_set(fields, {"grad(u)", "c", "psi"});
 
-  // std::vector<SolveBlock> solve_blocks({constant_block, c_block, u_block, pp_block});
   std::vector<SolveBlock> solve_blocks({constant_block, c_block, pp_block});
 
   UserInputParameters<dim>       user_inputs(parameters_filename);
