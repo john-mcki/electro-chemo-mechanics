@@ -145,13 +145,13 @@ private:
         ScalarGrad  r_c_grad = dt * c_func_grad;
         ScalarValue r_mu_val =
           RT * log(c_val) - site_vol * vegard * hydrostatic_stress - mu_val;
-        VectorGrad r_u_grad = -stress;
+        VectorGrad r_u_grad = stress;
 
         // Update fields
-        variable_list.set_gradient_term(0, r_u_grad);
+        variable_list.set_gradient_term(0, -r_u_grad);
         variable_list.set_value_term(1, r_mu_val);
         variable_list.set_value_term(2, r_c_val);
-        variable_list.set_gradient_term(2, r_c_grad);
+        variable_list.set_gradient_term(2, -r_c_grad);
       }
     /*
   else if (solve_block_id == 1) // pp
