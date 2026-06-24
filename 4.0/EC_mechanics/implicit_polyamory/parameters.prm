@@ -16,7 +16,7 @@ subsection refinement criterion: 0
   set value upper bound = 2
 end
 
-set time step = 0.25
+set time step = 1.0e-4
 set number steps = 100
 
 subsection output
@@ -27,14 +27,14 @@ subsection output
 end
 
 subsection linear solver parameters: 0
-  set solver_ids               = 0, 1
+  set solver_ids               = 0
 
   set solver type              = bicgstab
   set max iterations           = 10000
   set tolerance type           = RMSEPerField
   set tolerance value          = 1.0e-6
   set preconditioner           = Chebyshev
-
+  set mg depth = 3
   subsection Chebyshev
     set eigenvalue cg iterations = 10
     set smoother degree          = 5
@@ -59,17 +59,17 @@ set Model constant c0 = 1.0, DOUBLE
 set Model constant c_ref = 0.4, DOUBLE
 set Model constant diffusivity = 0.1, DOUBLE
 
-set Model constant i_0 = 10.0, DOUBLE
+set Model constant i_0 = 1.0, DOUBLE
 set Model constant del_phi = 0.00, DOUBLE
-set Model constant alpha = 0.5, DOUBLE
+#set Model constant alpha = 0.5, DOUBLE
 
 #Mechanics Parameters
 set Model constant vegard = 0.001, DOUBLE
 set Model constant site_vol = 4.867e-11, DOUBLE
 set Model constant mol_vol = 2.931e13, DOUBLE
 #set Model constant vegard = 0.0, DOUBLE
-#set Model constant site_vol = 0.0, DOUBLE
-#set Model constant mol_vol = 0.0, DOUBLE
+#set Model constant site_vol = 1.0, DOUBLE
+#set Model constant mol_vol = 1.0, DOUBLE
 #set Model constant poisson = 0.3, DOUBLE
 #set Model constant youngs_modulus = 22.5, DOUBLE
 set Model constant stiffness = (200.0,0.3), isotropic elastic constants

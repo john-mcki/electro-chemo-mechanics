@@ -135,46 +135,27 @@ private:
         variable_list.set_value_term(2, r_c_val);
         variable_list.set_gradient_term(2, r_c_grad);
       }
-    if (solve_block_id == 1) // displacement
+    else if (solve_block_id == 1) // displacement, hydrostatic stress
       {
         // Calling Variables
-        VectorGrad u_grad =
-          variable_list.template get_symmetric_gradient<Vector, Current>(0);
         ScalarValue c_val = variable_list.template get_value<Scalar, Current>(2);
         ScalarValue psi   = variable_list.template get_value<Scalar, Current>(3);
+
         // Solving for stress
+        VectorGrad  transformation_strain;
         ScalarValue eigenstrain = (vegard / 3.0) * (c_val - c_ref);
 
         for (unsigned int i = 0; i < dim; i++)
           {
-            u_grad[i][i] -= eigenstrain;
+            transformation_strain[i][i] = -eigenstrain;
           }
         VectorGrad stress;
-        Mechanics::compute_stress<dim, ScalarValue>(stiffness, psi * u_grad, stress);
+        Mechanics::compute_stress<dim, ScalarValue>(stiffness,
+                                                    psi * transformation_strain,
+                                                    stress);
 
         // Updating displacement and hydrostatic stress residuals
         variable_list.set_gradient_term(0, -stress);
-      }
-    else if (solve_block_id == 2)
-      {
-        /*
-        VectorGrad u_grad =
-          variable_list.template get_symmetric_gradient<Vector, Current>(0);
-        ScalarValue c_val = variable_list.template get_value<Scalar, Current>(2);
-        ScalarValue psi   = variable_list.template get_value<Scalar, Current>(3);
-
-        ScalarValue eigenstrain = (vegard / 3.0) * (c_val - c_ref);
-
-        for (unsigned int i = 0; i < dim; i++)
-          {
-            u_grad[i][i] = -eigenstrain;
-          }
-        VectorGrad stress;
-        Mechanics::compute_stress<dim, ScalarValue>(stiffness, psi * u_grad, stress);
-
-        // Updating displacement and hydrostatic stress residuals
-        // variable_list.set_value_term(1, dealii::trace(stress) / 3.0);
-        */
         variable_list.set_value_term(1, 0.0);
       }
     /*
@@ -277,27 +258,15 @@ private:
         // Calling Variables
         VectorGrad del_u_grad =
           variable_list.template get_symmetric_gradient<Vector, LHS>(0);
-        ScalarValue psi = variable_list.template get_value<Scalar, Current>(3);
+        ScalarValue del_s = variable_list.template get_value<Scalar, LHS>(1);
+        ScalarValue psi   = variable_list.template get_value<Scalar, Current>(3);
 
         // Mechanics - lhs
         VectorGrad stress;
         Mechanics::compute_stress<dim, ScalarValue>(stiffness, psi * del_u_grad, stress);
 
         variable_list.set_gradient_term(0, stress);
-      }
-    if (solve_block_id == 2) // hydrostatic stress
-      {
-        // Calling Variables
-        VectorGrad del_u_grad =
-          variable_list.template get_symmetric_gradient<Vector, LHS>(0);
-        // ScalarValue del_s = variable_list.template get_value<Scalar, LHS>(1);
-        ScalarValue psi = variable_list.template get_value<Scalar, Current>(3);
-
-        // Mechanics - lhs
-        VectorGrad stress;
-        Mechanics::compute_stress<dim, ScalarValue>(stiffness, psi * del_u_grad, stress);
-
-        variable_list.set_value_term(1, dealii::trace(stress) / 3.0);
+        variable_list.set_value_term(1, del_s - dealii::trace(stress) / 3.0);
       }
   }
 
