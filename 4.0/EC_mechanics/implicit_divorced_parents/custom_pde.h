@@ -187,8 +187,7 @@ private:
         ScalarValue hydrostatic_stress = (1.0 / 3.0) * dealii::trace(stress);
 
         ScalarValue mu =
-          ((RT * std::log(c_val)) - vegard * site_vol * hydrostatic_stress) /
-          ;
+          ((RT * std::log(c_val)) - vegard * site_vol * hydrostatic_stress);
         variable_list.set_value_term(5, mu);
 
         // Reaction Potential
