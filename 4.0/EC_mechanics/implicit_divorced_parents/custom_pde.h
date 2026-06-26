@@ -158,42 +158,43 @@ private:
         variable_list.set_gradient_term(0, -stress);
         variable_list.set_value_term(1, 0.0);
       }
-    /*
-  else if (solve_block_id == 2) // pp
-    {
-      // Displacement
-      VectorGrad u_grad =
-        variable_list.template get_symmetric_gradient<Vector, Current>(0);
-      // Concentration
-      ScalarValue c_val = variable_list.template get_value<Scalar, Current>(2);
-      // Order Parameter
-      ScalarValue psi = variable_list.template get_value<Scalar, Current>(3);
 
-      // Concentration inside the particle
-      variable_list.set_value_term(4, c_val * psi);
+    else if (solve_block_id == 2) // pp
+      {
+        // Displacement
+        VectorGrad u_grad =
+          variable_list.template get_symmetric_gradient<Vector, Current>(0);
+        // Concentration
+        ScalarValue c_val = variable_list.template get_value<Scalar, Current>(2);
+        // Order Parameter
+        ScalarValue psi = variable_list.template get_value<Scalar, Current>(3);
 
-      // Solution Free Energy (J/vol)
-      ScalarValue conf_energy =
-        (RT * c_val * std::log(c_val)) / mol_vol; // check mol_vol vs site_vol
-      variable_list.set_value_term(5, psi * conf_energy);
+        // Concentration inside the particle
+        variable_list.set_value_term(4, c_val * psi);
 
-      // Mechanical Free Energy (J/vol)
-      VectorGrad  transformation_strain;
-      ScalarValue eigenstrain = (vegard / 3.0) * (c_val - c_ref);
-      for (unsigned int i = 0; i < dim; i++)
-        {
-          transformation_strain[i][i] = -eigenstrain;
-        }
-      VectorGrad stress;
-      Mechanics::compute_stress<dim, ScalarValue>(stiffness,
-                                                  u_grad - transformation_strain,
-                                                  stress);
-      ScalarValue mech_energy =
-        0.5 * dealii::scalar_product(stress, (u_grad - transformation_strain)) *
-        (1.0e-9); // Conversion to J/vol in terms of microns
-      variable_list.set_value_term(6, psi * mech_energy);
-    }
-    */
+        // Diffusion Potential
+        VectorGrad  transformation_strain;
+        ScalarValue eigenstrain = (vegard / 3.0) * (c_val - c_ref);
+        for (unsigned int i = 0; i < dim; i++)
+          {
+            transformation_strain[i][i] = -eigenstrain;
+          }
+        VectorGrad stress;
+        Mechanics::compute_stress<dim, ScalarValue>(stiffness,
+                                                    psi *
+                                                      (u_grad - transformation_strain),
+                                                    stress);
+        ScalarValue hydrostatic_stress = (1.0 / 3.0) * dealii::trace(stress);
+
+        ScalarValue mu =
+          ((RT * std::log(c_val)) - vegard * site_vol * hydrostatic_stress) /
+          ;
+        variable_list.set_value_term(5, mu);
+
+        // Reaction Potential
+        ScalarValue FEta = mu + F * del_phi;
+        variable_list.set_value_term(6, FEta);
+      }
   }
 
   void

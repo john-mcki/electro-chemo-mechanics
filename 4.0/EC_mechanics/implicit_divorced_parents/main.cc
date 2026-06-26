@@ -25,7 +25,10 @@ main(int argc, char *argv[])
   std::vector<FieldAttributes> fields = {FieldAttributes("u", Vector),
                                          FieldAttributes("s"),
                                          FieldAttributes("c"),
-                                         FieldAttributes("psi")};
+                                         FieldAttributes("psi"),
+                                         FieldAttributes("particle_concentration"),
+                                         FieldAttributes("mu"),
+                                         FieldAttributes("FEta")};
   // FieldAttributes("particle_concentration"),
   // FieldAttributes("conf_energy"),
   // FieldAttributes("mech_energy")};
@@ -57,17 +60,15 @@ main(int argc, char *argv[])
   u_block.dependencies_lhs =
     make_dependency_set(fields, {"grad(lhs(u))", "lhs(s)", "psi"});
 
-  /*
   SolveBlock pp_block;
   pp_block.id               = 2;
   pp_block.solve_type       = Explicit;
   pp_block.solve_timing     = PostProcess;
   pp_block.field_indices    = {4, 5, 6};
   pp_block.dependencies_rhs = make_dependency_set(fields, {"grad(u)", "c", "psi"});
-  */
 
   // std::vector<SolveBlock> solve_blocks({constant_block, c_block, pp_block});
-  std::vector<SolveBlock> solve_blocks({constant_block, c_block, u_block});
+  std::vector<SolveBlock> solve_blocks({constant_block, c_block, u_block, pp_block});
 
   UserInputParameters<dim>       user_inputs(parameters_filename);
   PhaseFieldTools<dim>           pf_tools;

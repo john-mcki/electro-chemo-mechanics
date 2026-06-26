@@ -7,7 +7,7 @@ end
 set global refinement = 7
 set max refinement = 7
 set min refinement = 1
-set mesh adaptivity = false
+set mesh adaptivity = true
 
 subsection refinement criterion: 0
   set variables         = psi
@@ -17,7 +17,7 @@ subsection refinement criterion: 0
 end
 
 set time step = 0.25
-set number steps = 100
+set number steps = 100000
 
 subsection output
   set condition = EQUAL_SPACING
@@ -33,7 +33,7 @@ subsection linear solver parameters: 0
   set max iterations           = 10000
   set tolerance type           = RMSEPerField
   set tolerance value          = 1.0e-6
-  set preconditioner           = GMG
+  set preconditioner           = Chebyshev
   set mg depth                 = 3
 
   subsection Chebyshev
@@ -50,7 +50,7 @@ subsection linear solver parameters: 1
   set max iterations           = 10000
   set tolerance type           = RMSEPerField
   set tolerance value          = 1.0e-6
-  set preconditioner           = GMG
+  set preconditioner           = Chebyshev
   set mg depth                 = 3
 
   subsection Chebyshev
