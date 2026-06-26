@@ -42,7 +42,6 @@ compile_commands.json
 main-release
 main-debug
 main
-*.sh
 
 # Output files
 *.vtu
