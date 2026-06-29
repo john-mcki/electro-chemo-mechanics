@@ -139,8 +139,10 @@ private:
         // Residuals
         ScalarValue r_c_val  = c_old - c_val + dt * c_func_val;
         ScalarGrad  r_c_grad = dt * c_func_grad;
+        // ScalarValue r_mu_val = RT * log(c_val) - site_vol * vegard * hydrostatic_stress
+        // - mu_val;
         ScalarValue r_mu_val =
-          RT * log(c_val) - site_vol * vegard * hydrostatic_stress - mu_val;
+          RT * (c_val) -site_vol * vegard * hydrostatic_stress - mu_val;
         VectorGrad r_u_grad = stress;
 
         // Update fields

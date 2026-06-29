@@ -126,7 +126,7 @@ private:
 
         // Gradient terms
         ScalarGrad cx_term1 = -diffusivity * c_grad;
-        ScalarGrad cx_term2 = diffusivity * (site_vol * c_val) / RT * s_grad;
+        ScalarGrad cx_term2 = diffusivity * (site_vol * vegard * c_val) / RT * s_grad;
 
         // residual update
         ScalarValue r_c_val  = c_old - c_val + dt * (c_term1 + c_term2 + c_term3);
@@ -242,7 +242,8 @@ private:
 
         // Gradient Terms, LHS
         ScalarGrad LHS_cx_term1 = diffusivity * del_c_grad;
-        ScalarGrad LHS_cx_term2 = -(diffusivity * site_vol) / (RT) * (s_grad * del_c);
+        ScalarGrad LHS_cx_term2 =
+          -(diffusivity * vegard * site_vol) / (RT) * (s_grad * del_c);
 
         // Residual Terms, LHS
         ScalarValue eq_change_c =
