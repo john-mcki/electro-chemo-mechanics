@@ -7,7 +7,7 @@ end
 set global refinement = 7
 set max refinement = 7
 set min refinement = 1
-set mesh adaptivity = false
+set mesh adaptivity = true
 
 subsection refinement criterion: 0
   set variables         = psi
@@ -55,7 +55,7 @@ end
 # Geometry is currently hard-coded
 set Model constant offset = 1e-2, DOUBLE
 
-set Model constant c0 = 1.0, DOUBLE
+set Model constant c0 = 0.99, DOUBLE
 set Model constant c_ref = 0.4, DOUBLE
 set Model constant diffusivity = 0.1, DOUBLE
 

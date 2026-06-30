@@ -47,6 +47,7 @@ main(int argc, char *argv[])
   c_block.dependencies_lhs = make_dependency_set(fields,
                                                  {"grad(change(u))",
                                                   "mu",
+                                                  "grad(mu)",
                                                   "change(mu)",
                                                   "grad(change(mu))",
                                                   "c",
