@@ -62,7 +62,6 @@ private:
     double domain_parameter_2 =
       0.5 * ((1.0 + offset) - (1.0 - offset) * std::tanh(sdf_2));
     // Beginning a mechanics guess which will be used in a mu guess
-    // double eigenstrain = vegard/3.0 * (domain_parameter_2 - c_ref)
     if (index == 1) // mu
       {
         scalar_value = log(domain_parameter_2);
@@ -117,6 +116,12 @@ private:
         ScalarValue c_val = variable_list.template get_value<Scalar, Current>(2);
         ScalarValue c_old = variable_list.template get_value<Scalar, OldOne>(2);
 
+        // concentration offset
+        ScalarValue epsilon = 1.0e-8;
+
+        // Attach a floor to the concentration term
+        // ScalarValue c_val = std::max(c, epsilon);
+
         // Order Parameter
         ScalarValue psi      = variable_list.template get_value<Scalar, Current>(3);
         ScalarGrad  psi_grad = variable_list.template get_gradient<Scalar, Current>(3);
@@ -140,19 +145,20 @@ private:
         ScalarValue mobility       = (diffusivity * c_val) / RT;
         ScalarValue app_pot_energy = F * del_phi;
         ScalarValue eta            = RT * mu_val + app_pot_energy;
-        ScalarValue BV_exp_term    = exp(-eta / RT);
-        ScalarValue react =
-          i_0 / F * (pow(BV_exp_term, alpha) - pow(BV_exp_term, (1.0 - alpha)));
+        ScalarValue react          = -2.0 * (i_0 / F) * std::sinh(eta / (2.0 * RT));
         ScalarValue c_func_val =
           mobility * (psi_grad * RT * mu_grad) + psi_grad_mag * react;
-        ScalarGrad c_func_grad = mobility * RT * mu_grad;
+        ScalarGrad  c_func_grad = mobility * RT * mu_grad;
+        ScalarValue stress_func = (site_vol * vegard * hydrostatic_stress) / RT;
 
         // Residuals
         ScalarValue r_c_val  = psi * (c_old - c_val) + dt * c_func_val;
         ScalarGrad  r_c_grad = dt * c_func_grad;
-        ScalarValue r_mu_val =
-          log(c_val) - (site_vol * vegard * hydrostatic_stress) / RT - mu_val;
-        VectorGrad r_u_grad = stress;
+        // ScalarValue r_mu_val =
+        //   log(c_val + epsilon) - (site_vol * vegard * hydrostatic_stress) / RT -
+        //   mu_val;
+        ScalarValue r_mu_val = c_val - exp(mu_val + stress_func);
+        VectorGrad  r_u_grad = stress;
 
         // Update fields
         variable_list.set_gradient_term(0, -r_u_grad);
@@ -174,9 +180,14 @@ private:
     if (solve_block_id == 0)
       {
         // Value terms
+        VectorGrad u_grad =
+          variable_list.template get_symmetric_gradient<Vector, Current>(0);
         ScalarValue mu_val  = variable_list.template get_value<Scalar, Current>(1);
         ScalarGrad  mu_grad = variable_list.template get_gradient<Scalar, Current>(1);
         ScalarValue c_val   = variable_list.template get_value<Scalar, Current>(2);
+
+        // concentration offset
+        ScalarValue epsilon = 1.0e-8;
 
         // Domain Parameter
         ScalarValue psi      = variable_list.template get_value<Scalar, Current>(3);
@@ -194,6 +205,16 @@ private:
         ScalarValue dt = sim_timer.get_timestep();
 
         // Mechanics calculations
+        ScalarValue eigenstrain = (vegard / 3.0) * (c_val - c_ref);
+
+        for (unsigned int i = 0; i < dim; i++)
+          {
+            u_grad[i][i] -= eigenstrain;
+          }
+        VectorGrad stress;
+        Mechanics::compute_stress<dim, ScalarValue>(stiffness, psi * u_grad, stress);
+        ScalarValue hydrostatic_stress = dealii::trace(stress) / 3.0;
+
         VectorGrad stress_del_c; // variation on c
         VectorGrad transformation_strain;
         for (unsigned int i = 0; i < dim; i++)
@@ -215,29 +236,36 @@ private:
         // Reaction Rate, same as rhs
         ScalarValue app_pot_energy = F * del_phi;
         ScalarValue eta            = app_pot_energy + RT * mu_val;
-        ScalarValue BV_exp_term    = exp(-eta / RT);
-        // ScalarValue react =
-        //   i_0 / F * (pow(BV_exp_term, alpha) - pow(BV_exp_term, (1.0 - alpha)));
-        ScalarValue react_d_mu = i_0 / F *
-                                 ((-alpha / RT) * pow(BV_exp_term, alpha) -
-                                  ((1.0 - alpha) / RT) * pow(BV_exp_term, (1.0 - alpha)));
+        ScalarValue react_d_mu     = -(i_0 / F) * std::cosh(eta / (2.0 * RT));
 
         // Additional functions
         ScalarValue mobility = (diffusivity * c_val) / RT;
+        ScalarValue mu_exp_term =
+          exp((vegard * site_vol) / RT * hydrostatic_stress + mu_val);
+        ScalarValue thermo_factor = (vegard * site_vol) / RT;
 
         // LHS comprised of 3x3 Jacobi
 
-        ScalarValue j_c_c_val  = dt * psi_grad * (diffusivity * del_c) * mu_grad -
-                                 psi * del_c; // TODO check this and the vector
-        ScalarGrad  j_c_c_grad = dt * (diffusivity * del_c) * mu_grad;
-        ScalarValue j_c_mu_val =
-          dt * (mobility * psi_grad * RT * del_mu_grad + psi_grad_mag * react_d_mu);
-        ScalarGrad j_c_mu_grad = dt * mobility * RT * del_mu_grad;
+        ScalarValue j_c_c_val   = dt * psi_grad * (diffusivity * del_c) * mu_grad -
+                                  psi * del_c; // TODO check this and the vector
+        ScalarGrad  j_c_c_grad  = dt * (diffusivity * del_c) * mu_grad;
+        ScalarValue j_c_mu_val  = dt * (mobility * psi_grad * RT * del_mu_grad +
+                                        psi_grad_mag * react_d_mu * del_mu);
+        ScalarGrad  j_c_mu_grad = dt * mobility * RT * del_mu_grad;
         // ScalarValue j_c_u_val   = 0.0;
 
-        ScalarValue j_mu_c_val = 1.0 / c_val * del_c - (site_vol * vegard * s_del_c) / RT;
+        // Redoing the mu residual
+        /*
+        ScalarValue j_mu_c_val =
+          (1.0 / (c_val + epsilon)) * del_c -
+          (site_vol * vegard * s_del_c) / RT; // TODO check division here
         ScalarValue j_mu_mu_val = -del_mu;
         ScalarValue j_mu_u_val  = -(site_vol * vegard * s_del_u_grad) / RT;
+        */
+
+        ScalarValue j_mu_c_val  = del_c - mu_exp_term * s_del_c * thermo_factor;
+        ScalarValue j_mu_mu_val = -mu_exp_term * del_mu;
+        ScalarValue j_mu_u_val  = -mu_exp_term * s_del_u_grad * thermo_factor;
 
         VectorGrad j_u_c_grad = stress_del_c;
         // VectorValue j_u_mu_val(0.0);
@@ -252,19 +280,17 @@ private:
   }
 
   // number alpha;
-  number i_0;
-  number del_phi;
-  number offset;
-  number c0;
-  number c_ref;
-  number RT;
-  number F;
-  number diffusivity;
-  number vegard;
-  number site_vol;
-  number mol_vol;
-  // number                                                       poisson;
-  // number                                                       youngs_modulus;
+  number                                                       i_0;
+  number                                                       del_phi;
+  number                                                       offset;
+  number                                                       c0;
+  number                                                       c_ref;
+  number                                                       RT;
+  number                                                       F;
+  number                                                       diffusivity;
+  number                                                       vegard;
+  number                                                       site_vol;
+  number                                                       mol_vol;
   dealii::Tensor<2, Mechanics::voigt_tensor_size<dim>, number> stiffness;
 };
 

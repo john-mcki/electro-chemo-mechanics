@@ -45,7 +45,8 @@ main(int argc, char *argv[])
     fields,
     {"grad(u)", "mu", "grad(mu)", "old_1(c)", "c", "psi", "grad(psi)"});
   c_block.dependencies_lhs = make_dependency_set(fields,
-                                                 {"grad(change(u))",
+                                                 {"grad(u)",
+                                                  "grad(change(u))",
                                                   "mu",
                                                   "grad(mu)",
                                                   "change(mu)",
