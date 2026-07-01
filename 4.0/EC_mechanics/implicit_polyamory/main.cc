@@ -19,16 +19,16 @@ main(int argc, char *argv[])
   ParseCMDOptions cli_options(argc, argv);
   std::string     parameters_filename = cli_options.get_parameters_filename();
 
-  constexpr unsigned int dim    = 2; // TODO change to 3 (original app)
-  constexpr unsigned int degree = 2; // TODO change to 1 (original app)
+  constexpr unsigned int dim    = 3; // TODO change to 3 (original app)
+  constexpr unsigned int degree = 1; // TODO change to 1 (original app)
 
   std::vector<FieldAttributes> fields = {FieldAttributes("u", Vector),
                                          FieldAttributes("mu"),
                                          FieldAttributes("c"),
-                                         FieldAttributes("psi")};
-  // FieldAttributes("particle_concentration"),
-  // FieldAttributes("conf_energy"),
-  // FieldAttributes("mech_energy")};
+                                         FieldAttributes("psi"),
+                                         FieldAttributes("particle_concentration"),
+                                         FieldAttributes("diff_potential"),
+                                         FieldAttributes("react_potential")};
 
   SolveBlock constant_block;
   constant_block.id            = -1;
@@ -56,17 +56,16 @@ main(int argc, char *argv[])
                                                   "psi",
                                                   "grad(psi)"});
 
-  /*
   SolveBlock pp_block;
-  pp_block.id               = 1;
-  pp_block.solve_type       = Explicit;
-  pp_block.solve_timing     = PostProcess;
-  pp_block.field_indices    = {4, 5, 6};
-  pp_block.dependencies_rhs = make_dependency_set(fields, {"grad(u)", "c", "psi"});
-  */
+  pp_block.id            = 1;
+  pp_block.solve_type    = Explicit;
+  pp_block.solve_timing  = PostProcess;
+  pp_block.field_indices = {4, 5, 6};
+  pp_block.dependencies_rhs =
+    make_dependency_set(fields, {"grad(u)", "c", "psi", "grad(psi)"});
 
-  // std::vector<SolveBlock> solve_blocks({constant_block, c_block, pp_block});
-  std::vector<SolveBlock> solve_blocks({constant_block, c_block});
+  std::vector<SolveBlock> solve_blocks({constant_block, c_block, pp_block});
+  // std::vector<SolveBlock> solve_blocks({constant_block, c_block});
 
   UserInputParameters<dim>       user_inputs(parameters_filename);
   PhaseFieldTools<dim>           pf_tools;

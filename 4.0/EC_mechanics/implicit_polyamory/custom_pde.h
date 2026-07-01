@@ -166,6 +166,43 @@ private:
         variable_list.set_value_term(2, r_c_val);
         variable_list.set_gradient_term(2, -r_c_grad);
       }
+    if (solve_block_id == 1)
+      {
+        // Displacement
+        VectorGrad u_grad =
+          variable_list.template get_symmetric_gradient<Vector, Current>(0);
+        // Concentration
+        ScalarValue c_val = variable_list.template get_value<Scalar, Current>(2);
+        // Order Parameter
+        ScalarValue psi      = variable_list.template get_value<Scalar, Current>(3);
+        ScalarGrad  psi_grad = variable_list.template get_gradient<Scalar, Current>(3);
+        ScalarValue psi_grad_mag = psi_grad.norm() + offset;
+
+        // Concentration inside the particle
+        variable_list.set_value_term(4, c_val * psi);
+
+        // Diffusion Potential
+        VectorGrad  transformation_strain;
+        ScalarValue eigenstrain = (vegard / 3.0) * (c_val - c_ref);
+        for (unsigned int i = 0; i < dim; i++)
+          {
+            transformation_strain[i][i] = -eigenstrain;
+          }
+        VectorGrad stress;
+        Mechanics::compute_stress<dim, ScalarValue>(stiffness,
+                                                    psi *
+                                                      (u_grad - transformation_strain),
+                                                    stress);
+        ScalarValue hydrostatic_stress = (1.0 / 3.0) * dealii::trace(stress);
+
+        ScalarValue mu =
+          ((RT * std::log(c_val)) - vegard * site_vol * hydrostatic_stress);
+        variable_list.set_value_term(5, psi * mu);
+
+        // Reaction Potential
+        ScalarValue FEta = mu + F * del_phi;
+        variable_list.set_value_term(6, psi_grad_mag * FEta);
+      }
   }
 
   void

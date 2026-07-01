@@ -12,11 +12,11 @@ set mesh adaptivity = true
 subsection refinement criterion: 0
   set variables         = psi
   set type              = value
-  set value lower bound = 1e-3
+  set value lower bound = 1.01e-2
   set value upper bound = 2
 end
 
-set time step = 1.0e-3
+set time step = 1.0e-4
 set number steps = 100
 
 subsection output
@@ -38,7 +38,7 @@ subsection linear solver parameters: 0
   subsection Chebyshev
     set eigenvalue cg iterations = 10
     set smoother degree          = 5
-    set smoothing range          = 0.0001
+    set smoothing range          = 100
   end
 end
 

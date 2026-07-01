@@ -12,7 +12,7 @@ set mesh adaptivity = true
 subsection refinement criterion: 0
   set variables         = psi
   set type              = value
-  set value lower bound = 1e-3
+  set value lower bound = 1.01e-2
   set value upper bound = 2
 end
 
@@ -33,13 +33,13 @@ subsection linear solver parameters: 0
   set max iterations           = 10000
   set tolerance type           = RMSEPerField
   set tolerance value          = 1.0e-6
-  set preconditioner           = Chebyshev
+  set preconditioner           = GMG
   set mg depth                 = 3
 
   subsection Chebyshev
     set eigenvalue cg iterations = 10
     set smoother degree          = 5
-    set smoothing range          = 0.0001
+    set smoothing range          = 100
   end
 end
 
@@ -56,7 +56,7 @@ subsection linear solver parameters: 1
   subsection Chebyshev
     set eigenvalue cg iterations = 10
     set smoother degree          = 5
-    set smoothing range          = 0.0001
+    set smoothing range          = 100
   end
 end
 
