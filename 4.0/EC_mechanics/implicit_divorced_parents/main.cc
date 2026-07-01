@@ -20,7 +20,7 @@ main(int argc, char *argv[])
   std::string     parameters_filename = cli_options.get_parameters_filename();
 
   constexpr unsigned int dim    = 2; // TODO change to 3 (original app)
-  constexpr unsigned int degree = 1; // TODO change to 1 (original app)
+  constexpr unsigned int degree = 2; // TODO change to 1 (original app)
 
   std::vector<FieldAttributes> fields = {FieldAttributes("u", Vector),
                                          FieldAttributes("s"),
@@ -64,7 +64,6 @@ main(int argc, char *argv[])
   pp_block.field_indices    = {4, 5, 6};
   pp_block.dependencies_rhs = make_dependency_set(fields, {"grad(u)", "c", "psi"});
 
-  // std::vector<SolveBlock> solve_blocks({constant_block, c_block, pp_block});
   std::vector<SolveBlock> solve_blocks({constant_block, c_block, u_block, pp_block});
 
   UserInputParameters<dim>       user_inputs(parameters_filename);

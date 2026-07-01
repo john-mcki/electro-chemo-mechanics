@@ -19,8 +19,8 @@ main(int argc, char *argv[])
   ParseCMDOptions cli_options(argc, argv);
   std::string     parameters_filename = cli_options.get_parameters_filename();
 
-  constexpr unsigned int dim    = 3; // TODO change to 3 (original app)
-  constexpr unsigned int degree = 1; // TODO change to 1 (original app)
+  constexpr unsigned int dim    = 2; // TODO change to 3 (original app)
+  constexpr unsigned int degree = 2; // TODO change to 1 (original app)
 
   std::vector<FieldAttributes> fields = {FieldAttributes("u", Vector),
                                          FieldAttributes("mu"),
@@ -65,7 +65,6 @@ main(int argc, char *argv[])
     make_dependency_set(fields, {"grad(u)", "c", "psi", "grad(psi)"});
 
   std::vector<SolveBlock> solve_blocks({constant_block, c_block, pp_block});
-  // std::vector<SolveBlock> solve_blocks({constant_block, c_block});
 
   UserInputParameters<dim>       user_inputs(parameters_filename);
   PhaseFieldTools<dim>           pf_tools;
