@@ -6,7 +6,7 @@ cmake_minimum_required(VERSION 3.25)
 cmake_policy(VERSION 3.25)
 
 # Name the application
-set(APPLICATION_NAME "ecm_implicit_separate")
+set(APPLICATION_NAME "ecm_implicit_cheating")
 
 # Create a project for the application
 project(${APPLICATION_NAME} CXX)

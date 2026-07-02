@@ -1,8 +1,6 @@
 // SPDX-FileCopyrightText: © 2025 PRISMS Center at the University of Michigan
 // SPDX-License-Identifier: GNU Lesser General Public Version 2.1
 
-#include <deal.II/base/tensor.h>
-
 #include <prismspf/core/pde_operator_base.h>
 #include <prismspf/core/type_enums.h>
 
@@ -50,24 +48,15 @@ private:
                         [[maybe_unused]] number                   &scalar_value,
                         [[maybe_unused]] number &vector_component_value) const override
   {
-    using std::log;
     const dealii::Tensor<1, dim> &mesh_size =
       get_user_inputs().spatial_discretization.rectangular_mesh.size;
     dealii::Point<dim> center(mesh_size / 2.0);
     double             rad  = 10.0;
     double             sdf  = ((point - center).norm_square() - rad * rad) / (2.0 * rad);
     double domain_parameter = 0.5 * ((1.0 + offset) - (1.0 - offset) * std::tanh(sdf));
-    double rad_2            = 5.0;
-    double sdf_2 = ((point - center).norm_square() - rad_2 * rad_2) / (2.0 * rad_2);
-    double domain_parameter_2 =
-      0.5 * ((1.0 + offset) - (1.0 - offset) * std::tanh(sdf_2));
-    if (index == 1) // mu
-      {
-        scalar_value = RT * log(domain_parameter_2);
-      }
     if (index == 2) // c
       {
-        scalar_value = c0 * domain_parameter_2;
+        scalar_value = c0 * domain_parameter;
       }
     if (index == 3) // psi
       {
@@ -96,12 +85,11 @@ private:
               [[maybe_unused]] unsigned int solve_block_id) const override
 
   {
-    static const ScalarValue alpha(0.5);
+    // static const ScalarValue alpha(0.5);
     using std::exp;
-    using std::log;
     using std::pow;
     using std::sqrt;
-    if (solve_block_id == 0) // concentration and mechanics
+    if (solve_block_id == 0) // concentration and mu
       {
         // Displacement
         VectorGrad u_grad =
@@ -117,9 +105,6 @@ private:
 
         // concentration offset
         ScalarValue epsilon = 1.0e-8;
-
-        // Attach a floor to the concentration term
-        // ScalarValue c_val = std::max(c, epsilon);
 
         // Order Parameter
         ScalarValue psi      = variable_list.template get_value<Scalar, Current>(3);
@@ -143,54 +128,52 @@ private:
         // Additional terms
         ScalarValue mobility       = (diffusivity * c_val) / RT;
         ScalarValue app_pot_energy = F * del_phi;
-        ScalarValue eta            = mu_val + app_pot_energy;
+        ScalarValue eta            = RT * mu_val + app_pot_energy;
         ScalarValue react          = -2.0 * (i_0 / F) * std::sinh(eta / (2.0 * RT));
-        ScalarValue c_func_val     = psi_grad_mag * react;
-        ScalarGrad  c_func_grad    = mobility * mu_grad;
+        ScalarValue c_func_val     = psi_grad_mag * dt * react;
+        ScalarGrad  c_func_grad    = mobility * RT * mu_grad;
         ScalarValue stress_func    = (site_vol * vegard * hydrostatic_stress) / RT;
 
         // Residuals
         ScalarValue r_c_val  = psi * (c_old - c_val) + dt * c_func_val;
         ScalarGrad  r_c_grad = dt * c_func_grad;
-        ScalarValue r_mu_val =
-          RT * log(c_val + epsilon) - (site_vol * vegard * hydrostatic_stress) - mu_val;
-        // ScalarValue r_mu_val = c_val - exp(mu_val / RT + stress_func);
-        VectorGrad r_u_grad = stress;
+        ScalarValue r_mu_val = c_val - exp(mu_val + stress_func);
 
-        // Update fields
-        variable_list.set_gradient_term(0, -r_u_grad);
         variable_list.set_value_term(1, r_mu_val);
         variable_list.set_value_term(2, r_c_val);
         variable_list.set_gradient_term(2, -r_c_grad);
       }
-    if (solve_block_id == 1)
+    else if (solve_block_id == 1) // displacement
       {
-        // Displacement
-        VectorGrad u_grad =
-          variable_list.template get_symmetric_gradient<Vector, Current>(0);
-        // mu
-        ScalarValue mu_val  = variable_list.template get_value<Scalar, Current>(1);
-        ScalarGrad  mu_grad = variable_list.template get_gradient<Scalar, Current>(1);
+        // Calling Variables
+        ScalarValue c_val = variable_list.template get_value<Scalar, Current>(2);
+        ScalarValue psi   = variable_list.template get_value<Scalar, Current>(3);
+
+        // Solving for stress
+        VectorGrad  transformation_strain;
+        ScalarValue eigenstrain = (vegard / 3.0) * (c_val - c_ref);
+
+        for (unsigned int i = 0; i < dim; i++)
+          {
+            transformation_strain[i][i] = -eigenstrain;
+          }
+        VectorGrad stress;
+        Mechanics::compute_stress<dim, ScalarValue>(stiffness,
+                                                    psi * transformation_strain,
+                                                    stress);
+
+        // Updating displacement and hydrostatic stress residuals
+        variable_list.set_gradient_term(0, -stress);
+      }
+    else if (solve_block_id == 2) // pp
+      {
         // Concentration
         ScalarValue c_val = variable_list.template get_value<Scalar, Current>(2);
         // Order Parameter
-        ScalarValue psi      = variable_list.template get_value<Scalar, Current>(3);
-        ScalarGrad  psi_grad = variable_list.template get_gradient<Scalar, Current>(3);
-        ScalarValue psi_grad_mag = psi_grad.norm() + offset;
+        ScalarValue psi = variable_list.template get_value<Scalar, Current>(3);
 
         // Concentration inside the particle
         variable_list.set_value_term(4, c_val * psi);
-
-        // Diffusion term
-        ScalarValue mobility         = (diffusivity * c_val) / RT;
-        ScalarGrad  diffusion_driver = mobility * mu_grad;
-        variable_list.set_gradient_term(5, psi * diffusion_driver);
-
-        // Reaction rate
-        ScalarValue app_pot_energy = F * del_phi;
-        ScalarValue eta            = mu_val + app_pot_energy;
-        ScalarValue react          = -2.0 * (i_0 / F) * std::sinh(eta / (2.0 * RT));
-        variable_list.set_value_term(6, psi_grad_mag * react);
       }
   }
 
@@ -199,11 +182,11 @@ private:
               [[maybe_unused]] const SimulationTimer               &sim_timer,
               [[maybe_unused]] unsigned int solve_block_id) const override
   {
-    static const ScalarValue alpha(0.5);
+    // static const ScalarValue alpha(0.5);
     using std::exp;
     using std::pow;
     using std::sqrt;
-    if (solve_block_id == 0)
+    if (solve_block_id == 0) // concentration
       {
         // Value terms
         VectorGrad u_grad =
@@ -252,53 +235,44 @@ private:
                                                     stress_del_c);
         ScalarValue s_del_c = dealii::trace(stress_del_c) / 3.0;
 
-        VectorGrad stress_del_u_grad; // variation on u, also the u-field update
-        Mechanics::compute_stress<dim, ScalarValue>(stiffness,
-                                                    psi * del_u_grad,
-                                                    stress_del_u_grad); // Used in
-                                                                        // j_c_u
-        ScalarValue s_del_u_grad = dealii::trace(stress_del_u_grad) / 3.0;
-
         // Reaction Rate, same as rhs
         ScalarValue app_pot_energy = F * del_phi;
-        ScalarValue eta            = app_pot_energy + mu_val;
-        ScalarValue react_d_mu = -(i_0 / F) * (1.0 / RT) * std::cosh(eta / (2.0 * RT));
+        ScalarValue eta            = app_pot_energy + RT * mu_val;
+        ScalarValue react_d_mu     = -(i_0 / F) * std::cosh(eta / (2.0 * RT));
 
         // Additional functions
         ScalarValue mobility = (diffusivity * c_val) / RT;
         ScalarValue mu_exp_term =
-          exp((vegard * site_vol) / RT * hydrostatic_stress + mu_val / RT);
+          exp((vegard * site_vol) / RT * hydrostatic_stress + mu_val);
         ScalarValue thermo_factor = (vegard * site_vol) / RT;
 
         // LHS comprised of 3x3 Jacobi
 
         ScalarValue j_c_c_val   = -psi * del_c; // TODO check this and the vector
-        ScalarGrad  j_c_c_grad  = dt * (diffusivity * del_c) / RT * mu_grad;
+        ScalarGrad  j_c_c_grad  = dt * (diffusivity * del_c) * mu_grad;
         ScalarValue j_c_mu_val  = dt * (psi_grad_mag * react_d_mu * del_mu);
-        ScalarGrad  j_c_mu_grad = dt * mobility * del_mu_grad;
-        // ScalarValue j_c_u_val   = 0.0;
+        ScalarGrad  j_c_mu_grad = dt * mobility * RT * del_mu_grad;
 
-        // Redoing the mu residual
-
-        ScalarValue j_mu_c_val =
-          (RT / (c_val + epsilon)) * del_c -
-          (site_vol * vegard * s_del_c); // TODO check division here
-        ScalarValue j_mu_mu_val = -del_mu;
-        ScalarValue j_mu_u_val  = -(site_vol * vegard * s_del_u_grad);
-
-        // ScalarValue j_mu_c_val  = del_c - mu_exp_term * s_del_c * thermo_factor;
-        // ScalarValue j_mu_mu_val = -mu_exp_term * del_mu / RT;
-        // ScalarValue j_mu_u_val  = -mu_exp_term * s_del_u_grad * thermo_factor;
-
-        VectorGrad j_u_c_grad = stress_del_c;
-        // VectorValue j_u_mu_val(0.0);
-        VectorGrad j_u_u_grad = stress_del_u_grad;
+        ScalarValue j_mu_c_val  = del_c - mu_exp_term * s_del_c * thermo_factor;
+        ScalarValue j_mu_mu_val = -mu_exp_term * del_mu;
 
         // Update fields
-        variable_list.set_gradient_term(0, j_u_c_grad + j_u_u_grad);
-        variable_list.set_value_term(1, -j_mu_c_val - j_mu_mu_val - j_mu_u_val);
+        variable_list.set_value_term(1, -j_mu_c_val - j_mu_mu_val);
         variable_list.set_value_term(2, -j_c_c_val - j_c_mu_val);
         variable_list.set_gradient_term(2, j_c_mu_grad + j_c_c_grad);
+      }
+    if (solve_block_id == 1) // displacement
+      {
+        // Calling Variables
+        VectorGrad del_u_grad =
+          variable_list.template get_symmetric_gradient<Vector, LHS>(0);
+        ScalarValue psi = variable_list.template get_value<Scalar, Current>(3);
+
+        // Mechanics - lhs
+        VectorGrad stress;
+        Mechanics::compute_stress<dim, ScalarValue>(stiffness, psi * del_u_grad, stress);
+
+        variable_list.set_gradient_term(0, stress);
       }
   }
 

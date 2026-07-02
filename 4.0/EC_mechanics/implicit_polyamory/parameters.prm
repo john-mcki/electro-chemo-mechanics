@@ -17,12 +17,12 @@ subsection refinement criterion: 0
 end
 
 set time step = 1.0e-4
-set number steps = 100
+set number steps = 10000
 
 subsection output
   set condition = EQUAL_SPACING
   set number = 100
-  #set list = 1,2,3,4,5,6,7,8,9,10
+  #set list = 1,2,3,4,5,6,7,8,9,10,100
   set file type = vtu
 end
 
@@ -32,7 +32,7 @@ subsection linear solver parameters: 0
   set solver type              = bicgstab
   set max iterations           = 10000
   set tolerance type           = RMSEPerField
-  set tolerance value          = 1.0e-6
+  set tolerance value          = 1.0e-8
   set preconditioner           = Chebyshev
   set mg depth                 = 3
   subsection Chebyshev
@@ -44,9 +44,9 @@ end
 
 subsection newton solver parameters: 0
   set solver_ids               = 0
-  set max iterations           = 100
+  set max iterations           = 1000
   set step size                = 1.0
-  set tolerance value          = 1.0e-6
+  set tolerance value          = 1.0e-8
 end
 
 
@@ -59,12 +59,12 @@ set Model constant c0 = 0.99, DOUBLE
 set Model constant c_ref = 0.4, DOUBLE
 set Model constant diffusivity = 0.1, DOUBLE
 
-set Model constant i_0 = 1.0, DOUBLE
+set Model constant i_0 = 0.0, DOUBLE
 set Model constant del_phi = 0.00, DOUBLE
 #set Model constant alpha = 0.5, DOUBLE
 
 #Mechanics Parameters
-set Model constant vegard = 0.001, DOUBLE
+set Model constant vegard = 0.01, DOUBLE
 set Model constant site_vol = 4.867e-11, DOUBLE
 set Model constant mol_vol = 2.931e13, DOUBLE
 #set Model constant vegard = 0.0, DOUBLE
