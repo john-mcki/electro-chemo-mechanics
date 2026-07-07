@@ -3,6 +3,7 @@
 
 #include "custom_pde.h"
 
+#include <prismspf/core/field_attributes.h>
 #include <prismspf/core/parse_cmd_options.h>
 #include <prismspf/core/problem.h>
 
@@ -23,12 +24,14 @@ main(int argc, char *argv[])
   constexpr unsigned int degree = 2; // TODO change to 1 (original app)
 
   std::vector<FieldAttributes> fields = {FieldAttributes("u", Vector),
-                                         FieldAttributes("s"),
+                                         FieldAttributes("mu"),
                                          FieldAttributes("c"),
                                          FieldAttributes("psi"),
                                          FieldAttributes("particle_concentration"),
-                                         FieldAttributes("conf_energy"),
-                                         FieldAttributes("mech_energy")};
+                                         FieldAttributes("diffusion_driver"),
+                                         FieldAttributes("reaction_rate")};
+  // FieldAttributes("diff_potential"),
+  // FieldAttributes("react_potential")};
 
   SolveBlock constant_block;
   constant_block.id            = -1;
@@ -37,32 +40,34 @@ main(int argc, char *argv[])
   constant_block.field_indices = {3};
 
   SolveBlock c_block;
-  c_block.id               = 1;
-  c_block.solve_type       = Explicit;
+  c_block.id               = 0;
+  c_block.solve_type       = Newton;
   c_block.solve_timing     = Initialized;
-  c_block.field_indices    = {2};
+  c_block.field_indices    = {0, 1, 2};
   c_block.dependencies_rhs = make_dependency_set(
     fields,
-    {"old_1(s)", "grad(old_1(s))", "old_1(c)", "grad(old_1(c))", "psi", "grad(psi)"});
-
-  SolveBlock u_block;
-  u_block.id               = 0;
-  u_block.solve_type       = Linear;
-  u_block.solve_timing     = Uninitialized;
-  u_block.field_indices    = {0, 1};
-  u_block.dependencies_rhs = make_dependency_set(fields, {"c", "psi"});
-  u_block.dependencies_lhs =
-    make_dependency_set(fields, {"lhs(s)", "grad(lhs(u))", "psi"});
+    {"grad(u)", "mu", "grad(mu)", "old_1(c)", "c", "psi", "grad(psi)"});
+  c_block.dependencies_lhs = make_dependency_set(fields,
+                                                 {"grad(u)",
+                                                  "grad(change(u))",
+                                                  "mu",
+                                                  "grad(mu)",
+                                                  "change(mu)",
+                                                  "grad(change(mu))",
+                                                  "c",
+                                                  "change(c)",
+                                                  "psi",
+                                                  "grad(psi)"});
 
   SolveBlock pp_block;
-  pp_block.id               = 2;
-  pp_block.solve_type       = Explicit;
-  pp_block.solve_timing     = PostProcess;
-  pp_block.field_indices    = {4, 5, 6};
-  pp_block.dependencies_rhs = make_dependency_set(fields, {"grad(u)", "c", "psi"});
+  pp_block.id            = 1;
+  pp_block.solve_type    = Explicit;
+  pp_block.solve_timing  = PostProcess;
+  pp_block.field_indices = {4, 5, 6};
+  pp_block.dependencies_rhs =
+    make_dependency_set(fields, {"grad(u)", "mu", "grad(mu)", "c", "psi", "grad(psi)"});
 
-  std::vector<SolveBlock> solve_blocks({constant_block, c_block, u_block, pp_block});
-  // std::vector<SolveBlock> solve_blocks({constant_block, c_block, pp_block});
+  std::vector<SolveBlock> solve_blocks({constant_block, c_block, pp_block});
 
   UserInputParameters<dim>       user_inputs(parameters_filename);
   PhaseFieldTools<dim>           pf_tools;

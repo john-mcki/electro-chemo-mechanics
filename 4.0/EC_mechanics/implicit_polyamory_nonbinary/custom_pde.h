@@ -143,7 +143,7 @@ private:
         ScalarValue hydrostatic_stress = dealii::trace(stress) / 3.0;
 
         // Additional terms
-        ScalarValue mobility       = (diffusivity * c_val) / RT;
+        ScalarValue mobility       = (diffusivity * (c_val + epsilon)) / RT;
         ScalarValue app_pot_energy = F * del_phi;
         ScalarValue eta            = mu_val + app_pot_energy;
         ScalarValue react          = 0.0;
@@ -161,8 +161,7 @@ private:
         // ScalarValue r_mu_val = RT * log(c_val + epsilon) - (site_vol * vegard *
         // hydrostatic_stress) - mu_val;
         ScalarValue r_mu_val = c_val - exp(mu_val / RT + stress_func);
-        // ScalarValue r_mu_val = c_val - exp(safe_exp_arg);
-        VectorGrad r_u_grad = stress;
+        VectorGrad  r_u_grad = stress;
 
         // Update fields
         variable_list.set_gradient_term(0, -r_u_grad);
@@ -272,8 +271,7 @@ private:
         ScalarValue react_d_mu     = 0.0;
         if (i_0 > 1.0e-12)
           {
-            ScalarValue react_d_mu =
-              -(i_0 / F) * (1.0 / RT) * std::cosh(eta / (2.0 * RT));
+            react_d_mu = -(i_0 / F) * (1.0 / RT) * std::cosh(eta / (2.0 * RT));
           }
 
         // Additional functions

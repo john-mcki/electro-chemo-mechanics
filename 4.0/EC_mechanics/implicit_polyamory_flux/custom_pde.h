@@ -63,15 +63,15 @@ private:
       0.5 * ((1.0 + offset) - (1.0 - offset) * std::tanh(sdf_2));
     if (index == 1) // mu
       {
-        scalar_value = RT * log(domain_parameter_2);
+        scalar_value = RT * log(domain_parameter);
       }
     if (index == 2) // c
       {
-        scalar_value = c0 * domain_parameter_2;
+        scalar_value = c0 * domain_parameter;
       }
     if (index == 3) // psi
       {
-        scalar_value = domain_parameter_2;
+        scalar_value = domain_parameter;
       }
   }
 
@@ -99,8 +99,6 @@ private:
     static const ScalarValue alpha(0.5);
     using std::exp;
     using std::log;
-    using std::max;
-    using std::min;
     using std::pow;
     using std::sqrt;
     if (solve_block_id == 0) // concentration and mechanics
@@ -146,14 +144,10 @@ private:
         ScalarValue mobility       = (diffusivity * c_val) / RT;
         ScalarValue app_pot_energy = F * del_phi;
         ScalarValue eta            = mu_val + app_pot_energy;
-        ScalarValue react          = 0.0;
-        if (i_0 > 1.0e-12)
-          {
-            react = -2.0 * (i_0 / F) * std::sinh(eta / (2.0 * RT));
-          }
-        ScalarValue c_func_val  = psi_grad_mag * react;
-        ScalarGrad  c_func_grad = mobility * mu_grad;
-        ScalarValue stress_func = (site_vol * vegard * hydrostatic_stress) / RT;
+        ScalarValue react          = -2.0 * (i_0 / F) * std::sinh(eta / (2.0 * RT));
+        ScalarValue c_func_val     = psi_grad_mag * react;
+        ScalarGrad  c_func_grad    = mobility * mu_grad;
+        ScalarValue stress_func    = (site_vol * vegard * hydrostatic_stress) / RT;
 
         // Residuals
         ScalarValue r_c_val  = psi * (c_old - c_val) + dt * c_func_val;
@@ -161,8 +155,7 @@ private:
         // ScalarValue r_mu_val = RT * log(c_val + epsilon) - (site_vol * vegard *
         // hydrostatic_stress) - mu_val;
         ScalarValue r_mu_val = c_val - exp(mu_val / RT + stress_func);
-        // ScalarValue r_mu_val = c_val - exp(safe_exp_arg);
-        VectorGrad r_u_grad = stress;
+        VectorGrad  r_u_grad = stress;
 
         // Update fields
         variable_list.set_gradient_term(0, -r_u_grad);
@@ -269,12 +262,7 @@ private:
         // Reaction Rate, same as rhs
         ScalarValue app_pot_energy = F * del_phi;
         ScalarValue eta            = app_pot_energy + mu_val;
-        ScalarValue react_d_mu     = 0.0;
-        if (i_0 > 1.0e-12)
-          {
-            ScalarValue react_d_mu =
-              -(i_0 / F) * (1.0 / RT) * std::cosh(eta / (2.0 * RT));
-          }
+        ScalarValue react_d_mu = -(i_0 / F) * (1.0 / RT) * std::cosh(eta / (2.0 * RT));
 
         // Additional functions
         ScalarValue mobility = (diffusivity * c_val) / RT;
