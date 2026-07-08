@@ -60,7 +60,7 @@ set Model constant c_ref = 0.4, DOUBLE
 set Model constant diffusivity = 0.1, DOUBLE
 
 set Model constant i_0 = 0.5, DOUBLE
-set Model constant del_phi = 0.05, DOUBLE
+set Model constant del_phi = 0.00, DOUBLE
 #set Model constant alpha = 0.5, DOUBLE
 
 #Mechanics Parameters

@@ -27,6 +27,9 @@ public:
     : PDEOperatorBase<dim, degree, number>(_user_inputs, _pf_tools)
     , c0(get_user_inputs().user_constants.get_double("c0"))
     , offset(get_user_inputs().user_constants.get_double("offset"))
+    , diffusivity(get_user_inputs().user_constants.get_double("diffusivity"))
+    , kc(get_user_inputs().user_constants.get_double("kc"))
+    , cref(get_user_inputs().user_constants.get_double("cref"))
   {}
 
 private:
@@ -72,10 +75,10 @@ private:
 
         ScalarValue dt = sim_timer.get_timestep();
 
-        ScalarValue c_term_1 = 0.1 * (psix * cx) / psi; // diff = 0.1
+        ScalarValue c_term_1 = diffusivity * (psix * cx) / psi; // diff = 0.1
         ScalarValue c_term_2 =
-          -(psi_x_mag / psi) * 0.1 * (0.1 * (c - 0.1)); // kc = 0.1, c_ref = 0.1
-        ScalarGrad cx_term = -0.1 * cx;                 // diff = 0.1
+          -(psi_x_mag / psi) * diffusivity * (kc * (c - 0.1)); // kc = 0.1, c_ref = 0.1
+        ScalarGrad cx_term = -diffusivity * cx;                // diff = 0.1
 
         ScalarValue r_c  = c_old - c + dt * (c_term_1 + c_term_2);
         VectorValue r_cx = dt * cx_term;
@@ -105,9 +108,10 @@ private:
         ScalarGrad  psix      = variable_list.template get_gradient<Scalar, Current>(1);
         ScalarValue psi_x_mag = psix.norm() + offset;
 
-        ScalarValue LHS_c_term_1 = 0.1 * (psix * delta_c_grad) / psi; // diff = 0.1
-        ScalarValue LHS_c_term_2 = -(psi_x_mag / psi) * 0.1 * (delta_c_val);
-        ScalarGrad  LHS_cx_term  = 0.1 * delta_c_grad; // diff = 0.1
+        ScalarValue LHS_c_term_1 =
+          diffusivity * (psix * delta_c_grad) / psi; // diff = 0.1
+        ScalarValue LHS_c_term_2 = -(psi_x_mag / psi) * diffusivity * kc * (delta_c_val);
+        ScalarGrad  LHS_cx_term  = diffusivity * delta_c_grad; // diff = 0.1
 
         ScalarValue change_c  = delta_c_val * (1.0 + dt * (LHS_c_term_1 + LHS_c_term_2));
         ScalarGrad  change_cx = dt * LHS_cx_term;
@@ -119,6 +123,9 @@ private:
 
   number c0;
   number offset;
+  number diffusivity;
+  number kc;
+  number cref;
 };
 
 PRISMS_PF_END_NAMESPACE
