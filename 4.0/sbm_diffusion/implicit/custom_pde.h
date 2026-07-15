@@ -46,9 +46,13 @@ private:
     double             rad  = 10.0;
     double             sdf  = ((point - center).norm_square() - rad * rad) / (2.0 * rad);
     double domain_parameter = 0.5 * ((1.0 + offset) - (1.0 - offset) * std::tanh(sdf));
+    double rad_2            = 5.0;
+    double sdf_2 = ((point - center).norm_square() - rad_2 * rad_2) / (2.0 * rad_2);
+    double domain_parameter_2 =
+      0.5 * ((1.0 + offset) - (1.0 - offset) * std::tanh(sdf_2));
     if (index == 0) // c
       {
-        scalar_value = c0 * domain_parameter;
+        scalar_value = c0 * domain_parameter_2;
       }
     if (index == 1) // psi
       {

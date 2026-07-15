@@ -28,7 +28,7 @@ end
 set Model constant c0 = 1.0, DOUBLE
 set Model constant offset = 1e-2, DOUBLE
 set Model constant diffusivity = 0.1, DOUBLE
-set Model constant kc = 0.1, DOUBLE
+set Model constant kc = 0.0, DOUBLE
 set Model constant cref = 0.1, DOUBLE
 
 subsection linear solver parameters: 0

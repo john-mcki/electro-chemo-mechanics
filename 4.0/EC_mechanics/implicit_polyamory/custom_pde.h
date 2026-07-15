@@ -40,6 +40,7 @@ public:
     , RT(get_user_inputs().user_constants.get_double("RT"))
     , F(get_user_inputs().user_constants.get_double("F"))
     , stiffness(get_user_inputs().user_constants.get_elasticity_tensor("stiffness"))
+    , stress_scale(get_user_inputs().user_constants.get_double("stress_scale"))
   {}
 
 private:
@@ -80,14 +81,12 @@ private:
                 [[maybe_unused]] const unsigned int       &boundary_id,
                 [[maybe_unused]] const unsigned int       &component,
                 [[maybe_unused]] const dealii::Point<dim> &point,
+                [[maybe_unused]] const SimulationTimer    &sim_timer,
                 [[maybe_unused]] number                   &scalar_value,
                 [[maybe_unused]] number &vector_component_value) const override
   {
-    if (index == 0)
-      {
-        scalar_value           = 0.0;
-        vector_component_value = 0.0;
-      }
+    scalar_value           = 0.0;
+    vector_component_value = 0.0;
   }
 
   void
@@ -161,8 +160,7 @@ private:
         // ScalarValue r_mu_val = RT * log(c_val + epsilon) - (site_vol * vegard *
         // hydrostatic_stress) - mu_val;
         ScalarValue r_mu_val = c_val - exp(mu_val + stress_func);
-        // ScalarValue r_mu_val = c_val - exp(safe_exp_arg);
-        VectorGrad r_u_grad = stress;
+        VectorGrad  r_u_grad = stress;
 
         // Update fields
         variable_list.set_gradient_term(0, -r_u_grad);
@@ -191,13 +189,32 @@ private:
         // Diffusion term
         ScalarValue mobility         = (diffusivity * c_val) / RT;
         ScalarGrad  diffusion_driver = psi * mobility * RT * mu_grad;
-        variable_list.set_gradient_term(5, psi * diffusion_driver);
+        variable_list.set_gradient_term(5, diffusion_driver);
 
         // Reaction rate
         ScalarValue app_pot_energy = F * del_phi;
         ScalarValue eta            = RT * mu_val + app_pot_energy;
         ScalarValue react          = -2.0 * (i_0 / F) * std::sinh(eta / (2.0 * RT));
         variable_list.set_value_term(6, psi_grad_mag * react);
+
+        // mu contributions
+
+        // Mechanics Calculation
+        ScalarValue eigenstrain = (vegard / 3.0) * (c_val - c_ref);
+        for (unsigned int i = 0; i < dim; i++)
+          {
+            u_grad[i][i] -= eigenstrain;
+          }
+        VectorGrad stress;
+        Mechanics::compute_stress<dim, ScalarValue>(stress_scale * stiffness,
+                                                    psi * u_grad,
+                                                    stress);
+        ScalarValue hydrostatic_stress = dealii::trace(stress) / 3.0;
+        ScalarValue li_energy          = RT * log(c_val);
+        ScalarValue mech_energy        = -(site_vol * vegard * hydrostatic_stress);
+
+        variable_list.set_value_term(7, li_energy);
+        variable_list.set_value_term(8, mech_energy);
       }
   }
 
@@ -284,7 +301,7 @@ private:
         // LHS comprised of 3x3 Jacobi
 
         ScalarValue j_c_c_val   = -psi * del_c; // TODO check this and the vector
-        ScalarGrad  j_c_c_grad  = dt * (diffusivity * del_c) * mu_grad;
+        ScalarGrad  j_c_c_grad  = dt * psi * (diffusivity * del_c) * mu_grad;
         ScalarValue j_c_mu_val  = dt * (psi_grad_mag * react_d_mu * del_mu);
         ScalarGrad  j_c_mu_grad = dt * psi * mobility * RT * del_mu_grad;
         // ScalarValue j_c_u_val   = 0.0;
@@ -325,6 +342,7 @@ private:
   number                                                       vegard;
   number                                                       site_vol;
   number                                                       mol_vol;
+  number                                                       stress_scale;
   dealii::Tensor<2, Mechanics::voigt_tensor_size<dim>, number> stiffness;
 };
 

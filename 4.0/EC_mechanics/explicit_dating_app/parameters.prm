@@ -12,12 +12,12 @@ set mesh adaptivity = false
 subsection refinement criterion: 0
   set variables         = psi
   set type              = value
-  set value lower bound = 1.01e-2
+  set value lower bound = 1e-3
   set value upper bound = 2
 end
 
-set time step = 0.1
-set number steps = 100
+set time step = 1.0e-2
+set number steps = 100000
 
 subsection output
   set condition = EQUAL_SPACING
@@ -27,41 +27,32 @@ subsection output
 end
 
 subsection linear solver parameters: 0
-  set solver_ids               = 0
+  set solver_ids               = 0,1,2
 
   set solver type              = bicgstab
   set max iterations           = 10000
-  #set tolerance type           = RMSEPerField
   set tolerance type           = AbsoluteResidual
-  set tolerance value          = 1.0e-6
+  set tolerance value          = 1e-6
   set preconditioner           = GMG
-  set mg depth                 = 3
+
   subsection Chebyshev
     set eigenvalue cg iterations = 10
     set smoother degree          = 5
-    set smoothing range          = 1000
+    set smoothing range          = 10000
   end
 end
-
-subsection newton solver parameters: 0
-  set solver_ids               = 0
-  set max iterations           = 1000
-  set step size                = 1.0
-  set tolerance value          = 1.0e-6
-end
-
 
 # Model Constants (for reference check calculation tab in NMC parameters google sheet)
 
 # Geometry is currently hard-coded
-set Model constant offset = 1e-2, DOUBLE
+set Model constant offset = 1e-4, DOUBLE
 
 set Model constant c0 = 0.99, DOUBLE
 set Model constant c_ref = 0.4, DOUBLE
 set Model constant diffusivity = 0.1, DOUBLE
 
-set Model constant i_0 = 1000.0, DOUBLE
-set Model constant del_phi = 0.10, DOUBLE
+set Model constant i_0 = 0.0, DOUBLE
+set Model constant del_phi = 0.0, DOUBLE
 #set Model constant alpha = 0.5, DOUBLE
 
 #Mechanics Parameters
