@@ -16,8 +16,8 @@ subsection refinement criterion: 0
   set value upper bound = 2
 end
 
-set time step = 10.0
-set number steps = 100000
+set time step = 1.0
+set number steps = 1000
 
 subsection output
   set condition = EQUAL_SPACING

@@ -34,6 +34,31 @@ public:
 
 private:
   void
+  post_solve_block([[maybe_unused]] SolveContext<dim, degree, number> &solve_context,
+                   [[maybe_unused]] unsigned int                       solver_id) override
+  {
+    if (solver_id == 1)
+      {
+        const double       time = solve_context.get_simulation_timer().get_time();
+        const unsigned int increment =
+          solve_context.get_simulation_timer().get_increment();
+        /* !set.empty() && solve_context.get_simulation_timer().get_time() >
+         * *times.begin() */
+        while (auto &time_it = times.begin() > time_it != times.end() && time >= *time_it)
+          {
+            solve_context.get_user_inputs().output_parameters.output_list.insert(
+              increment);
+            times.erase(time_it);
+          }
+        if (solve_context.get_user_inputs().output_parameters.output_list.contains(
+              increment))
+          {
+            ConditionalOstreams::pout_base() << "Time: " << time << "\n";
+          }
+      }
+  }
+
+  void
   set_initial_condition([[maybe_unused]] const unsigned int       &index,
                         [[maybe_unused]] const unsigned int       &component,
                         [[maybe_unused]] const dealii::Point<dim> &point,
@@ -50,13 +75,28 @@ private:
     double sdf_2 = ((point - center).norm_square() - rad_2 * rad_2) / (2.0 * rad_2);
     double domain_parameter_2 =
       0.5 * ((1.0 + offset) - (1.0 - offset) * std::tanh(sdf_2));
+
+    // double sdf_3 = (std::abs(point - center) - rad) / 2.0;
+    // double domain_parameter_3 =
+    //   0.5 * ((1.0 + offset) - (1.0 - offset) * std::tanh(sdf_3));
+    double sdf_4             = 0.0;
+    double ellipse_params[2] = {1.0, 1.5};
+    for (unsigned int i = 0; i < dim; i++)
+      {
+        sdf_4 += ((point[i] - center[i]) / ellipse_params[i]) *
+                 ((point[i] - center[i]) / ellipse_params[i]);
+      }
+    double domain_parameter_4 =
+      0.5 * ((1.0 + offset) -
+             (1.0 - offset) * std::tanh((sdf_4 - rad_2 * rad_2) / (2.0 * rad_2)));
+    // double sdf_4 =((point - center).norm_square() - rad_2 * rad_2) / (2.0 * rad_2);
     if (index == 0) // c
       {
-        scalar_value = c0 * domain_parameter_2;
+        scalar_value = c0 * domain_parameter_4;
       }
     if (index == 1) // psi
       {
-        scalar_value = domain_parameter;
+        scalar_value = domain_parameter_4;
       }
   }
 

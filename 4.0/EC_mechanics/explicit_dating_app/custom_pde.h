@@ -51,20 +51,17 @@ private:
     const dealii::Tensor<1, dim> &mesh_size =
       get_user_inputs().spatial_discretization.rectangular_mesh.size;
     dealii::Point<dim> center(mesh_size / 2.0);
-    double             rad  = 10.0;
-    double             sdf  = ((point - center).norm_square() - rad * rad) / (2.0 * rad);
+    // double             rad = 10.0;
+    double rad              = mesh_size[0] * (2.0 / 5.0);
+    double sdf              = ((point - center).norm_square() - rad * rad) / (2.0 * rad);
     double domain_parameter = 0.5 * ((1.0 + offset) - (1.0 - offset) * std::tanh(sdf));
-    double rad_2            = 5.0;
-    double sdf_2 = ((point - center).norm_square() - rad_2 * rad_2) / (2.0 * rad_2);
-    double domain_parameter_2 =
-      0.5 * ((1.0 + offset) - (1.0 - offset) * std::tanh(sdf_2));
     if (index == 0) // c
       {
-        scalar_value = c0 * domain_parameter_2;
+        scalar_value = c0 * domain_parameter;
       }
     if (index == 2) // mu
       {
-        scalar_value = log(domain_parameter_2);
+        scalar_value = log(domain_parameter);
       }
     if (index == 3) // psi
       {
@@ -209,6 +206,10 @@ private:
 
         variable_list.set_value_term(7, li_energy);
         variable_list.set_value_term(8, mech_energy);
+        variable_list.set_value_term(9, stress[0][0]);
+        variable_list.set_value_term(10, stress[1][1]);
+        variable_list.set_value_term(11, hydrostatic_stress / stress_scale); // reported
+                                                                             // in GPa
       }
   }
 

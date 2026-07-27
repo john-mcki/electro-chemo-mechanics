@@ -41,9 +41,38 @@ public:
     , F(get_user_inputs().user_constants.get_double("F"))
     , stiffness(get_user_inputs().user_constants.get_elasticity_tensor("stiffness"))
     , stress_scale(get_user_inputs().user_constants.get_double("stress_scale"))
-  {}
+  {
+    for (unsigned int i; i < 10; i++)
+      double time = i * 0.5;
+    times.insert(time);
+  }
 
 private:
+  void
+  post_solve_block([[maybe_unused]] SolveContext<dim, degree, number> &solve_context,
+                   [[maybe_unused]] unsigned int                       solver_id) override
+  {
+    if (solver_id == 1)
+      {
+        const double       time = solve_context.get_simulation_timer().get_time();
+        const unsigned int increment =
+          solve_context.get_simulation_timer().get_increment();
+        /* !set.empty() && solve_context.get_simulation_timer().get_time() >
+         * *times.begin() */
+        while (auto &time_it = times.begin() > time_it != times.end() && time >= *time_it)
+          {
+            solve_context.get_user_inputs().output_parameters.output_list.insert(
+              increment);
+            times.erase(time_it);
+          }
+        if (solve_context.get_user_inputs().output_parameters.output_list.contains(
+              increment))
+          {
+            ConditionalOstreams::pout_base() << "Time: " << time << "\n";
+          }
+      }
+  }
+
   void
   set_initial_condition([[maybe_unused]] const unsigned int       &index,
                         [[maybe_unused]] const unsigned int       &component,
@@ -344,6 +373,7 @@ private:
   number                                                       mol_vol;
   number                                                       stress_scale;
   dealii::Tensor<2, Mechanics::voigt_tensor_size<dim>, number> stiffness;
+  std::set<double>                                             times;
 };
 
 PRISMS_PF_END_NAMESPACE

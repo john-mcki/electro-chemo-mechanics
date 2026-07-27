@@ -30,7 +30,10 @@ main(int argc, char *argv[])
                                          FieldAttributes("diffusion_driver"),
                                          FieldAttributes("reaction_rate"),
                                          FieldAttributes("li_energy"),
-                                         FieldAttributes("mech_energy")};
+                                         FieldAttributes("mech_energy"),
+                                         FieldAttributes("sigma_x"),
+                                         FieldAttributes("sigma_y"),
+                                         FieldAttributes("sigma_h")};
 
   SolveBlock constant_block;
   constant_block.id            = -1;
@@ -66,7 +69,7 @@ main(int argc, char *argv[])
   pp_block.id            = 3;
   pp_block.solve_type    = Explicit;
   pp_block.solve_timing  = PostProcess;
-  pp_block.field_indices = {4, 5, 6, 7, 8};
+  pp_block.field_indices = {4, 5, 6, 7, 8, 9, 10, 11};
   pp_block.dependencies_rhs =
     make_dependency_set(fields, {"c", "grad(u)", "mu", "grad(mu)", "psi", "grad(psi)"});
 

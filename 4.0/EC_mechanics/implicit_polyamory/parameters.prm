@@ -2,6 +2,8 @@ subsection Rectangular mesh
   set x size = 100
   set y size = 100
   set z size = 100
+  #set x lower bound = -50
+  #set y lower bound = -50
 end
 
 set global refinement = 7
