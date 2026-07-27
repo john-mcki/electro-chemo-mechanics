@@ -57,7 +57,8 @@ private:
     double domain_parameter = 0.5 * ((1.0 + offset) - (1.0 - offset) * std::tanh(sdf));
     if (index == 0) // c
       {
-        scalar_value = c0 * domain_parameter;
+        // scalar_value = c0 * domain_parameter;
+        scalar_value = c0;
       }
     if (index == 2) // mu
       {

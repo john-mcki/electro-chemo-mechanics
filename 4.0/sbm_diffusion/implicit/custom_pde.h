@@ -30,7 +30,11 @@ public:
     , diffusivity(get_user_inputs().user_constants.get_double("diffusivity"))
     , kc(get_user_inputs().user_constants.get_double("kc"))
     , cref(get_user_inputs().user_constants.get_double("cref"))
-  {}
+  {
+    for (unsigned int i; i < 10; i++)
+      double time = i * 0.5;
+    times.insert(time);
+  }
 
 private:
   void
@@ -165,11 +169,12 @@ private:
       }
   }
 
-  number c0;
-  number offset;
-  number diffusivity;
-  number kc;
-  number cref;
+  number           c0;
+  number           offset;
+  number           diffusivity;
+  number           kc;
+  number           cref;
+  std::set<double> times;
 };
 
 PRISMS_PF_END_NAMESPACE
