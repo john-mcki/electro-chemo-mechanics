@@ -60,7 +60,7 @@ set Model constant vegard = 0.001, DOUBLE
 #set Model constant site_vol = 4.867e-11, DOUBLE
 set Model constant site_vol = 2.38e-5, DOUBLE
 set Model constant mol_vol = 2.931e13, DOUBLE
-set Model constant stiffness = (200.0,0.3), isotropic elastic constants
+set Model constant stiffness = (400.0,0.3), isotropic elastic constants
 # Scaling stress to GPa
 set Model constant stress_scale = 1.0e9, DOUBLE
 set Model constant RT = 2494.2, DOUBLE

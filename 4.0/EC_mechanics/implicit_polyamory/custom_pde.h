@@ -59,7 +59,7 @@ private:
           solve_context.get_simulation_timer().get_increment();
         /* !set.empty() && solve_context.get_simulation_timer().get_time() >
          * *times.begin() */
-        while (auto &time_it = times.begin() > time_it != times.end() && time >= *time_it)
+        for (auto &time_it = times.begin() < time_it != times.end() && time <= *time_it)
           {
             solve_context.get_user_inputs().output_parameters.output_list.insert(
               increment);
