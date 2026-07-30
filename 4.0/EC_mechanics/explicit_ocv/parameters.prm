@@ -17,12 +17,12 @@ subsection refinement criterion: 0
 end
 
 set time step = 1.0e-4
-set number steps = 1000000
+set number steps = 100000
 
 subsection output
   set condition = EQUAL_SPACING
   set number = 100
-  #set list = 1,2,3,4,5,6,7,8,9,10,100
+  set list = 1,2,3,4,5,6,7,8,9,10,100
   set file type = vtu
 end
 
@@ -58,8 +58,8 @@ set Model constant V_ref = 3.302, DOUBLE
 set Model constant del_phi = 4.067, DOUBLE
 set Model constant V_min = 0.100, DOUBLE
 set Model constant V_max = 4.50, DOUBLE
-set Model constant V_step = 0.0050, DOUBLE
-set Model constant i_target = 1.88e-12,DOUBLE
+set Model constant V_step = 0.50, DOUBLE
+set Model constant i_target = -1.88e-12,DOUBLE
 
 
 #Mechanics Parameters
