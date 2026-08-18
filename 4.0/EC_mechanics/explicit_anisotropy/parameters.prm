@@ -1,0 +1,191 @@
+subsection Rectangular mesh
+  set x size = 10
+  set y size = 10
+  set z size = 10
+end
+
+set global refinement = 7
+set max refinement = 7
+set min refinement = 1
+set mesh adaptivity = false
+
+subsection refinement criterion: 0
+  set variables         = psi
+  set type              = value
+  set value lower bound = 1e-3
+  set value upper bound = 2
+end
+
+set time step = 1.0e-4
+set number steps = 10000
+
+subsection output
+  set condition = LOG_SPACING
+  set number = 100
+  #set list = 1,2,3,4,5,6,7,8,9,10,100
+  set file type = vtu
+end
+
+subsection boundary conditions: 0
+  set variables = u
+  set conditions = Dirichlet
+end
+
+subsection linear solver parameters: 0
+  set solver_ids               = 1
+
+  set solver type              = bicgstab
+  set max iterations           = 10000
+  set tolerance type           = AbsoluteResidual
+  set tolerance value          = 1e-5
+  set preconditioner           = None
+
+  subsection Chebyshev
+    set eigenvalue cg iterations = 10
+    set smoother degree          = 5
+    set smoothing range          = 100
+  end
+end
+
+set read initial conditions from file = true
+
+subsection input file: 0
+  set file name = Cv2D_1.dat
+  set format = binary
+  set file variables = Cel1
+  set simulation variables = Cel1
+  set x data points = 257
+  set y data points  = 257
+  set z data points  = 1
+end
+
+subsection input file: 1
+  set file name = Cv2D_2.dat
+  set format = binary
+  set file variables = Cel2
+  set simulation variables = Cel2
+  set x data points = 257
+  set y data points  = 257
+  set z data points  = 1
+end
+
+subsection input file: 3
+  set file name = Cv2D_3.dat
+  set format = binary
+  set file variables = Cel3
+  set simulation variables = Cel3
+  set x data points = 257
+  set y data points  = 257
+  set z data points  = 1
+end
+
+subsection input file: 4
+  set file name = eigv2D_1.dat
+  set format = binary
+  set file variables = eig1
+  set simulation variables = eig1
+  set x data points = 257
+  set y data points  = 257
+  set z data points  = 1
+end
+
+subsection input file: 5
+  set file name = eigv2D_2.dat
+  set format = binary
+  set file variables = eig2
+  set simulation variables = eig2
+  set x data points = 257
+  set y data points  = 257
+  set z data points  = 1
+end
+
+subsection input file: 6
+  set file name = Dv2D_1.dat
+  set format = binary
+  set file variables = D1
+  set simulation variables = D1
+  set x data points = 257
+  set y data points  = 257
+  set z data points  = 1
+end
+
+subsection input file: 7
+  set file name = Dv2D_2.dat
+  set format = binary
+  set file variables = D2
+  set simulation variables = D2
+  set x data points = 257
+  set y data points  = 257
+  set z data points  = 1
+end
+
+subsection input file: 8
+  set file name = psi.dat
+  set format = binary
+  set file variables = psi
+  set simulation variables = psi
+  set x data points = 257
+  set y data points  = 257
+  set z data points  = 1
+end
+
+
+# Model Constants (for reference check calculation tab in NMC parameters google sheet)
+
+# Geometry is currently hard-coded
+set Model constant offset = 1e-4, DOUBLE
+
+set Model constant c0 = 0.99, DOUBLE
+set Model constant c_ref = 0.98, DOUBLE
+set Model constant diffusivity = 0.01, DOUBLE
+set Model constant diff_scale = 1.0, DOUBLE
+
+set Model constant i_0 = 10.0, DOUBLE
+# Reference OCV at c0=0.99: polynomial evaluated at t=1 gives ~3.302 V.
+# del_phi is the overpotential above this reference; eta = F*(del_phi - delta_U_ocv).
+set Model constant V_ref = 3.302, DOUBLE
+set Model constant del_phi = 3.35, DOUBLE
+set Model constant V_min = 0.100, DOUBLE
+set Model constant V_max = 4.50, DOUBLE
+set Model constant V_step = 100.0, DOUBLE
+set Model constant i_target = -3.08e-16,DOUBLE
+
+
+#Mechanics Parameters
+set Model constant vegard = 0.02, DOUBLE
+#set Model constant site_vol = 4.867e-11, DOUBLE
+set Model constant site_vol = 2.38e-5, DOUBLE
+set Model constant mol_vol = 2.931e13, DOUBLE
+set Model constant stiffness = (200.0,0.3), isotropic elastic constants
+# Scaling stress to GPa
+set Model constant stress_scale = 1.0e9, DOUBLE
+set Model constant RT = 2494.2, DOUBLE
+set Model constant F = 96485.0, DOUBLE
+
+# OCV polynomial U(c) fit to NMC data over SoC in [0.30, 0.99].
+# Evaluated via Horner's method in normalized variable t = 2*(c - 0.30)/0.69 - 1.
+# Degree 21 Chebyshev fit; max residual ~4.95 mV over the fit domain.
+set Model constant ocv_q0  =  3.760060570358124e+00, DOUBLE
+set Model constant ocv_q1  = -2.024259589873655e-01, DOUBLE
+set Model constant ocv_q2  =  2.691682752135670e-01, DOUBLE
+set Model constant ocv_q3  = -6.352149288213646e-02, DOUBLE
+set Model constant ocv_q4  = -2.243592647577209e+00, DOUBLE
+set Model constant ocv_q5  = -1.293875959613897e+01, DOUBLE
+set Model constant ocv_q6  =  3.836767727237708e+01, DOUBLE
+set Model constant ocv_q7  =  1.604735968307998e+02, DOUBLE
+set Model constant ocv_q8  = -3.077229112935632e+02, DOUBLE
+set Model constant ocv_q9  = -9.936780252696260e+02, DOUBLE
+set Model constant ocv_q10 =  1.345660647298912e+03, DOUBLE
+set Model constant ocv_q11 =  3.646097875951269e+03, DOUBLE
+set Model constant ocv_q12 = -3.498541621367946e+03, DOUBLE
+set Model constant ocv_q13 = -8.349228920373598e+03, DOUBLE
+set Model constant ocv_q14 =  5.559342157468553e+03, DOUBLE
+set Model constant ocv_q15 =  1.203400233562777e+04, DOUBLE
+set Model constant ocv_q16 = -5.296608096504102e+03, DOUBLE
+set Model constant ocv_q17 = -1.060177043792399e+04, DOUBLE
+set Model constant ocv_q18 =  2.778078192261170e+03, DOUBLE
+set Model constant ocv_q19 =  5.211929686346203e+03, DOUBLE
+set Model constant ocv_q20 = -6.165671379287322e+02, DOUBLE
+set Model constant ocv_q21 = -1.095113531608059e+03, DOUBLE
+
+
