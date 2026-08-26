@@ -44,6 +44,9 @@ main-debug
 main
 *.sh
 
+# Input files
+*.dat
+
 # Output files
 *.vtu
 *.pvtu
