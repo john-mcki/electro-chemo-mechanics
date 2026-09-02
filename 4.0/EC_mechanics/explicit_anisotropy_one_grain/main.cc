@@ -20,7 +20,7 @@ main(int argc, char *argv[])
   std::string     parameters_filename = cli_options.get_parameters_filename();
 
   constexpr unsigned int dim    = 2; // TODO change to 3 (original app)
-  constexpr unsigned int degree = 2; // TODO change to 1 (original app)
+  constexpr unsigned int degree = 1; // TODO change to 1 (original app)
 
   std::vector<FieldAttributes> fields = {
     FieldAttributes("c"),

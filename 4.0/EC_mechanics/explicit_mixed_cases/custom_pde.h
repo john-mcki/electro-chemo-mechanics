@@ -66,6 +66,8 @@ public:
     , V_step(get_user_inputs().user_constants.get_double("V_step"))
     , V_max(get_user_inputs().user_constants.get_double("V_max"))
     , V_min(get_user_inputs().user_constants.get_double("V_min"))
+    , stiffness_iso(
+        get_user_inputs().user_constants.get_elasticity_tensor("stiffness_iso"))
   {}
 
 private:
@@ -327,26 +329,33 @@ private:
         ScalarValue psi_grad_mag = psi_grad.norm();
 
         ScalarValue dt = sim_timer.get_timestep();
-
-        VectorValue D1 =
-          diff_scale * variable_list.template get_value<Vector, Current>(17);
-        ScalarValue D2 =
-          diff_scale * variable_list.template get_value<Scalar, Current>(18);
-
         // Functions
-        // ScalarValue mobility = (diffusivity * c_val) / RT;
+        if (diff_iso == true)
+          {
+            // diff is the isotropic mirror to anisotropic diffisuvity tensor
+            ScalarValue func_c = (psi_grad / psi) * mobility_factor * RT * diff * mu_grad;
+            ScalarGrad  func_c_grad = -mobility_factor * RT * diff * mu_grad;
+          }
+        else
+          {
+            VectorValue D1 =
+              diff_scale * variable_list.template get_value<Vector, Current>(17);
+            ScalarValue D2 =
+              diff_scale * variable_list.template get_value<Scalar, Current>(18);
+            VectorValue flux        = get_flux2D(mu_grad, D1, D2);
+            ScalarValue func_c      = (psi_grad / psi) * mobility_factor * RT * flux;
+            ScalarGrad  func_c_grad = -mobility_factor * RT * flux;
+          }
+
         ScalarValue mobility_factor = -(RT / F) * (1.0 / eval_dU_ocv(c_val));
         ScalarValue app_pot_energy  = F * del_phi;
         ScalarValue eta             = app_pot_energy + RT * mu_val;
+
         // Diffusion and Reaction functions
         ScalarValue react = -2.0 * (i_0 / F) * std::sinh(eta / (2.0 * RT));
-
-        VectorValue flux        = get_flux2D(mu_grad, D1, D2);
-        ScalarValue func_c      = (psi_grad / psi) * mobility_factor * RT * flux;
-        ScalarGrad  func_c_grad = -mobility_factor * RT * flux;
-
-        // Forward Euler time stepping
         ScalarValue rxn   = psi_grad_mag * react;
+
+        // Forward Euler timestepping
         ScalarValue eq_c  = c_val + dt * (func_c + rxn / psi);
         ScalarGrad  eqx_c = dt * func_c_grad;
 
@@ -359,20 +368,59 @@ private:
         ScalarValue c_val = variable_list.template get_value<Scalar, Current>(0);
         ScalarValue psi   = variable_list.template get_value<Scalar, Current>(3);
         psi               = std::max(psi, ScalarValue(offset));
-
-        VectorValue Cel1         = variable_list.template get_value<Vector, Current>(12);
-        VectorValue Cel2         = variable_list.template get_value<Vector, Current>(13);
-        VectorValue Cel3         = variable_list.template get_value<Vector, Current>(14);
-        VectorValue eig1         = variable_list.template get_value<Vector, Current>(15);
-        ScalarValue eig2         = variable_list.template get_value<Scalar, Current>(16);
-        VectorGrad  eigenstrain0 = eigenstrain_helper(eig1, eig2);
-        VectorGrad  eigenstrain  = (c_val - c_ref) * eigenstrain0;
-        dealii::Tensor<2, Mechanics::voigt_tensor_size<dim>, ScalarValue> stiffness =
-          get_voigt2D(Cel1, Cel2, Cel3);
         VectorGrad stress;
-        Mechanics::compute_stress<dim, ScalarValue>(stiffness,
-                                                    psi * (eigenstrain),
-                                                    stress);
+        if (elas_iso == false && eig_iso == false)
+          {
+            VectorValue Cel1 = variable_list.template get_value<Vector, Current>(12);
+            VectorValue Cel2 = variable_list.template get_value<Vector, Current>(13);
+            VectorValue Cel3 = variable_list.template get_value<Vector, Current>(14);
+            VectorValue eig1 = variable_list.template get_value<Vector, Current>(15);
+            ScalarValue eig2 = variable_list.template get_value<Scalar, Current>(16);
+            VectorGrad  eigenstrain0 = eigenstrain_helper(eig1, eig2);
+            VectorGrad  eigenstrain  = (c_val - c_ref) * eigenstrain0;
+            dealii::Tensor<2, Mechanics::voigt_tensor_size<dim>, ScalarValue> stiffness =
+              get_voigt2D(Cel1, Cel2, Cel3);
+            Mechanics::compute_stress<dim, ScalarValue>(stiffness,
+                                                        psi * (eigenstrain),
+                                                        stress);
+          }
+        if (elas_iso == true && eig_iso == false)
+          {
+            // VectorValue Cel1 = variable_list.template get_value<Vector, Current>(12);
+            // VectorValue Cel2 = variable_list.template get_value<Vector, Current>(13);
+            // VectorValue Cel3 = variable_list.template get_value<Vector, Current>(14);
+            VectorValue eig1 = variable_list.template get_value<Vector, Current>(15);
+            ScalarValue eig2 = variable_list.template get_value<Scalar, Current>(16);
+            VectorGrad  eigenstrain0 = eigenstrain_helper(eig1, eig2);
+            VectorGrad  eigenstrain  = (c_val - c_ref) * eigenstrain0;
+            dealii::Tensor<2, Mechanics::voigt_tensor_size<dim>, ScalarValue> stiffness =
+              get_voigt2D(Cel1, Cel2, Cel3);
+            Mechanics::compute_stress<dim, ScalarValue>(stiffness,
+                                                        psi * (eigenstrain),
+                                                        stress);
+          }
+        if (elas_iso == false && eig_iso == true)
+          {
+            VectorValue Cel1 = variable_list.template get_value<Vector, Current>(12);
+            VectorValue Cel2 = variable_list.template get_value<Vector, Current>(13);
+            VectorValue Cel3 = variable_list.template get_value<Vector, Current>(14);
+            // VectorValue eig1 = variable_list.template get_value<Vector, Current>(15);
+            // ScalarValue eig2 = variable_list.template get_value<Scalar, Current>(16);
+            // VectorGrad  eigenstrain0 = eigenstrain_helper(eig1, eig2);
+            VectorGrad eigenstrain = (c_val - c_ref) * eig;
+            dealii::Tensor<2, Mechanics::voigt_tensor_size<dim>, ScalarValue> stiffness =
+              get_voigt2D(Cel1, Cel2, Cel3);
+            Mechanics::compute_stress<dim, ScalarValue>(stiffness,
+                                                        psi * (eigenstrain),
+                                                        stress);
+          }
+        else
+          {
+            VectorGrad eigenstrain = (c_val - c_ref) * eig;
+            Mechanics::compute_stress<dim, ScalarValue>(stiffness_iso,
+                                                        psi * (eigenstrain),
+                                                        stress);
+          }
         variable_list.set_gradient_term(1, -stress);
       }
     if (solve_block_id == 2) // mu
@@ -461,27 +509,26 @@ private:
       }
   }
 
-  number i_0;
-  number del_phi;
-  number offset;
-  number c0;
-  number c_ref;
-  number RT;
-  number F;
-  number diffusivity;
-  number diff_scale;
-  number vegard;
-  number site_vol;
-  number mol_vol;
-  number stress_scale;
-  number ocv_q0, ocv_q1, ocv_q2, ocv_q3, ocv_q4, ocv_q5, ocv_q6, ocv_q7;
-  number ocv_q8, ocv_q9, ocv_q10, ocv_q11, ocv_q12, ocv_q13, ocv_q14, ocv_q15;
-  number ocv_q16, ocv_q17, ocv_q18, ocv_q19, ocv_q20, ocv_q21;
-  number V_ref;
-  number i_target;
-  number V_step;
-  number V_min;
-  number V_max;
+  number             i_0;
+  number             del_phi;
+  number             offset;
+  number             c0;
+  number             c_ref;
+  number             RT;
+  number             F;
+  number diff number diff_scale;
+  number             vegard;
+  number             site_vol;
+  number             mol_vol;
+  number             stress_scale;
+  number             ocv_q0, ocv_q1, ocv_q2, ocv_q3, ocv_q4, ocv_q5, ocv_q6, ocv_q7;
+  number             ocv_q8, ocv_q9, ocv_q10, ocv_q11, ocv_q12, ocv_q13, ocv_q14, ocv_q15;
+  number             ocv_q16, ocv_q17, ocv_q18, ocv_q19, ocv_q20, ocv_q21;
+  number             V_ref;
+  number             i_target;
+  number             V_step;
+  number             V_min;
+  number             V_max;
 };
 
 PRISMS_PF_END_NAMESPACE

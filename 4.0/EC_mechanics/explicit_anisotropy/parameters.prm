@@ -17,11 +17,11 @@ subsection refinement criterion: 0
 end
 
 set time step = 1.0e-5
-set number steps = 72000000
+set number steps = 10000
 
 subsection output
-  set condition = LOG_SPACING
-  set number = 1000
+  set condition = EQUAL_SPACING
+  set number = 100
   #set list = 1,2,3,4,5,6,7,8,9,10,100
   set file type = vtu
 end
@@ -51,7 +51,7 @@ set read initial conditions from file = true
 #naming convention: ../structure_files/#_grain_struct/file
 
 subsection input file: 0
-  set file name = structure_files/16_grain_struct/Cv2D_1.dat
+  set file name = structure_files/33_grain_struct/Cv2D_1.dat
   set format = binary
   set file variables = Cel1
   set simulation variables = Cel1
@@ -61,7 +61,7 @@ subsection input file: 0
 end
 
 subsection input file: 1
-  set file name = structure_files/16_grain_struct/Cv2D_2.dat
+  set file name = structure_files/33_grain_struct/Cv2D_2.dat
   set format = binary
   set file variables = Cel2
   set simulation variables = Cel2
@@ -71,7 +71,7 @@ subsection input file: 1
 end
 
 subsection input file: 3
-  set file name = structure_files/16_grain_struct/Cv2D_3.dat
+  set file name = structure_files/33_grain_struct/Cv2D_3.dat
   set format = binary
   set file variables = Cel3
   set simulation variables = Cel3
@@ -81,7 +81,7 @@ subsection input file: 3
 end
 
 subsection input file: 4
-  set file name = structure_files/16_grain_struct/eigv2D_1.dat
+  set file name = structure_files/33_grain_struct/eigv2D_1.dat
   set format = binary
   set file variables = eig1
   set simulation variables = eig1
@@ -91,7 +91,7 @@ subsection input file: 4
 end
 
 subsection input file: 5
-  set file name = structure_files/16_grain_struct/eigv2D_2.dat
+  set file name = structure_files/33_grain_struct/eigv2D_2.dat
   set format = binary
   set file variables = eig2
   set simulation variables = eig2
@@ -101,7 +101,7 @@ subsection input file: 5
 end
 
 subsection input file: 6
-  set file name = structure_files/16_grain_struct/Dv2D_1.dat
+  set file name = structure_files/33_grain_struct/Dv2D_1.dat
   set format = binary
   set file variables = D1
   set simulation variables = D1
@@ -111,7 +111,7 @@ subsection input file: 6
 end
 
 subsection input file: 7
-  set file name = structure_files/16_grain_struct/Dv2D_2.dat
+  set file name = structure_files/33_grain_struct/Dv2D_2.dat
   set format = binary
   set file variables = D2
   set simulation variables = D2
@@ -121,7 +121,7 @@ subsection input file: 7
 end
 
 subsection input file: 8
-  set file name = structure_files/16_grain_struct/psi.dat
+  set file name = structure_files/33_grain_struct/psi.dat
   set format = binary
   set file variables = psi
   set simulation variables = psi
@@ -139,7 +139,7 @@ set Model constant offset = 1e-4, DOUBLE
 set Model constant c0 = 0.99, DOUBLE
 set Model constant c_ref = 0.98, DOUBLE
 set Model constant diffusivity = 0.01, DOUBLE
-set Model constant diff_scale = 10.0, DOUBLE
+set Model constant diff_scale = 1.0, DOUBLE
 
 set Model constant i_0 = 10.0, DOUBLE
 # Reference OCV at c0=0.99: polynomial evaluated at t=1 gives ~3.302 V.

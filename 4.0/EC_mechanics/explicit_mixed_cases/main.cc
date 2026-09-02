@@ -20,20 +20,24 @@ main(int argc, char *argv[])
   std::string     parameters_filename = cli_options.get_parameters_filename();
 
   constexpr unsigned int dim    = 2; // TODO change to 3 (original app)
-  constexpr unsigned int degree = 1; // TODO change to 1 (original app)
+  constexpr unsigned int degree = 2; // TODO change to 1 (original app)
 
-  std::vector<FieldAttributes> fields = {FieldAttributes("c"),
+  std::vector<FieldAttributes> fields = {// Calculated fields (0 - 3)
+                                         FieldAttributes("c"),
                                          FieldAttributes("u", Vector),
                                          FieldAttributes("mu"),
                                          FieldAttributes("psi"),
+                                         // Post-processed variables (4 - 11)
                                          FieldAttributes("particle_concentration"),
                                          FieldAttributes("overpotential"),
                                          FieldAttributes("elastic_potential"),
                                          FieldAttributes("sigma_x"),
                                          FieldAttributes("sigma_y"),
                                          FieldAttributes("sigma_xy"),
-                                         FieldAttributes("rxn"),
+                                         FieldAttributes("rxn"), // Field 10 NOT
+                                                                 // POST-PROCESSED
                                          FieldAttributes("del_phi"),
+                                         // Read-in variables (12 - 18)
                                          FieldAttributes("Cel1", Vector),
                                          FieldAttributes("Cel2", Vector),
                                          FieldAttributes("Cel3", Vector),
