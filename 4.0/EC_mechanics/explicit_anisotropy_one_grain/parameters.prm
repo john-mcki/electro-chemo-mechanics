@@ -68,6 +68,7 @@ set Model constant c0 = 0.99, DOUBLE
 set Model constant c_ref = 0.98, DOUBLE
 set Model constant diffusivity = 0.01, DOUBLE #ignored in the case of anisotropic diffusivity
 set Model constant diff_scale = 1.0, DOUBLE
+set Model constant eig_scale = 1.0, DOUBLE
 
 set Model constant i_0 = 10.0, DOUBLE
 # Reference OCV at c0=0.99: polynomial evaluated at t=1 gives ~3.302 V.

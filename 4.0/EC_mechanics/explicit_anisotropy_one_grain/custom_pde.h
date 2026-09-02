@@ -31,6 +31,7 @@ public:
     , offset(get_user_inputs().user_constants.get_double("offset"))
     , diffusivity(get_user_inputs().user_constants.get_double("diffusivity"))
     , diff_scale(get_user_inputs().user_constants.get_double("diff_scale"))
+    , eig_scale(get_user_inputs().user_constants.get_double("eig_scale"))
     , i_0(get_user_inputs().user_constants.get_double("i_0"))
     , del_phi(get_user_inputs().user_constants.get_double("del_phi"))
     , vegard(get_user_inputs().user_constants.get_double("vegard"))
@@ -182,10 +183,10 @@ private:
     VectorGrad eigenstrain;
     if (dim == 2)
       {
-        eigenstrain[0][0] = eig11;
-        eigenstrain[1][1] = eig22;
-        eigenstrain[0][1] = eig12;
-        eigenstrain[1][0] = eig12;
+        eigenstrain[0][0] = eig_scale * eig11;
+        eigenstrain[1][1] = eig_scale * eig22;
+        eigenstrain[0][1] = eig_scale * eig12;
+        eigenstrain[1][0] = eig_scale * eig12;
       }
     else
       {
@@ -243,8 +244,8 @@ private:
     VectorValue flux;
     if (dim == 2)
       {
-        flux[0] = D11 * cx[0] + D12 * cx[1];
-        flux[1] = D22 * cx[1] + D12 * cx[0];
+        flux[0] = diff_scale * (D11 * cx[0] + D12 * cx[1]);
+        flux[1] = diff_scale * (D22 * cx[1] + D12 * cx[0]);
       }
     else
       {
@@ -518,6 +519,7 @@ private:
   number F;
   number diffusivity;
   number diff_scale;
+  number eig_scale;
   number vegard;
   number site_vol;
   number mol_vol;

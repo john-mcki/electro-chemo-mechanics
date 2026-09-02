@@ -31,6 +31,7 @@ public:
     , offset(get_user_inputs().user_constants.get_double("offset"))
     , diffusivity(get_user_inputs().user_constants.get_double("diffusivity"))
     , diff_scale(get_user_inputs().user_constants.get_double("diff_scale"))
+    , eig_scale(get_user_inputs().user_constants.get_double("eig_scale"))
     , i_0(get_user_inputs().user_constants.get_double("i_0"))
     , del_phi(get_user_inputs().user_constants.get_double("del_phi"))
     , vegard(get_user_inputs().user_constants.get_double("vegard"))
@@ -360,13 +361,15 @@ private:
         ScalarValue psi   = variable_list.template get_value<Scalar, Current>(3);
         psi               = std::max(psi, ScalarValue(offset));
 
-        VectorValue Cel1         = variable_list.template get_value<Vector, Current>(12);
-        VectorValue Cel2         = variable_list.template get_value<Vector, Current>(13);
-        VectorValue Cel3         = variable_list.template get_value<Vector, Current>(14);
-        VectorValue eig1         = variable_list.template get_value<Vector, Current>(15);
-        ScalarValue eig2         = variable_list.template get_value<Scalar, Current>(16);
-        VectorGrad  eigenstrain0 = eigenstrain_helper(eig1, eig2);
-        VectorGrad  eigenstrain  = (c_val - c_ref) * eigenstrain0;
+        VectorValue Cel1 = variable_list.template get_value<Vector, Current>(12);
+        VectorValue Cel2 = variable_list.template get_value<Vector, Current>(13);
+        VectorValue Cel3 = variable_list.template get_value<Vector, Current>(14);
+        VectorValue eig1 =
+          eig_scale * variable_list.template get_value<Vector, Current>(15);
+        ScalarValue eig2 =
+          eig_scale * variable_list.template get_value<Scalar, Current>(16);
+        VectorGrad eigenstrain0 = eigenstrain_helper(eig1, eig2);
+        VectorGrad eigenstrain  = (c_val - c_ref) * eigenstrain0;
         dealii::Tensor<2, Mechanics::voigt_tensor_size<dim>, ScalarValue> stiffness =
           get_voigt2D(Cel1, Cel2, Cel3);
         VectorGrad stress;
@@ -385,8 +388,10 @@ private:
         VectorValue Cel1 = variable_list.template get_value<Vector, Current>(12);
         VectorValue Cel2 = variable_list.template get_value<Vector, Current>(13);
         VectorValue Cel3 = variable_list.template get_value<Vector, Current>(14);
-        VectorValue eig1 = variable_list.template get_value<Vector, Current>(15);
-        ScalarValue eig2 = variable_list.template get_value<Scalar, Current>(16);
+        VectorValue eig1 =
+          eig_scale * variable_list.template get_value<Vector, Current>(15);
+        ScalarValue eig2 =
+          eig_scale * variable_list.template get_value<Scalar, Current>(16);
 
         VectorGrad eigenstrain0 = eigenstrain_helper(eig1, eig2);
         VectorGrad eigenstrain  = (c_val - c_ref) * eigenstrain0;
@@ -415,8 +420,10 @@ private:
         VectorValue Cel1 = variable_list.template get_value<Vector, Current>(12);
         VectorValue Cel2 = variable_list.template get_value<Vector, Current>(13);
         VectorValue Cel3 = variable_list.template get_value<Vector, Current>(14);
-        VectorValue eig1 = variable_list.template get_value<Vector, Current>(15);
-        ScalarValue eig2 = variable_list.template get_value<Scalar, Current>(16);
+        VectorValue eig1 =
+          eig_scale * variable_list.template get_value<Vector, Current>(15);
+        ScalarValue eig2 =
+          eig_scale * variable_list.template get_value<Scalar, Current>(16);
 
         VectorGrad eigenstrain0 = eigenstrain_helper(eig1, eig2);
         VectorGrad eigenstrain  = (c_val - c_ref) * eigenstrain0;
@@ -470,6 +477,7 @@ private:
   number F;
   number diffusivity;
   number diff_scale;
+  number eig_scale;
   number vegard;
   number site_vol;
   number mol_vol;
