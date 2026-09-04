@@ -4,8 +4,8 @@ subsection Rectangular mesh
   set z size = 10
 end
 
-set global refinement = 8
-set max refinement = 8
+set global refinement = 7
+set max refinement = 7
 set min refinement = 1
 set mesh adaptivity = false
 
@@ -167,7 +167,7 @@ set Model constant i_target = -3.08e-16,DOUBLE
 
 
 #Mechanics Parameters
-set Model constant vegard = 0.02, DOUBLE
+set Model constant vegard = 0.00, DOUBLE
 #set Model constant site_vol = 4.867e-11, DOUBLE
 set Model constant site_vol = 2.38e-5, DOUBLE
 set Model constant mol_vol = 2.931e13, DOUBLE

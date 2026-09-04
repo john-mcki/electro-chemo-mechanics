@@ -59,6 +59,8 @@ private:
   // Chebyshev21Ocv<ScalarValue> ocv_model_;
   Chebyshev21Ocv<ScalarValue> ocv_model_;
 
+  // PiecewiseCubicSplineOcv<ScalarValue> ocv_model_;
+
   void
   post_solve_block([[maybe_unused]] SolveContext<dim, degree, number> &solve_context,
                    [[maybe_unused]] unsigned int                       solver_id) override
@@ -148,6 +150,15 @@ private:
     if (solve_block_id == 0) // c
       {
         // Calling variables
+        /*
+        ScalarValue psi =
+          variable_list.template get_value<Scalar, Current>(Fields::psi.index);
+        ScalarValue solve_limit =
+          0.010; // Value of psi, beyond which no calculations occur
+        if (double(psi) <= double(solve_limit))
+          {
+          }
+          */
         ScalarValue c_val =
           variable_list.template get_value<Scalar, OldOne>(Fields::c.index);
         ScalarValue mu_val =
