@@ -4,8 +4,8 @@ subsection Rectangular mesh
   set z size = 10
 end
 
-set global refinement = 7
-set max refinement = 7
+set global refinement = 8
+set max refinement = 8
 set min refinement = 1
 set mesh adaptivity = false
 
@@ -17,38 +17,51 @@ subsection refinement criterion: 0
 end
 
 set time step = 1.0e-5
-set number steps = 10000
+set number steps = 100
 
 subsection output
-  set condition = EQUAL_SPACING
-  set number = 100
+  set condition = LOG_SPACING
+  set number = 20
   #set list = 1,2,3,4,5,6,7,8,9,10,100
   set file type = vtu
 end
 
 subsection boundary conditions: 0
-  set variables = u
-  set conditions = Dirichlet
+  set variables = u:x
+#  set conditions = Dirichlet, Dirichlet, Natural, Dirichlet, Natural, Dirichlet
+  set conditions = Dirichlet, Dirichlet, Dirichlet, Dirichlet, Dirichlet, Dirichlet
+#  set conditions = Natural
+end
+subsection boundary conditions: 2
+  set variables = u:y
+#  set conditions = Natural, Dirichlet, Dirichlet, Dirichlet, Natural, Dirichlet
+  set conditions = Dirichlet, Dirichlet, Dirichlet, Dirichlet, Dirichlet, Dirichlet
+#  set conditions = Natural
+end
+subsection boundary conditions: 3
+  set variables = u:z
+#  set conditions = Natural, Dirichlet, Natural, Dirichlet, Dirichlet, Dirichlet
+  set conditions = Dirichlet, Dirichlet, Dirichlet, Dirichlet, Dirichlet, Dirichlet
+#  set conditions = Natural
 end
 
 subsection linear solver parameters: 0
   set solver_ids               = 1
-
-  set solver type              = bicgstab
-  set max iterations           = 10000
+  set solver type              = cg
+  set max iterations           = 20000
   set tolerance type           = AbsoluteResidual
-  set tolerance value          = 1e-5
-  set preconditioner           = None
+  set tolerance value          = 1e-8
+  set preconditioner           = GMG
 
   subsection Chebyshev
-    set eigenvalue cg iterations = 10
-    set smoother degree          = 5
+    set eigenvalue cg iterations = 20
+    set smoother degree          = 10
     set smoothing range          = 100
   end
 end
 
 set read initial conditions from file = true
-#naming convention: ../structure_files/#_grain_struct/file
+#naming convention: ../structure_files/iso_aniso/isotropic/file
 
 subsection input file: 0
   set file name = 9-3-26_structs/all_aniso/Cv2D_1.dat
@@ -137,7 +150,7 @@ end
 set Model constant offset = 1e-4, DOUBLE
 
 set Model constant c0 = 0.99, DOUBLE
-set Model constant c_ref = 0.98, DOUBLE
+set Model constant c_ref = 0.99, DOUBLE
 set Model constant diffusivity = 0.01, DOUBLE
 set Model constant diff_scale = 1.0, DOUBLE
 set Model constant eig_scale = 1.0, DOUBLE
@@ -163,31 +176,5 @@ set Model constant stiffness = (200.0,0.3), isotropic elastic constants
 set Model constant stress_scale = 1.0e9, DOUBLE
 set Model constant RT = 2494.2, DOUBLE
 set Model constant F = 96485.0, DOUBLE
-
-# OCV polynomial U(c) fit to NMC data over SoC in [0.30, 0.99].
-# Evaluated via Horner's method in normalized variable t = 2*(c - 0.30)/0.69 - 1.
-# Degree 21 Chebyshev fit; max residual ~4.95 mV over the fit domain.
-set Model constant ocv_q0  =  3.760060570358124e+00, DOUBLE
-set Model constant ocv_q1  = -2.024259589873655e-01, DOUBLE
-set Model constant ocv_q2  =  2.691682752135670e-01, DOUBLE
-set Model constant ocv_q3  = -6.352149288213646e-02, DOUBLE
-set Model constant ocv_q4  = -2.243592647577209e+00, DOUBLE
-set Model constant ocv_q5  = -1.293875959613897e+01, DOUBLE
-set Model constant ocv_q6  =  3.836767727237708e+01, DOUBLE
-set Model constant ocv_q7  =  1.604735968307998e+02, DOUBLE
-set Model constant ocv_q8  = -3.077229112935632e+02, DOUBLE
-set Model constant ocv_q9  = -9.936780252696260e+02, DOUBLE
-set Model constant ocv_q10 =  1.345660647298912e+03, DOUBLE
-set Model constant ocv_q11 =  3.646097875951269e+03, DOUBLE
-set Model constant ocv_q12 = -3.498541621367946e+03, DOUBLE
-set Model constant ocv_q13 = -8.349228920373598e+03, DOUBLE
-set Model constant ocv_q14 =  5.559342157468553e+03, DOUBLE
-set Model constant ocv_q15 =  1.203400233562777e+04, DOUBLE
-set Model constant ocv_q16 = -5.296608096504102e+03, DOUBLE
-set Model constant ocv_q17 = -1.060177043792399e+04, DOUBLE
-set Model constant ocv_q18 =  2.778078192261170e+03, DOUBLE
-set Model constant ocv_q19 =  5.211929686346203e+03, DOUBLE
-set Model constant ocv_q20 = -6.165671379287322e+02, DOUBLE
-set Model constant ocv_q21 = -1.095113531608059e+03, DOUBLE
 
 
