@@ -208,7 +208,7 @@ private:
           TensorHelper::extract_stiffness(variable_list, Subsets::stiffness());
         VectorGrad stress;
         Mechanics::compute_stress<dim, ScalarValue>(stiffness, psi * eigenstrain, stress);
-        variable_list.set_gradient_term(Fields::u.index, -stress);
+        variable_list.set_gradient_term(Fields::u.index, stress);
       }
     if (solve_block_id == 2) // mu
       {

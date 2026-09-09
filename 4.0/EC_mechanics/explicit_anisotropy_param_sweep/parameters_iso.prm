@@ -64,7 +64,7 @@ set read initial conditions from file = true
 #naming convention: ../structure_files/iso_aniso/isotropic/file
 
 subsection input file: 0
-  set file name = 9-3-26_structs/all_aniso/Cv2D_1.dat
+  set file name = 9-7-26_structs/all_iso/Cv2D_1.dat
   set format = binary
   set file variables = Cel1
   set simulation variables = Cel1
@@ -74,7 +74,7 @@ subsection input file: 0
 end
 
 subsection input file: 1
-  set file name = 9-3-26_structs/all_aniso/Cv2D_2.dat
+  set file name = 9-7-26_structs/all_iso/Cv2D_2.dat
   set format = binary
   set file variables = Cel2
   set simulation variables = Cel2
@@ -84,7 +84,7 @@ subsection input file: 1
 end
 
 subsection input file: 3
-  set file name = 9-3-26_structs/all_aniso/Cv2D_3.dat
+  set file name = 9-7-26_structs/all_iso/Cv2D_3.dat
   set format = binary
   set file variables = Cel3
   set simulation variables = Cel3
@@ -94,7 +94,7 @@ subsection input file: 3
 end
 
 subsection input file: 4
-  set file name = 9-3-26_structs/all_aniso/eigv2D_1.dat
+  set file name = 9-7-26_structs/all_iso/eigv2D_1.dat
   set format = binary
   set file variables = eig1
   set simulation variables = eig1
@@ -104,7 +104,7 @@ subsection input file: 4
 end
 
 subsection input file: 5
-  set file name = 9-3-26_structs/all_aniso/eigv2D_2.dat
+  set file name = 9-7-26_structs/all_iso/eigv2D_2.dat
   set format = binary
   set file variables = eig2
   set simulation variables = eig2
@@ -114,7 +114,7 @@ subsection input file: 5
 end
 
 subsection input file: 6
-  set file name = 9-3-26_structs/all_aniso/Dv2D_1.dat
+  set file name = 9-7-26_structs/all_iso/Dv2D_1.dat
   set format = binary
   set file variables = D1
   set simulation variables = D1
@@ -124,7 +124,7 @@ subsection input file: 6
 end
 
 subsection input file: 7
-  set file name = 9-3-26_structs/all_aniso/Dv2D_2.dat
+  set file name = 9-7-26_structs/all_iso/Dv2D_2.dat
   set format = binary
   set file variables = D2
   set simulation variables = D2
@@ -134,7 +134,7 @@ subsection input file: 7
 end
 
 subsection input file: 8
-  set file name = 9-3-26_structs/all_aniso/psi.dat
+  set file name = 9-7-26_structs/all_iso/psi.dat
   set format = binary
   set file variables = psi
   set simulation variables = psi
