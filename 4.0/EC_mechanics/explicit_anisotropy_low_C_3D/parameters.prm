@@ -4,8 +4,8 @@ subsection Rectangular mesh
   set z size = 10
 end
 
-set global refinement = 7
-set max refinement = 7
+set global refinement = 8
+set max refinement = 8
 set min refinement = 1
 set mesh adaptivity = false
 
@@ -16,12 +16,12 @@ subsection refinement criterion: 0
   set value upper bound = 2
 end
 
-set time step = 1.0e-4
+set time step = 1.0e-1
 set number steps = 1000
 
 subsection output
   set condition = LOG_SPACING
-  set number = 20
+  set number = 50
   #set list = 1,2,3,4,5,6,7,8,9,10,100
   set file type = vtu
 end
@@ -50,21 +50,20 @@ subsection linear solver parameters: 0
   set solver type              = bicgstab
   set max iterations           = 20000
   set tolerance type           = AbsoluteResidual
-  set tolerance value          = 1e-8
-  set preconditioner           = Chebyshev
+  set tolerance value          = 1e-7
+  set preconditioner           = GMG
 
   subsection Chebyshev
-    set eigenvalue cg iterations = 50
-    set smoother degree          = 4
+    set eigenvalue cg iterations = 40
+    set smoother degree          = 2
     set smoothing range          = 100
   end
 end
 
 set read initial conditions from file = true
-# 9-3-26_structs/all_iso/
 
 subsection input file: 0
-  set file name = 9-7-26_structs/all_aniso/Cv2D_1.dat
+  set file name = Cv2D_1.dat
   set format = binary
   set file variables = Cel1
   set simulation variables = Cel1
@@ -74,7 +73,7 @@ subsection input file: 0
 end
 
 subsection input file: 1
-  set file name = 9-7-26_structs/all_aniso/Cv2D_2.dat
+  set file name = Cv2D_2.dat
   set format = binary
   set file variables = Cel2
   set simulation variables = Cel2
@@ -83,8 +82,8 @@ subsection input file: 1
   set z data points  = 1
 end
 
-subsection input file: 2
-  set file name = 9-7-26_structs/all_aniso/Cv2D_3.dat
+subsection input file: 3
+  set file name = Cv2D_3.dat
   set format = binary
   set file variables = Cel3
   set simulation variables = Cel3
@@ -93,8 +92,8 @@ subsection input file: 2
   set z data points  = 1
 end
 
-subsection input file: 3
-  set file name = 9-7-26_structs/all_aniso/eigv2D_1.dat
+subsection input file: 4
+  set file name = eigv2D_1.dat
   set format = binary
   set file variables = eig1
   set simulation variables = eig1
@@ -103,8 +102,8 @@ subsection input file: 3
   set z data points  = 1
 end
 
-subsection input file: 4
-  set file name = 9-7-26_structs/all_aniso/eigv2D_2.dat
+subsection input file: 5
+  set file name = eigv2D_2.dat
   set format = binary
   set file variables = eig2
   set simulation variables = eig2
@@ -113,8 +112,8 @@ subsection input file: 4
   set z data points  = 1
 end
 
-subsection input file: 5
-  set file name = 9-7-26_structs/all_aniso/Dv2D_1.dat
+subsection input file: 6
+  set file name = Dv2D_1.dat
   set format = binary
   set file variables = D1
   set simulation variables = D1
@@ -123,8 +122,8 @@ subsection input file: 5
   set z data points  = 1
 end
 
-subsection input file: 6
-  set file name = 9-7-26_structs/all_aniso/Dv2D_2.dat
+subsection input file: 7
+  set file name = Dv2D_2.dat
   set format = binary
   set file variables = D2
   set simulation variables = D2
@@ -133,8 +132,8 @@ subsection input file: 6
   set z data points  = 1
 end
 
-subsection input file: 7
-  set file name = 9-7-26_structs/all_aniso/psi.dat
+subsection input file: 8
+  set file name = psi_2D.dat
   set format = binary
   set file variables = psi
   set simulation variables = psi
@@ -162,9 +161,7 @@ set Model constant V_min = 0.100, DOUBLE
 set Model constant V_max = 4.50, DOUBLE
 set Model constant delta_X_Li = 0.7, DOUBLE
 set Model constant C_rate = 5.0, DOUBLE
-set Model constant V_step = 10.0, DOUBLE
-#set Model constant V_step = 100.0, DOUBLE
-#set Model constant i_target = -3.08e-16,DOUBLE
+set Model constant V_step = 1.0, DOUBLE
 
 #Mechanics Parameters
 set Model constant vegard = 0.02, DOUBLE
@@ -174,3 +171,5 @@ set Model constant stiffness = (200.0,0.3), isotropic elastic constants
 set Model constant stress_scale = 1.0e9, DOUBLE
 set Model constant RT = 2494.2, DOUBLE
 set Model constant F = 96485.0, DOUBLE
+
+

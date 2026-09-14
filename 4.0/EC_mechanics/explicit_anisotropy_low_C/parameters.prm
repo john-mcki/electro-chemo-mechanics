@@ -4,17 +4,24 @@ subsection Rectangular mesh
   set z size = 10
 end
 
-set global refinement = 6
-set max refinement = 6
+set global refinement = 8
+set max refinement = 8
 set min refinement = 1
 set mesh adaptivity = false
 
-set time step = 1e-3
-set number steps = 10000
+subsection refinement criterion: 0
+  set variables         = psi
+  set type              = value
+  set value lower bound = 1e-3
+  set value upper bound = 2
+end
+
+set time step = 1.0e-1
+set number steps = 1000
 
 subsection output
   set condition = LOG_SPACING
-  set number = 100
+  set number = 50
   #set list = 1,2,3,4,5,6,7,8,9,10,100
   set file type = vtu
 end
@@ -22,33 +29,33 @@ end
 subsection boundary conditions: 0
   set variables = u:x
 #  set conditions = Dirichlet, Dirichlet, Natural, Dirichlet, Natural, Dirichlet
-#  set conditions = Dirichlet, Dirichlet, Dirichlet, Dirichlet, Dirichlet, Dirichlet
-  set conditions = Natural
+  set conditions = Dirichlet, Dirichlet, Dirichlet, Dirichlet, Dirichlet, Dirichlet
+#  set conditions = Natural
 end
 subsection boundary conditions: 2
   set variables = u:y
 #  set conditions = Natural, Dirichlet, Dirichlet, Dirichlet, Natural, Dirichlet
-#  set conditions = Dirichlet, Dirichlet, Dirichlet, Dirichlet, Dirichlet, Dirichlet
-  set conditions = Natural
+  set conditions = Dirichlet, Dirichlet, Dirichlet, Dirichlet, Dirichlet, Dirichlet
+#  set conditions = Natural
 end
 subsection boundary conditions: 3
   set variables = u:z
 #  set conditions = Natural, Dirichlet, Natural, Dirichlet, Dirichlet, Dirichlet
-#  set conditions = Dirichlet, Dirichlet, Dirichlet, Dirichlet, Dirichlet, Dirichlet
-  set conditions = Natural
+  set conditions = Dirichlet, Dirichlet, Dirichlet, Dirichlet, Dirichlet, Dirichlet
+#  set conditions = Natural
 end
 
 subsection linear solver parameters: 0
   set solver_ids               = 1
   set solver type              = bicgstab
-  set max iterations           = 50000
+  set max iterations           = 20000
   set tolerance type           = AbsoluteResidual
-  set tolerance value          = 1e-6
+  set tolerance value          = 1e-7
   set preconditioner           = GMG
 
   subsection Chebyshev
-    set eigenvalue cg iterations = 50
-    set smoother degree          = 1
+    set eigenvalue cg iterations = 40
+    set smoother degree          = 2
     set smoothing range          = 100
   end
 end
@@ -56,124 +63,85 @@ end
 set read initial conditions from file = true
 
 subsection input file: 0
-  set file name = psi3D.dat
-  set format = binary
-  set file variables = psi
-  set simulation variables = psi
-  set x data points = 65
-  set y data points  = 65
-  set z data points  = 65
-end
-
-subsection input file: 1
-  set file name = Cv1.dat
+  set file name = Cv2D_1.dat
   set format = binary
   set file variables = Cel1
   set simulation variables = Cel1
-  set x data points = 65
-  set y data points  = 65
-  set z data points  = 65
+  set x data points = 257
+  set y data points  = 257
+  set z data points  = 1
 end
 
-subsection input file: 2
-  set file name = Cv2.dat
+subsection input file: 1
+  set file name = Cv2D_2.dat
   set format = binary
   set file variables = Cel2
   set simulation variables = Cel2
-  set x data points = 65
-  set y data points  = 65
-  set z data points  = 65
+  set x data points = 257
+  set y data points  = 257
+  set z data points  = 1
 end
 
 subsection input file: 3
-  set file name = Cv3.dat
+  set file name = Cv2D_3.dat
   set format = binary
   set file variables = Cel3
   set simulation variables = Cel3
-  set x data points = 65
-  set y data points  = 65
-  set z data points  = 65
+  set x data points = 257
+  set y data points  = 257
+  set z data points  = 1
 end
 
 subsection input file: 4
-  set file name = Cv4.dat
-  set format = binary
-  set file variables = Cel4
-  set simulation variables = Cel4
-  set x data points = 65
-  set y data points  = 65
-  set z data points  = 65
-end
-
-subsection input file: 5
-  set file name = Cv5.dat
-  set format = binary
-  set file variables = Cel5
-  set simulation variables = Cel5
-  set x data points = 65
-  set y data points  = 65
-  set z data points  = 65
-end
-
-subsection input file: 6
-  set file name = Cv6.dat
-  set format = binary
-  set file variables = Cel6
-  set simulation variables = Cel6
-  set x data points = 65
-  set y data points  = 65
-  set z data points  = 65
-end
-
-subsection input file: 7
-  set file name = Cv7.dat
-  set format = binary
-  set file variables = Cel7
-  set simulation variables = Cel7
-  set x data points = 65
-  set y data points  = 65
-  set z data points  = 65
-end
-
-subsection input file: 8
-  set file name = eigv_1.dat
+  set file name = eigv2D_1.dat
   set format = binary
   set file variables = eig1
   set simulation variables = eig1
-  set x data points = 65
-  set y data points  = 65
-  set z data points  = 65
+  set x data points = 257
+  set y data points  = 257
+  set z data points  = 1
 end
 
-subsection input file: 9
-  set file name = eigv_2.dat
+subsection input file: 5
+  set file name = eigv2D_2.dat
   set format = binary
   set file variables = eig2
   set simulation variables = eig2
-  set x data points = 65
-  set y data points  = 65
-  set z data points  = 65
+  set x data points = 257
+  set y data points  = 257
+  set z data points  = 1
 end
 
-subsection input file: 10
-  set file name = Dv_1.dat
+subsection input file: 6
+  set file name = Dv2D_1.dat
   set format = binary
   set file variables = D1
   set simulation variables = D1
-  set x data points = 65
-  set y data points  = 65
-  set z data points  = 65
+  set x data points = 257
+  set y data points  = 257
+  set z data points  = 1
 end
 
-subsection input file: 11
-  set file name = Dv_2.dat
+subsection input file: 7
+  set file name = Dv2D_2.dat
   set format = binary
   set file variables = D2
   set simulation variables = D2
-  set x data points = 65
-  set y data points  = 65
-  set z data points  = 65
+  set x data points = 257
+  set y data points  = 257
+  set z data points  = 1
 end
+
+subsection input file: 8
+  set file name = psi_2D.dat
+  set format = binary
+  set file variables = psi
+  set simulation variables = psi
+  set x data points = 257
+  set y data points  = 257
+  set z data points  = 1
+end
+
 
 # Model Constants (for reference check calculation tab in NMC parameters google sheet)
 
@@ -193,7 +161,7 @@ set Model constant V_min = 0.100, DOUBLE
 set Model constant V_max = 4.50, DOUBLE
 set Model constant delta_X_Li = 0.7, DOUBLE
 set Model constant C_rate = 5.0, DOUBLE
-set Model constant V_step = 10.0, DOUBLE
+set Model constant V_step = 1.0, DOUBLE
 
 #Mechanics Parameters
 set Model constant vegard = 0.02, DOUBLE

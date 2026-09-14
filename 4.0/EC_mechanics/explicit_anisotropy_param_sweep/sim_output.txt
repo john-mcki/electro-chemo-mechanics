@@ -1,0 +1,973 @@
+[93m[0m
+[91m██[0m[96m██[0m[94m██[0m[93m╗ [0m[93m██[0m[93m██[0m[96m██[0m[94m╗ [0m[93m██[0m[92m╗█[0m[97m██[0m[94m██[0m[97m██[0m[97m╗█[0m[94m██[0m[91m╗ [0m[95m  [0m[97m██[0m[97m█╗[0m[93m██[0m[92m██[0m[93m██[0m[96m█╗[0m[97m  [0m[91m  [0m[96m  [0m[94m██[0m[93m██[0m[93m██[0m[94m╗ [0m[91m██[0m[93m██[0m[96m██[0m[91m█╗[0m
+[91m██[0m[91m╔═[0m[92m═█[0m[96m█╗[0m[93m██[0m[93m╔═[0m[91m═█[0m[94m█╗[0m[92m██[0m[97m║█[0m[97m█╔[0m[92m══[0m[96m══[0m[96m╝█[0m[93m██[0m[93m█╗[0m[91m █[0m[91m██[0m[95m█║[0m[97m██[0m[97m╔═[0m[91m══[0m[91m═╝[0m[94m  [0m[94m  [0m[91m  [0m[94m██[0m[96m╔═[0m[97m═█[0m[95m█╗[0m[94m██[0m[96m╔═[0m[91m══[0m[97m═╝[0m
+[97m██[0m[95m██[0m[94m██[0m[97m╔╝[0m[95m██[0m[95m██[0m[94m██[0m[95m╔╝[0m[93m██[0m[95m║█[0m[96m██[0m[96m██[0m[95m██[0m[92m╗█[0m[94m█╔[0m[97m██[0m[93m██[0m[97m╔█[0m[94m█║[0m[91m██[0m[92m██[0m[93m██[0m[97m█╗[0m[91m██[0m[91m██[0m[97m█╗[0m[91m██[0m[95m██[0m[96m██[0m[91m╔╝[0m[95m██[0m[91m██[0m[93m█╗[0m
+[92m██[0m[94m╔═[0m[97m══[0m[95m╝ [0m[92m██[0m[97m╔═[0m[93m═█[0m[91m█╗[0m[96m██[0m[93m║╚[0m[92m══[0m[91m══[0m[95m██[0m[95m║█[0m[94m█║[0m[94m╚█[0m[97m█╔[0m[92m╝█[0m[96m█║[0m[94m╚═[0m[97m══[0m[96m═█[0m[94m█║[0m[97m╚═[0m[97m══[0m[93m═╝[0m[91m██[0m[95m╔═[0m[91m══[0m[94m╝ [0m[93m██[0m[97m╔═[0m[91m═╝[0m
+[92m██[0m[93m║ [0m[95m  [0m[94m  [0m[95m██[0m[95m║ [0m[96m █[0m[96m█║[0m[95m██[0m[91m║█[0m[97m██[0m[97m██[0m[93m██[0m[96m║█[0m[92m█║[0m[93m ╚[0m[94m═╝[0m[91m █[0m[92m█║[0m[96m██[0m[95m██[0m[96m██[0m[96m█║[0m[91m  [0m[91m  [0m[93m  [0m[92m██[0m[96m║ [0m[95m  [0m[93m  [0m[94m██[0m[91m║[0m
+[92m╚═[0m[93m╝ [0m[92m  [0m[92m  [0m[97m╚═[0m[95m╝ [0m[91m ╚[0m[95m═╝[0m[91m╚═[0m[91m╝╚[0m[95m══[0m[91m══[0m[97m══[0m[97m╝╚[0m[93m═╝[0m[94m  [0m[94m  [0m[97m ╚[0m[95m═╝[0m[91m╚═[0m[97m══[0m[95m══[0m[97m═╝[0m[93m  [0m[93m  [0m[94m  [0m[91m╚═[0m[91m╝ [0m[93m  [0m[93m  [0m[91m╚═[0m[93m╝[0m
+[36mVersion 4.0.0
+Git revision 6e8d62feada4621a9175dfbd429394b9cf67ee03
+[0m[36mUsing parameter file parameters.prm[0m
+[36mOverriding boundary condition parameters for field u with user input parameters[0m
+[36mOverriding linear solver parameters for solve block 1 with user input parameters[0m
+[0m
+===============================================================================
+Initialization
+===============================================================================
+[0m
+[36mNumber of processes 8[0m
+[36mVectorization over 2 doubles = 128 bits (SSE2)[0m
+
+Generating mesh...
+[32mMesh generation succeeded[0m
+Creating DoFHandlers...
+[32mDoFHandler creation succeeded[0m
+Creating constraints...
+[32mConstraint creation succeeded[0m
+Creating MatrixFree...
+[32mMatrixFree creation succeeded[0m
+Creating InvM...
+[32mInvM creation succeeded[0m
+Initializing solvers...
+[32mSolve initialization succeeded[0m
+[0m
+===============================================================================
+Time-stepping Loop
+===============================================================================
+[0m
+ Linear solve final residual : 0 Linear steps: 0
+Total Current is:0
+Cell potential is:3.35
+Iteration 0 Time 0
+  Field index 0 name c l2-norm 254.43 integrated value 99
+  Field index 1 name u l2-norm 0 integrated value 0 0
+  Field index 2 name mu l2-norm 32831.7 integrated value -12775
+  Field index 3 name psi l2-norm 145.095 integrated value 32.727
+  Field index 4 name rxn l2-norm 0 integrated value 0
+  Field index 5 name particle_concentration l2-norm 143.644 integrated value 32.3997
+  Field index 6 name mu_chem l2-norm 848.721 integrated value 330.242
+  Field index 7 name mu_elastic l2-norm 0 integrated value 0
+  Field index 8 name overpotential l2-norm 13.5141 integrated value 5.25841
+  Field index 9 name stress_diag l2-norm 0 integrated value 0 0
+  Field index 10 name stress_off_diag l2-norm 0 integrated value 0 0
+  Field index 11 name stress_principal l2-norm 0 integrated value 0 0
+  Field index 12 name Cel1 l2-norm 49067.3 integrated value 8751.69 8890.15
+  Field index 13 name Cel2 l2-norm 16562.6 integrated value 2907 2949.65
+  Field index 14 name Cel3 l2-norm 4596.78 integrated value 66.9775 -172.631
+  Field index 15 name eig1 l2-norm 5.88541 integrated value 1.06617 1.06617
+  Field index 16 name D1 l2-norm 0.109233 integrated value 0.0197882 0.0197882
+  Field index 17 name eig2 l2-norm 5.28225e-17 integrated value 5.67047e-20
+  Field index 18 name D2 l2-norm 1.07289e-18 integrated value 9.37024e-20
+
+ Linear solve final residual : 9.88585e-07 Linear steps: 17
+Total Current is:-3.0769e-16
+Cell potential is:3.61458
+Iteration 10000 Time 0.5
+  Field index 0 name c l2-norm 254.163 integrated value 98.895
+  Field index 1 name u l2-norm 0.0197126 integrated value -6.84319e-05 3.89745e-05
+  Field index 2 name mu l2-norm 33188.2 integrated value -12913.4
+  Field index 3 name psi l2-norm 145.095 integrated value 32.727
+  Field index 4 name rxn l2-norm 1.281 integrated value -0.0934693
+  Field index 5 name particle_concentration l2-norm 143.444 integrated value 32.3532
+  Field index 6 name mu_chem l2-norm 857.937 integrated value 333.819
+  Field index 7 name mu_elastic l2-norm 0.00361646 integrated value 4.69245e-07
+  Field index 8 name overpotential l2-norm 72.2762 integrated value 27.6397
+  Field index 9 name stress_diag l2-norm 0.499653 integrated value 3.86484e-05 3.74433e-05
+  Field index 10 name stress_off_diag l2-norm 0.21699 integrated value 1.0926e-05 0
+  Field index 11 name stress_principal l2-norm 0.586366 integrated value 0.0575085 -0.0574324
+  Field index 12 name Cel1 l2-norm 49067.3 integrated value 8751.69 8890.15
+  Field index 13 name Cel2 l2-norm 16562.6 integrated value 2907 2949.65
+  Field index 14 name Cel3 l2-norm 4596.78 integrated value 66.9775 -172.631
+  Field index 15 name eig1 l2-norm 5.88541 integrated value 1.06617 1.06617
+  Field index 16 name D1 l2-norm 0.109233 integrated value 0.0197882 0.0197882
+  Field index 17 name eig2 l2-norm 5.28225e-17 integrated value 5.67047e-20
+  Field index 18 name D2 l2-norm 1.07289e-18 integrated value 9.37024e-20
+
+ Linear solve final residual : 9.72446e-07 Linear steps: 18
+Total Current is:-3.07823e-16
+Cell potential is:3.65226
+Iteration 20000 Time 1
+  Field index 0 name c l2-norm 253.971 integrated value 98.8195
+  Field index 1 name u l2-norm 0.0382437 integrated value -9.47827e-05 7.56258e-05
+  Field index 2 name mu l2-norm 33382.6 integrated value -12988.5
+  Field index 3 name psi l2-norm 145.095 integrated value 32.727
+  Field index 4 name rxn l2-norm 1.28324 integrated value -0.0935098
+  Field index 5 name particle_concentration l2-norm 143.238 integrated value 32.3064
+  Field index 6 name mu_chem l2-norm 862.962 integrated value 335.762
+  Field index 7 name mu_elastic l2-norm 0.0048718 integrated value 4.34328e-07
+  Field index 8 name overpotential l2-norm 77.7409 integrated value 29.4637
+  Field index 9 name stress_diag l2-norm 0.673618 integrated value 3.66518e-05 3.37764e-05
+  Field index 10 name stress_off_diag l2-norm 0.291792 integrated value 1.37388e-05 0
+  Field index 11 name stress_principal l2-norm 0.789968 integrated value 0.0801346 -0.0800642
+  Field index 12 name Cel1 l2-norm 49067.3 integrated value 8751.69 8890.15
+  Field index 13 name Cel2 l2-norm 16562.6 integrated value 2907 2949.65
+  Field index 14 name Cel3 l2-norm 4596.78 integrated value 66.9775 -172.631
+  Field index 15 name eig1 l2-norm 5.88541 integrated value 1.06617 1.06617
+  Field index 16 name D1 l2-norm 0.109233 integrated value 0.0197882 0.0197882
+  Field index 17 name eig2 l2-norm 5.28225e-17 integrated value 5.67047e-20
+  Field index 18 name D2 l2-norm 1.07289e-18 integrated value 9.37024e-20
+
+ Linear solve final residual : 9.28385e-07 Linear steps: 0
+Total Current is:-3.07881e-16
+Cell potential is:3.67583
+Iteration 30000 Time 1.5
+  Field index 0 name c l2-norm 253.788 integrated value 98.7477
+  Field index 1 name u l2-norm 0.057182 integrated value -0.000114674 0.000112186
+  Field index 2 name mu l2-norm 33531.1 integrated value -13045.9
+  Field index 3 name psi l2-norm 145.095 integrated value 32.727
+  Field index 4 name rxn l2-norm 1.28388 integrated value -0.0935273
+  Field index 5 name particle_concentration l2-norm 143.031 integrated value 32.2597
+  Field index 6 name mu_chem l2-norm 866.802 integrated value 337.244
+  Field index 7 name mu_elastic l2-norm 0.00542007 integrated value 1.19055e-06
+  Field index 8 name overpotential l2-norm 80.6727 integrated value 30.3397
+  Field index 9 name stress_diag l2-norm 0.749843 integrated value 9.72348e-05 9.58201e-05
+  Field index 10 name stress_off_diag l2-norm 0.324245 integrated value 1.12912e-05 0
+  Field index 11 name stress_principal l2-norm 0.878942 integrated value 0.090022 -0.0898289
+  Field index 12 name Cel1 l2-norm 49067.3 integrated value 8751.69 8890.15
+  Field index 13 name Cel2 l2-norm 16562.6 integrated value 2907 2949.65
+  Field index 14 name Cel3 l2-norm 4596.78 integrated value 66.9775 -172.631
+  Field index 15 name eig1 l2-norm 5.88541 integrated value 1.06617 1.06617
+  Field index 16 name D1 l2-norm 0.109233 integrated value 0.0197882 0.0197882
+  Field index 17 name eig2 l2-norm 5.28225e-17 integrated value 5.67047e-20
+  Field index 18 name D2 l2-norm 1.07289e-18 integrated value 9.37024e-20
+
+ Linear solve final residual : 8.82327e-07 Linear steps: 0
+Total Current is:-3.07914e-16
+Cell potential is:3.69226
+Iteration 40000 Time 2
+  Field index 0 name c l2-norm 253.609 integrated value 98.6774
+  Field index 1 name u l2-norm 0.0763057 integrated value -0.000132864 0.000147867
+  Field index 2 name mu l2-norm 33646.5 integrated value -13090.2
+  Field index 3 name psi l2-norm 145.095 integrated value 32.727
+  Field index 4 name rxn l2-norm 1.28382 integrated value -0.0935376
+  Field index 5 name particle_concentration l2-norm 142.824 integrated value 32.2129
+  Field index 6 name mu_chem l2-norm 869.783 integrated value 338.39
+  Field index 7 name mu_elastic l2-norm 0.00566343 integrated value 1.18869e-06
+  Field index 8 name overpotential l2-norm 82.5641 integrated value 30.8357
+  Field index 9 name stress_diag l2-norm 0.783722 integrated value 9.70828e-05 9.56692e-05
+  Field index 10 name stress_off_diag l2-norm 0.33859 integrated value 1.22463e-05 0
+  Field index 11 name stress_principal l2-norm 0.918429 integrated value 0.0943489 -0.0941561
+  Field index 12 name Cel1 l2-norm 49067.3 integrated value 8751.69 8890.15
+  Field index 13 name Cel2 l2-norm 16562.6 integrated value 2907 2949.65
+  Field index 14 name Cel3 l2-norm 4596.78 integrated value 66.9775 -172.631
+  Field index 15 name eig1 l2-norm 5.88541 integrated value 1.06617 1.06617
+  Field index 16 name D1 l2-norm 0.109233 integrated value 0.0197882 0.0197882
+  Field index 17 name eig2 l2-norm 5.28225e-17 integrated value 5.67047e-20
+  Field index 18 name D2 l2-norm 1.07289e-18 integrated value 9.37024e-20
+
+ Linear solve final residual : 9.59258e-07 Linear steps: 16
+Total Current is:-3.07937e-16
+Cell potential is:3.7042
+Iteration 50000 Time 2.5
+  Field index 0 name c l2-norm 253.432 integrated value 98.6077
+  Field index 1 name u l2-norm 0.0955815 integrated value -0.000150511 0.000183068
+  Field index 2 name mu l2-norm 33735.8 integrated value -13124.5
+  Field index 3 name psi l2-norm 145.095 integrated value 32.727
+  Field index 4 name rxn l2-norm 1.28353 integrated value -0.0935444
+  Field index 5 name particle_concentration l2-norm 142.617 integrated value 32.1661
+  Field index 6 name mu_chem l2-norm 872.093 integrated value 339.276
+  Field index 7 name mu_elastic l2-norm 0.00577241 integrated value 4.11477e-07
+  Field index 8 name overpotential l2-norm 83.8977 integrated value 31.1433
+  Field index 9 name stress_diag l2-norm 0.798894 integrated value 3.44217e-05 3.22963e-05
+  Field index 10 name stress_off_diag l2-norm 0.344978 integrated value 1.31365e-05 0
+  Field index 11 name stress_principal l2-norm 0.936086 integrated value 0.0962105 -0.0961438
+  Field index 12 name Cel1 l2-norm 49067.3 integrated value 8751.69 8890.15
+  Field index 13 name Cel2 l2-norm 16562.6 integrated value 2907 2949.65
+  Field index 14 name Cel3 l2-norm 4596.78 integrated value 66.9775 -172.631
+  Field index 15 name eig1 l2-norm 5.88541 integrated value 1.06617 1.06617
+  Field index 16 name D1 l2-norm 0.109233 integrated value 0.0197882 0.0197882
+  Field index 17 name eig2 l2-norm 5.28225e-17 integrated value 5.67047e-20
+  Field index 18 name D2 l2-norm 1.07289e-18 integrated value 9.37024e-20
+
+ Linear solve final residual : 6.40421e-07 Linear steps: 1
+Total Current is:-3.07953e-16
+Cell potential is:3.71304
+Iteration 60000 Time 3
+  Field index 0 name c l2-norm 253.256 integrated value 98.5383
+  Field index 1 name u l2-norm 0.114949 integrated value -0.000167878 0.000217948
+  Field index 2 name mu l2-norm 33804.8 integrated value -13150.9
+  Field index 3 name psi l2-norm 145.095 integrated value 32.727
+  Field index 4 name rxn l2-norm 1.28326 integrated value -0.0935493
+  Field index 5 name particle_concentration l2-norm 142.409 integrated value 32.1194
+  Field index 6 name mu_chem l2-norm 873.877 integrated value 339.959
+  Field index 7 name mu_elastic l2-norm 0.00582096 integrated value 7.86299e-07
+  Field index 8 name overpotential l2-norm 84.8758 integrated value 31.3449
+  Field index 9 name stress_diag l2-norm 0.80567 integrated value 6.46877e-05 6.28098e-05
+  Field index 10 name stress_off_diag l2-norm 0.347834 integrated value 1.27534e-05 0
+  Field index 11 name stress_principal l2-norm 0.943974 integrated value 0.0971023 -0.0969748
+  Field index 12 name Cel1 l2-norm 49067.3 integrated value 8751.69 8890.15
+  Field index 13 name Cel2 l2-norm 16562.6 integrated value 2907 2949.65
+  Field index 14 name Cel3 l2-norm 4596.78 integrated value 66.9775 -172.631
+  Field index 15 name eig1 l2-norm 5.88541 integrated value 1.06617 1.06617
+  Field index 16 name D1 l2-norm 0.109233 integrated value 0.0197882 0.0197882
+  Field index 17 name eig2 l2-norm 5.28225e-17 integrated value 5.67047e-20
+  Field index 18 name D2 l2-norm 1.07289e-18 integrated value 9.37024e-20
+
+ Linear solve final residual : 5.90763e-07 Linear steps: 1
+Total Current is:-3.07965e-16
+Cell potential is:3.71967
+Iteration 70000 Time 3.5
+  Field index 0 name c l2-norm 253.08 integrated value 98.469
+  Field index 1 name u l2-norm 0.134362 integrated value -0.00018496 0.000252423
+  Field index 2 name mu l2-norm 33858 integrated value -13171.2
+  Field index 3 name psi l2-norm 145.095 integrated value 32.727
+  Field index 4 name rxn l2-norm 1.28306 integrated value -0.0935528
+  Field index 5 name particle_concentration l2-norm 142.202 integrated value 32.0726
+  Field index 6 name mu_chem l2-norm 875.252 integrated value 340.484
+  Field index 7 name mu_elastic l2-norm 0.00584223 integrated value 7.89839e-07
+  Field index 8 name overpotential l2-norm 85.6083 integrated value 31.4829
+  Field index 9 name stress_diag l2-norm 0.808646 integrated value 6.50281e-05 6.30418e-05
+  Field index 10 name stress_off_diag l2-norm 0.349079 integrated value 1.31456e-05 0
+  Field index 11 name stress_principal l2-norm 0.947431 integrated value 0.0974825 -0.0973544
+  Field index 12 name Cel1 l2-norm 49067.3 integrated value 8751.69 8890.15
+  Field index 13 name Cel2 l2-norm 16562.6 integrated value 2907 2949.65
+  Field index 14 name Cel3 l2-norm 4596.78 integrated value 66.9775 -172.631
+  Field index 15 name eig1 l2-norm 5.88541 integrated value 1.06617 1.06617
+  Field index 16 name D1 l2-norm 0.109233 integrated value 0.0197882 0.0197882
+  Field index 17 name eig2 l2-norm 5.28225e-17 integrated value 5.67047e-20
+  Field index 18 name D2 l2-norm 1.07289e-18 integrated value 9.37024e-20
+
+ Linear solve final residual : 6.26432e-07 Linear steps: 1
+Total Current is:-3.07973e-16
+Cell potential is:3.72472
+Iteration 80000 Time 4
+  Field index 0 name c l2-norm 252.905 integrated value 98.3999
+  Field index 1 name u l2-norm 0.153839 integrated value -0.000201792 0.000286656
+  Field index 2 name mu l2-norm 33899.2 integrated value -13186.9
+  Field index 3 name psi l2-norm 145.095 integrated value 32.727
+  Field index 4 name rxn l2-norm 1.28296 integrated value -0.0935553
+  Field index 5 name particle_concentration l2-norm 141.995 integrated value 32.0258
+  Field index 6 name mu_chem l2-norm 876.315 integrated value 340.89
+  Field index 7 name mu_elastic l2-norm 0.00585075 integrated value 7.85455e-07
+  Field index 8 name overpotential l2-norm 86.1687 integrated value 31.5825
+  Field index 9 name stress_diag l2-norm 0.809835 integrated value 6.4598e-05 6.27593e-05
+  Field index 10 name stress_off_diag l2-norm 0.349559 integrated value 1.27751e-05 0
+  Field index 11 name stress_principal l2-norm 0.9488 integrated value 0.0976342 -0.0975068
+  Field index 12 name Cel1 l2-norm 49067.3 integrated value 8751.69 8890.15
+  Field index 13 name Cel2 l2-norm 16562.6 integrated value 2907 2949.65
+  Field index 14 name Cel3 l2-norm 4596.78 integrated value 66.9775 -172.631
+  Field index 15 name eig1 l2-norm 5.88541 integrated value 1.06617 1.06617
+  Field index 16 name D1 l2-norm 0.109233 integrated value 0.0197882 0.0197882
+  Field index 17 name eig2 l2-norm 5.28225e-17 integrated value 5.67047e-20
+  Field index 18 name D2 l2-norm 1.07289e-18 integrated value 9.37024e-20
+
+ Linear solve final residual : 6.17814e-07 Linear steps: 1
+Total Current is:-3.07978e-16
+Cell potential is:3.72866
+Iteration 90000 Time 4.5
+  Field index 0 name c l2-norm 252.73 integrated value 98.3308
+  Field index 1 name u l2-norm 0.173356 integrated value -0.000218369 0.000320545
+  Field index 2 name mu l2-norm 33931.2 integrated value -13199.1
+  Field index 3 name psi l2-norm 145.095 integrated value 32.727
+  Field index 4 name rxn l2-norm 1.28291 integrated value -0.093557
+  Field index 5 name particle_concentration l2-norm 141.787 integrated value 31.979
+  Field index 6 name mu_chem l2-norm 877.144 integrated value 341.205
+  Field index 7 name mu_elastic l2-norm 0.00585228 integrated value 7.96853e-07
+  Field index 8 name overpotential l2-norm 86.6114 integrated value 31.6603
+  Field index 9 name stress_diag l2-norm 0.810075 integrated value 6.56744e-05 6.35298e-05
+  Field index 10 name stress_off_diag l2-norm 0.349644 integrated value 1.36508e-05 0
+  Field index 11 name stress_principal l2-norm 0.949067 integrated value 0.0976732 -0.097544
+  Field index 12 name Cel1 l2-norm 49067.3 integrated value 8751.69 8890.15
+  Field index 13 name Cel2 l2-norm 16562.6 integrated value 2907 2949.65
+  Field index 14 name Cel3 l2-norm 4596.78 integrated value 66.9775 -172.631
+  Field index 15 name eig1 l2-norm 5.88541 integrated value 1.06617 1.06617
+  Field index 16 name D1 l2-norm 0.109233 integrated value 0.0197882 0.0197882
+  Field index 17 name eig2 l2-norm 5.28225e-17 integrated value 5.67047e-20
+  Field index 18 name D2 l2-norm 1.07289e-18 integrated value 9.37024e-20
+
+ Linear solve final residual : 9.88109e-07 Linear steps: 0
+Total Current is:-3.07982e-16
+Cell potential is:3.73183
+Iteration 100000 Time 5
+  Field index 0 name c l2-norm 252.555 integrated value 98.2617
+  Field index 1 name u l2-norm 0.192899 integrated value -0.000234728 0.000354027
+  Field index 2 name mu l2-norm 33956.6 integrated value -13208.8
+  Field index 3 name psi l2-norm 145.095 integrated value 32.727
+  Field index 4 name rxn l2-norm 1.2829 integrated value -0.0935582
+  Field index 5 name particle_concentration l2-norm 141.58 integrated value 31.9322
+  Field index 6 name mu_chem l2-norm 877.799 integrated value 341.455
+  Field index 7 name mu_elastic l2-norm 0.00584963 integrated value 1.50324e-06
+  Field index 8 name overpotential l2-norm 86.9782 integrated value 31.7276
+  Field index 9 name stress_diag l2-norm 0.809739 integrated value 0.000122644 0.000121106
+  Field index 10 name stress_off_diag l2-norm 0.349491 integrated value 1.19541e-05 0
+  Field index 11 name stress_principal l2-norm 0.948668 integrated value 0.0976982 -0.0974544
+  Field index 12 name Cel1 l2-norm 49067.3 integrated value 8751.69 8890.15
+  Field index 13 name Cel2 l2-norm 16562.6 integrated value 2907 2949.65
+  Field index 14 name Cel3 l2-norm 4596.78 integrated value 66.9775 -172.631
+  Field index 15 name eig1 l2-norm 5.88541 integrated value 1.06617 1.06617
+  Field index 16 name D1 l2-norm 0.109233 integrated value 0.0197882 0.0197882
+  Field index 17 name eig2 l2-norm 5.28225e-17 integrated value 5.67047e-20
+  Field index 18 name D2 l2-norm 1.07289e-18 integrated value 9.37024e-20
+
+ Linear solve final residual : 6.17284e-07 Linear steps: 1
+Total Current is:-3.07985e-16
+Cell potential is:3.73449
+Iteration 110000 Time 5.5
+  Field index 0 name c l2-norm 252.38 integrated value 98.1926
+  Field index 1 name u l2-norm 0.212481 integrated value -0.000250941 0.000387171
+  Field index 2 name mu l2-norm 33977.1 integrated value -13216.6
+  Field index 3 name psi l2-norm 145.095 integrated value 32.727
+  Field index 4 name rxn l2-norm 1.28291 integrated value -0.0935589
+  Field index 5 name particle_concentration l2-norm 141.372 integrated value 31.8855
+  Field index 6 name mu_chem l2-norm 878.331 integrated value 341.657
+  Field index 7 name mu_elastic l2-norm 0.00584489 integrated value 7.91079e-07
+  Field index 8 name overpotential l2-norm 87.3002 integrated value 31.7921
+  Field index 9 name stress_diag l2-norm 0.809072 integrated value 6.49072e-05 6.33574e-05
+  Field index 10 name stress_off_diag l2-norm 0.349142 integrated value 1.295e-05 0
+  Field index 11 name stress_principal l2-norm 0.947841 integrated value 0.0975548 -0.0974265
+  Field index 12 name Cel1 l2-norm 49067.3 integrated value 8751.69 8890.15
+  Field index 13 name Cel2 l2-norm 16562.6 integrated value 2907 2949.65
+  Field index 14 name Cel3 l2-norm 4596.78 integrated value 66.9775 -172.631
+  Field index 15 name eig1 l2-norm 5.88541 integrated value 1.06617 1.06617
+  Field index 16 name D1 l2-norm 0.109233 integrated value 0.0197882 0.0197882
+  Field index 17 name eig2 l2-norm 5.28225e-17 integrated value 5.67047e-20
+  Field index 18 name D2 l2-norm 1.07289e-18 integrated value 9.37024e-20
+
+ Linear solve final residual : 9.41911e-07 Linear steps: 0
+Total Current is:-3.07986e-16
+Cell potential is:3.73685
+Iteration 120000 Time 6
+  Field index 0 name c l2-norm 252.205 integrated value 98.1236
+  Field index 1 name u l2-norm 0.23208 integrated value -0.00026705 0.000419992
+  Field index 2 name mu l2-norm 33994.3 integrated value -13223.1
+  Field index 3 name psi l2-norm 145.095 integrated value 32.727
+  Field index 4 name rxn l2-norm 1.28293 integrated value -0.0935593
+  Field index 5 name particle_concentration l2-norm 141.165 integrated value 31.8387
+  Field index 6 name mu_chem l2-norm 878.775 integrated value 341.827
+  Field index 7 name mu_elastic l2-norm 0.00583697 integrated value 1.81263e-06
+  Field index 8 name overpotential l2-norm 87.6002 integrated value 31.8586
+  Field index 9 name stress_diag l2-norm 0.808039 integrated value 0.00014778 0.000146137
+  Field index 10 name stress_off_diag l2-norm 0.34871 integrated value 1.19993e-05 0
+  Field index 11 name stress_principal l2-norm 0.946642 integrated value 0.0975238 -0.0972299
+  Field index 12 name Cel1 l2-norm 49067.3 integrated value 8751.69 8890.15
+  Field index 13 name Cel2 l2-norm 16562.6 integrated value 2907 2949.65
+  Field index 14 name Cel3 l2-norm 4596.78 integrated value 66.9775 -172.631
+  Field index 15 name eig1 l2-norm 5.88541 integrated value 1.06617 1.06617
+  Field index 16 name D1 l2-norm 0.109233 integrated value 0.0197882 0.0197882
+  Field index 17 name eig2 l2-norm 5.28225e-17 integrated value 5.67047e-20
+  Field index 18 name D2 l2-norm 1.07289e-18 integrated value 9.37024e-20
+
+ Linear solve final residual : 9.08082e-07 Linear steps: 16
+Total Current is:-3.07987e-16
+Cell potential is:3.73904
+Iteration 130000 Time 6.5
+  Field index 0 name c l2-norm 252.031 integrated value 98.0546
+  Field index 1 name u l2-norm 0.251717 integrated value -0.00028316 0.000452597
+  Field index 2 name mu l2-norm 34009.2 integrated value -13228.8
+  Field index 3 name psi l2-norm 145.095 integrated value 32.727
+  Field index 4 name rxn l2-norm 1.28294 integrated value -0.0935596
+  Field index 5 name particle_concentration l2-norm 140.958 integrated value 31.7919
+  Field index 6 name mu_chem l2-norm 879.161 integrated value 341.974
+  Field index 7 name mu_elastic l2-norm 0.00582988 integrated value 4.33942e-07
+  Field index 8 name overpotential l2-norm 87.8942 integrated value 31.93
+  Field index 9 name stress_diag l2-norm 0.807016 integrated value 3.5894e-05 3.44543e-05
+  Field index 10 name stress_off_diag l2-norm 0.348182 integrated value 1.3974e-05 0
+  Field index 11 name stress_principal l2-norm 0.945379 integrated value 0.0972691 -0.0971987
+  Field index 12 name Cel1 l2-norm 49067.3 integrated value 8751.69 8890.15
+  Field index 13 name Cel2 l2-norm 16562.6 integrated value 2907 2949.65
+  Field index 14 name Cel3 l2-norm 4596.78 integrated value 66.9775 -172.631
+  Field index 15 name eig1 l2-norm 5.88541 integrated value 1.06617 1.06617
+  Field index 16 name D1 l2-norm 0.109233 integrated value 0.0197882 0.0197882
+  Field index 17 name eig2 l2-norm 5.28225e-17 integrated value 5.67047e-20
+  Field index 18 name D2 l2-norm 1.07289e-18 integrated value 9.37024e-20
+
+ Linear solve final residual : 8.25041e-07 Linear steps: 0
+Total Current is:-3.07987e-16
+Cell potential is:3.74114
+Iteration 140000 Time 7
+  Field index 0 name c l2-norm 251.857 integrated value 97.9855
+  Field index 1 name u l2-norm 0.271363 integrated value -0.000299301 0.000484999
+  Field index 2 name mu l2-norm 34022.7 integrated value -13234
+  Field index 3 name psi l2-norm 145.095 integrated value 32.727
+  Field index 4 name rxn l2-norm 1.28295 integrated value -0.0935596
+  Field index 5 name particle_concentration l2-norm 140.75 integrated value 31.7451
+  Field index 6 name mu_chem l2-norm 879.509 integrated value 342.106
+  Field index 7 name mu_elastic l2-norm 0.00582177 integrated value 1.19087e-06
+  Field index 8 name overpotential l2-norm 88.1926 integrated value 32.0081
+  Field index 9 name stress_diag l2-norm 0.805932 integrated value 9.72117e-05 9.5878e-05
+  Field index 10 name stress_off_diag l2-norm 0.34771 integrated value 1.42629e-05 0
+  Field index 11 name stress_principal l2-norm 0.944106 integrated value 0.0971976 -0.0970045
+  Field index 12 name Cel1 l2-norm 49067.3 integrated value 8751.69 8890.15
+  Field index 13 name Cel2 l2-norm 16562.6 integrated value 2907 2949.65
+  Field index 14 name Cel3 l2-norm 4596.78 integrated value 66.9775 -172.631
+  Field index 15 name eig1 l2-norm 5.88541 integrated value 1.06617 1.06617
+  Field index 16 name D1 l2-norm 0.109233 integrated value 0.0197882 0.0197882
+  Field index 17 name eig2 l2-norm 5.28225e-17 integrated value 5.67047e-20
+  Field index 18 name D2 l2-norm 1.07289e-18 integrated value 9.37024e-20
+
+ Linear solve final residual : 9.51344e-07 Linear steps: 14
+Total Current is:-3.07987e-16
+Cell potential is:3.74324
+Iteration 150000 Time 7.5
+  Field index 0 name c l2-norm 251.682 integrated value 97.9164
+  Field index 1 name u l2-norm 0.291041 integrated value -0.00031554 0.00051732
+  Field index 2 name mu l2-norm 34035.3 integrated value -13238.8
+  Field index 3 name psi l2-norm 145.095 integrated value 32.727
+  Field index 4 name rxn l2-norm 1.28296 integrated value -0.0935596
+  Field index 5 name particle_concentration l2-norm 140.543 integrated value 31.6983
+  Field index 6 name mu_chem l2-norm 879.835 integrated value 342.231
+  Field index 7 name mu_elastic l2-norm 0.00581567 integrated value 4.09955e-07
+  Field index 8 name overpotential l2-norm 88.5012 integrated value 32.093
+  Field index 9 name stress_diag l2-norm 0.80509 integrated value 3.40723e-05 3.23831e-05
+  Field index 10 name stress_off_diag l2-norm 0.347316 integrated value 1.43724e-05 0
+  Field index 11 name stress_principal l2-norm 0.943097 integrated value 0.0970192 -0.0969527
+  Field index 12 name Cel1 l2-norm 49067.3 integrated value 8751.69 8890.15
+  Field index 13 name Cel2 l2-norm 16562.6 integrated value 2907 2949.65
+  Field index 14 name Cel3 l2-norm 4596.78 integrated value 66.9775 -172.631
+  Field index 15 name eig1 l2-norm 5.88541 integrated value 1.06617 1.06617
+  Field index 16 name D1 l2-norm 0.109233 integrated value 0.0197882 0.0197882
+  Field index 17 name eig2 l2-norm 5.28225e-17 integrated value 5.67047e-20
+  Field index 18 name D2 l2-norm 1.07289e-18 integrated value 9.37024e-20
+
+ Linear solve final residual : 6.7764e-07 Linear steps: 1
+Total Current is:-3.07987e-16
+Cell potential is:3.74535
+Iteration 160000 Time 8
+  Field index 0 name c l2-norm 251.508 integrated value 97.8472
+  Field index 1 name u l2-norm 0.310728 integrated value -0.000331863 0.000549549
+  Field index 2 name mu l2-norm 34047.5 integrated value -13243.4
+  Field index 3 name psi l2-norm 145.095 integrated value 32.727
+  Field index 4 name rxn l2-norm 1.28297 integrated value -0.0935596
+  Field index 5 name particle_concentration l2-norm 140.336 integrated value 31.6516
+  Field index 6 name mu_chem l2-norm 880.15 integrated value 342.351
+  Field index 7 name mu_elastic l2-norm 0.00581183 integrated value 8.01799e-07
+  Field index 8 name overpotential l2-norm 88.8229 integrated value 32.1845
+  Field index 9 name stress_diag l2-norm 0.804542 integrated value 6.67882e-05 6.3207e-05
+  Field index 10 name stress_off_diag l2-norm 0.347051 integrated value 1.54589e-05 0
+  Field index 11 name stress_principal l2-norm 0.942434 integrated value 0.096967 -0.096837
+  Field index 12 name Cel1 l2-norm 49067.3 integrated value 8751.69 8890.15
+  Field index 13 name Cel2 l2-norm 16562.6 integrated value 2907 2949.65
+  Field index 14 name Cel3 l2-norm 4596.78 integrated value 66.9775 -172.631
+  Field index 15 name eig1 l2-norm 5.88541 integrated value 1.06617 1.06617
+  Field index 16 name D1 l2-norm 0.109233 integrated value 0.0197882 0.0197882
+  Field index 17 name eig2 l2-norm 5.28225e-17 integrated value 5.67047e-20
+  Field index 18 name D2 l2-norm 1.07289e-18 integrated value 9.37024e-20
+
+ Linear solve final residual : 9.78321e-07 Linear steps: 16
+Total Current is:-3.07987e-16
+Cell potential is:3.74751
+Iteration 170000 Time 8.5
+  Field index 0 name c l2-norm 251.334 integrated value 97.778
+  Field index 1 name u l2-norm 0.330433 integrated value -0.000348304 0.000581783
+  Field index 2 name mu l2-norm 34059.5 integrated value -13248
+  Field index 3 name psi l2-norm 145.095 integrated value 32.727
+  Field index 4 name rxn l2-norm 1.28297 integrated value -0.0935595
+  Field index 5 name particle_concentration l2-norm 140.128 integrated value 31.6048
+  Field index 6 name mu_chem l2-norm 880.46 integrated value 342.469
+  Field index 7 name mu_elastic l2-norm 0.00580966 integrated value 4.10123e-07
+  Field index 8 name overpotential l2-norm 89.1578 integrated value 32.2819
+  Field index 9 name stress_diag l2-norm 0.804259 integrated value 3.45115e-05 3.1968e-05
+  Field index 10 name stress_off_diag l2-norm 0.346928 integrated value 1.37946e-05 0
+  Field index 11 name stress_principal l2-norm 0.942102 integrated value 0.0968962 -0.0968297
+  Field index 12 name Cel1 l2-norm 49067.3 integrated value 8751.69 8890.15
+  Field index 13 name Cel2 l2-norm 16562.6 integrated value 2907 2949.65
+  Field index 14 name Cel3 l2-norm 4596.78 integrated value 66.9775 -172.631
+  Field index 15 name eig1 l2-norm 5.88541 integrated value 1.06617 1.06617
+  Field index 16 name D1 l2-norm 0.109233 integrated value 0.0197882 0.0197882
+  Field index 17 name eig2 l2-norm 5.28225e-17 integrated value 5.67047e-20
+  Field index 18 name D2 l2-norm 1.07289e-18 integrated value 9.37024e-20
+
+ Linear solve final residual : 8.35379e-07 Linear steps: 0
+Total Current is:-3.07986e-16
+Cell potential is:3.74971
+Iteration 180000 Time 9
+  Field index 0 name c l2-norm 251.159 integrated value 97.7087
+  Field index 1 name u l2-norm 0.350149 integrated value -0.000364854 0.000614065
+  Field index 2 name mu l2-norm 34071.5 integrated value -13252.6
+  Field index 3 name psi l2-norm 145.095 integrated value 32.727
+  Field index 4 name rxn l2-norm 1.28297 integrated value -0.0935594
+  Field index 5 name particle_concentration l2-norm 139.921 integrated value 31.558
+  Field index 6 name mu_chem l2-norm 880.77 integrated value 342.587
+  Field index 7 name mu_elastic l2-norm 0.00580918 integrated value 1.18834e-06
+  Field index 8 name overpotential l2-norm 89.5046 integrated value 32.3838
+  Field index 9 name stress_diag l2-norm 0.804205 integrated value 9.6883e-05 9.57901e-05
+  Field index 10 name stress_off_diag l2-norm 0.346917 integrated value 1.26165e-05 0
+  Field index 11 name stress_principal l2-norm 0.942048 integrated value 0.0969497 -0.096757
+  Field index 12 name Cel1 l2-norm 49067.3 integrated value 8751.69 8890.15
+  Field index 13 name Cel2 l2-norm 16562.6 integrated value 2907 2949.65
+  Field index 14 name Cel3 l2-norm 4596.78 integrated value 66.9775 -172.631
+  Field index 15 name eig1 l2-norm 5.88541 integrated value 1.06617 1.06617
+  Field index 16 name D1 l2-norm 0.109233 integrated value 0.0197882 0.0197882
+  Field index 17 name eig2 l2-norm 5.28225e-17 integrated value 5.67047e-20
+  Field index 18 name D2 l2-norm 1.07289e-18 integrated value 9.37024e-20
+
+ Linear solve final residual : 9.87632e-07 Linear steps: 0
+Total Current is:-3.07986e-16
+Cell potential is:3.75195
+Iteration 190000 Time 9.5
+  Field index 0 name c l2-norm 250.985 integrated value 97.6394
+  Field index 1 name u l2-norm 0.369879 integrated value -0.000381501 0.000646406
+  Field index 2 name mu l2-norm 34083.6 integrated value -13257.1
+  Field index 3 name psi l2-norm 145.095 integrated value 32.727
+  Field index 4 name rxn l2-norm 1.28297 integrated value -0.0935593
+  Field index 5 name particle_concentration l2-norm 139.713 integrated value 31.5112
+  Field index 6 name mu_chem l2-norm 881.082 integrated value 342.706
+  Field index 7 name mu_elastic l2-norm 0.00581023 integrated value 8.18194e-07
+  Field index 8 name overpotential l2-norm 89.8605 integrated value 32.4889
+  Field index 9 name stress_diag l2-norm 0.80434 integrated value 6.69861e-05 6.56629e-05
+  Field index 10 name stress_off_diag l2-norm 0.34696 integrated value 1.35822e-05 0
+  Field index 11 name stress_principal l2-norm 0.942195 integrated value 0.0969292 -0.0967965
+  Field index 12 name Cel1 l2-norm 49067.3 integrated value 8751.69 8890.15
+  Field index 13 name Cel2 l2-norm 16562.6 integrated value 2907 2949.65
+  Field index 14 name Cel3 l2-norm 4596.78 integrated value 66.9775 -172.631
+  Field index 15 name eig1 l2-norm 5.88541 integrated value 1.06617 1.06617
+  Field index 16 name D1 l2-norm 0.109233 integrated value 0.0197882 0.0197882
+  Field index 17 name eig2 l2-norm 5.28225e-17 integrated value 5.67047e-20
+  Field index 18 name D2 l2-norm 1.07289e-18 integrated value 9.37024e-20
+
+ Linear solve final residual : 9.90611e-07 Linear steps: 14
+Total Current is:-3.07986e-16
+Cell potential is:3.75421
+Iteration 200000 Time 10
+  Field index 0 name c l2-norm 250.811 integrated value 97.57
+  Field index 1 name u l2-norm 0.389623 integrated value -0.000398242 0.000678871
+  Field index 2 name mu l2-norm 34095.7 integrated value -13261.8
+  Field index 3 name psi l2-norm 145.095 integrated value 32.727
+  Field index 4 name rxn l2-norm 1.28297 integrated value -0.0935593
+  Field index 5 name particle_concentration l2-norm 139.506 integrated value 31.4644
+  Field index 6 name mu_chem l2-norm 881.396 integrated value 342.825
+  Field index 7 name mu_elastic l2-norm 0.0058114 integrated value 4.28665e-07
+  Field index 8 name overpotential l2-norm 90.2224 integrated value 32.5959
+  Field index 9 name stress_diag l2-norm 0.804516 integrated value 3.54002e-05 3.40812e-05
+  Field index 10 name stress_off_diag l2-norm 0.347042 integrated value 1.40958e-05 0
+  Field index 11 name stress_principal l2-norm 0.942406 integrated value 0.0969208 -0.0968513
+  Field index 12 name Cel1 l2-norm 49067.3 integrated value 8751.69 8890.15
+  Field index 13 name Cel2 l2-norm 16562.6 integrated value 2907 2949.65
+  Field index 14 name Cel3 l2-norm 4596.78 integrated value 66.9775 -172.631
+  Field index 15 name eig1 l2-norm 5.88541 integrated value 1.06617 1.06617
+  Field index 16 name D1 l2-norm 0.109233 integrated value 0.0197882 0.0197882
+  Field index 17 name eig2 l2-norm 5.28225e-17 integrated value 5.67047e-20
+  Field index 18 name D2 l2-norm 1.07289e-18 integrated value 9.37024e-20
+
+ Linear solve final residual : 9.00453e-07 Linear steps: 0
+Total Current is:-3.07986e-16
+Cell potential is:3.75649
+Iteration 210000 Time 10.5
+  Field index 0 name c l2-norm 250.636 integrated value 97.5006
+  Field index 1 name u l2-norm 0.409376 integrated value -0.000415038 0.000711439
+  Field index 2 name mu l2-norm 34107.9 integrated value -13266.4
+  Field index 3 name psi l2-norm 145.095 integrated value 32.727
+  Field index 4 name rxn l2-norm 1.28296 integrated value -0.0935593
+  Field index 5 name particle_concentration l2-norm 139.299 integrated value 31.4177
+  Field index 6 name mu_chem l2-norm 881.712 integrated value 342.945
+  Field index 7 name mu_elastic l2-norm 0.00581294 integrated value 1.19067e-06
+  Field index 8 name overpotential l2-norm 90.5866 integrated value 32.7033
+  Field index 9 name stress_diag l2-norm 0.804717 integrated value 9.78911e-05 9.51554e-05
+  Field index 10 name stress_off_diag l2-norm 0.347118 integrated value 1.3427e-05 0
+  Field index 11 name stress_principal l2-norm 0.942633 integrated value 0.097003 -0.09681
+  Field index 12 name Cel1 l2-norm 49067.3 integrated value 8751.69 8890.15
+  Field index 13 name Cel2 l2-norm 16562.6 integrated value 2907 2949.65
+  Field index 14 name Cel3 l2-norm 4596.78 integrated value 66.9775 -172.631
+  Field index 15 name eig1 l2-norm 5.88541 integrated value 1.06617 1.06617
+  Field index 16 name D1 l2-norm 0.109233 integrated value 0.0197882 0.0197882
+  Field index 17 name eig2 l2-norm 5.28225e-17 integrated value 5.67047e-20
+  Field index 18 name D2 l2-norm 1.07289e-18 integrated value 9.37024e-20
+
+ Linear solve final residual : 9.62241e-07 Linear steps: 17
+Total Current is:-3.07986e-16
+Cell potential is:3.75875
+Iteration 220000 Time 11
+  Field index 0 name c l2-norm 250.462 integrated value 97.4311
+  Field index 1 name u l2-norm 0.429147 integrated value -0.000431909 0.000744135
+  Field index 2 name mu l2-norm 34120.2 integrated value -13271.1
+  Field index 3 name psi l2-norm 145.095 integrated value 32.727
+  Field index 4 name rxn l2-norm 1.28296 integrated value -0.0935593
+  Field index 5 name particle_concentration l2-norm 139.091 integrated value 31.3709
+  Field index 6 name mu_chem l2-norm 882.028 integrated value 343.066
+  Field index 7 name mu_elastic l2-norm 0.00581408 integrated value 4.15836e-07
+  Field index 8 name overpotential l2-norm 90.9495 integrated value 32.8099
+  Field index 9 name stress_diag l2-norm 0.804873 integrated value 3.50812e-05 3.23166e-05
+  Field index 10 name stress_off_diag l2-norm 0.347173 integrated value 1.30289e-05 0
+  Field index 11 name stress_principal l2-norm 0.942807 integrated value 0.0969593 -0.0968919
+  Field index 12 name Cel1 l2-norm 49067.3 integrated value 8751.69 8890.15
+  Field index 13 name Cel2 l2-norm 16562.6 integrated value 2907 2949.65
+  Field index 14 name Cel3 l2-norm 4596.78 integrated value 66.9775 -172.631
+  Field index 15 name eig1 l2-norm 5.88541 integrated value 1.06617 1.06617
+  Field index 16 name D1 l2-norm 0.109233 integrated value 0.0197882 0.0197882
+  Field index 17 name eig2 l2-norm 5.28225e-17 integrated value 5.67047e-20
+  Field index 18 name D2 l2-norm 1.07289e-18 integrated value 9.37024e-20
+
+ Linear solve final residual : 8.00562e-07 Linear steps: 1
+Total Current is:-3.07986e-16
+Cell potential is:3.761
+Iteration 230000 Time 11.5
+  Field index 0 name c l2-norm 250.288 integrated value 97.3615
+  Field index 1 name u l2-norm 0.448913 integrated value -0.000448794 0.000776918
+  Field index 2 name mu l2-norm 34132.3 integrated value -13275.7
+  Field index 3 name psi l2-norm 145.095 integrated value 32.727
+  Field index 4 name rxn l2-norm 1.28296 integrated value -0.0935594
+  Field index 5 name particle_concentration l2-norm 138.884 integrated value 31.3241
+  Field index 6 name mu_chem l2-norm 882.343 integrated value 343.185
+  Field index 7 name mu_elastic l2-norm 0.00581361 integrated value 1.42196e-06
+  Field index 8 name overpotential l2-norm 91.3078 integrated value 32.9146
+  Field index 9 name stress_diag l2-norm 0.804863 integrated value 0.000116146 0.000114403
+  Field index 10 name stress_off_diag l2-norm 0.347234 integrated value 1.30487e-05 0
+  Field index 11 name stress_principal l2-norm 0.942843 integrated value 0.0970573 -0.0968267
+  Field index 12 name Cel1 l2-norm 49067.3 integrated value 8751.69 8890.15
+  Field index 13 name Cel2 l2-norm 16562.6 integrated value 2907 2949.65
+  Field index 14 name Cel3 l2-norm 4596.78 integrated value 66.9775 -172.631
+  Field index 15 name eig1 l2-norm 5.88541 integrated value 1.06617 1.06617
+  Field index 16 name D1 l2-norm 0.109233 integrated value 0.0197882 0.0197882
+  Field index 17 name eig2 l2-norm 5.28225e-17 integrated value 5.67047e-20
+  Field index 18 name D2 l2-norm 1.07289e-18 integrated value 9.37024e-20
+
+ Linear solve final residual : 9.67516e-07 Linear steps: 14
+Total Current is:-3.07987e-16
+Cell potential is:3.7632
+Iteration 240000 Time 12
+  Field index 0 name c l2-norm 250.113 integrated value 97.2919
+  Field index 1 name u l2-norm 0.468701 integrated value -0.000465721 0.000809825
+  Field index 2 name mu l2-norm 34144.4 integrated value -13280.3
+  Field index 3 name psi l2-norm 145.095 integrated value 32.727
+  Field index 4 name rxn l2-norm 1.28295 integrated value -0.0935595
+  Field index 5 name particle_concentration l2-norm 138.676 integrated value 31.2773
+  Field index 6 name mu_chem l2-norm 882.655 integrated value 343.303
+  Field index 7 name mu_elastic l2-norm 0.00581417 integrated value 4.18336e-07
+  Field index 8 name overpotential l2-norm 91.6584 integrated value 33.0164
+  Field index 9 name stress_diag l2-norm 0.804901 integrated value 3.46258e-05 3.31743e-05
+  Field index 10 name stress_off_diag l2-norm 0.347207 integrated value 1.43774e-05 0
+  Field index 11 name stress_principal l2-norm 0.942855 integrated value 0.0969729 -0.0969051
+  Field index 12 name Cel1 l2-norm 49067.3 integrated value 8751.69 8890.15
+  Field index 13 name Cel2 l2-norm 16562.6 integrated value 2907 2949.65
+  Field index 14 name Cel3 l2-norm 4596.78 integrated value 66.9775 -172.631
+  Field index 15 name eig1 l2-norm 5.88541 integrated value 1.06617 1.06617
+  Field index 16 name D1 l2-norm 0.109233 integrated value 0.0197882 0.0197882
+  Field index 17 name eig2 l2-norm 5.28225e-17 integrated value 5.67047e-20
+  Field index 18 name D2 l2-norm 1.07289e-18 integrated value 9.37024e-20
+
+ Linear solve final residual : 9.10906e-07 Linear steps: 16
+Total Current is:-3.07987e-16
+Cell potential is:3.76534
+Iteration 250000 Time 12.5
+  Field index 0 name c l2-norm 249.939 integrated value 97.2223
+  Field index 1 name u l2-norm 0.488499 integrated value -0.000482657 0.000842826
+  Field index 2 name mu l2-norm 34156.2 integrated value -13284.8
+  Field index 3 name psi l2-norm 145.095 integrated value 32.727
+  Field index 4 name rxn l2-norm 1.28295 integrated value -0.0935596
+  Field index 5 name particle_concentration l2-norm 138.469 integrated value 31.2305
+  Field index 6 name mu_chem l2-norm 882.961 integrated value 343.42
+  Field index 7 name mu_elastic l2-norm 0.0058136 integrated value 4.25573e-07
+  Field index 8 name overpotential l2-norm 91.9987 integrated value 33.1145
+  Field index 9 name stress_diag l2-norm 0.804806 integrated value 3.53051e-05 3.3667e-05
+  Field index 10 name stress_off_diag l2-norm 0.347156 integrated value 1.40543e-05 0
+  Field index 11 name stress_principal l2-norm 0.942737 integrated value 0.0969613 -0.0968924
+  Field index 12 name Cel1 l2-norm 49067.3 integrated value 8751.69 8890.15
+  Field index 13 name Cel2 l2-norm 16562.6 integrated value 2907 2949.65
+  Field index 14 name Cel3 l2-norm 4596.78 integrated value 66.9775 -172.631
+  Field index 15 name eig1 l2-norm 5.88541 integrated value 1.06617 1.06617
+  Field index 16 name D1 l2-norm 0.109233 integrated value 0.0197882 0.0197882
+  Field index 17 name eig2 l2-norm 5.28225e-17 integrated value 5.67047e-20
+  Field index 18 name D2 l2-norm 1.07289e-18 integrated value 9.37024e-20
+
+ Linear solve final residual : 9.80379e-07 Linear steps: 16
+Total Current is:-3.07987e-16
+Cell potential is:3.76742
+Iteration 260000 Time 13
+  Field index 0 name c l2-norm 249.765 integrated value 97.1526
+  Field index 1 name u l2-norm 0.508302 integrated value -0.000499604 0.000875918
+  Field index 2 name mu l2-norm 34167.8 integrated value -13289.2
+  Field index 3 name psi l2-norm 145.095 integrated value 32.727
+  Field index 4 name rxn l2-norm 1.28294 integrated value -0.0935597
+  Field index 5 name particle_concentration l2-norm 138.262 integrated value 31.1838
+  Field index 6 name mu_chem l2-norm 883.26 integrated value 343.533
+  Field index 7 name mu_elastic l2-norm 0.00581214 integrated value 4.32517e-07
+  Field index 8 name overpotential l2-norm 92.3265 integrated value 33.2082
+  Field index 9 name stress_diag l2-norm 0.804607 integrated value 3.69078e-05 3.31889e-05
+  Field index 10 name stress_off_diag l2-norm 0.347062 integrated value 1.33716e-05 0
+  Field index 11 name stress_principal l2-norm 0.942498 integrated value 0.0969407 -0.0968706
+  Field index 12 name Cel1 l2-norm 49067.3 integrated value 8751.69 8890.15
+  Field index 13 name Cel2 l2-norm 16562.6 integrated value 2907 2949.65
+  Field index 14 name Cel3 l2-norm 4596.78 integrated value 66.9775 -172.631
+  Field index 15 name eig1 l2-norm 5.88541 integrated value 1.06617 1.06617
+  Field index 16 name D1 l2-norm 0.109233 integrated value 0.0197882 0.0197882
+  Field index 17 name eig2 l2-norm 5.28225e-17 integrated value 5.67047e-20
+  Field index 18 name D2 l2-norm 1.07289e-18 integrated value 9.37024e-20
+
+ Linear solve final residual : 6.25578e-07 Linear steps: 1
+Total Current is:-3.07988e-16
+Cell potential is:3.76941
+Iteration 270000 Time 13.5
+  Field index 0 name c l2-norm 249.591 integrated value 97.0828
+  Field index 1 name u l2-norm 0.528118 integrated value -0.000516564 0.000909115
+  Field index 2 name mu l2-norm 34179.1 integrated value -13293.4
+  Field index 3 name psi l2-norm 145.095 integrated value 32.727
+  Field index 4 name rxn l2-norm 1.28294 integrated value -0.0935599
+  Field index 5 name particle_concentration l2-norm 138.054 integrated value 31.137
+  Field index 6 name mu_chem l2-norm 883.551 integrated value 343.644
+  Field index 7 name mu_elastic l2-norm 0.00580974 integrated value 7.84347e-07
+  Field index 8 name overpotential l2-norm 92.6403 integrated value 33.2973
+  Field index 9 name stress_diag l2-norm 0.804286 integrated value 6.46425e-05 6.25052e-05
+  Field index 10 name stress_off_diag l2-norm 0.34694 integrated value 1.26977e-05 0
+  Field index 11 name stress_principal l2-norm 0.942134 integrated value 0.0969374 -0.0968103
+  Field index 12 name Cel1 l2-norm 49067.3 integrated value 8751.69 8890.15
+  Field index 13 name Cel2 l2-norm 16562.6 integrated value 2907 2949.65
+  Field index 14 name Cel3 l2-norm 4596.78 integrated value 66.9775 -172.631
+  Field index 15 name eig1 l2-norm 5.88541 integrated value 1.06617 1.06617
+  Field index 16 name D1 l2-norm 0.109233 integrated value 0.0197882 0.0197882
+  Field index 17 name eig2 l2-norm 5.28225e-17 integrated value 5.67047e-20
+  Field index 18 name D2 l2-norm 1.07289e-18 integrated value 9.37024e-20
+
+ Linear solve final residual : 8.80309e-07 Linear steps: 17
+Total Current is:-3.07988e-16
+Cell potential is:3.77132
+Iteration 280000 Time 14
+  Field index 0 name c l2-norm 249.416 integrated value 97.013
+  Field index 1 name u l2-norm 0.547938 integrated value -0.000533517 0.000942332
+  Field index 2 name mu l2-norm 34190 integrated value -13297.6
+  Field index 3 name psi l2-norm 145.095 integrated value 32.727
+  Field index 4 name rxn l2-norm 1.28293 integrated value -0.0935601
+  Field index 5 name particle_concentration l2-norm 137.847 integrated value 31.0902
+  Field index 6 name mu_chem l2-norm 883.833 integrated value 343.751
+  Field index 7 name mu_elastic l2-norm 0.0058071 integrated value 3.95889e-07
+  Field index 8 name overpotential l2-norm 92.9389 integrated value 33.3813
+  Field index 9 name stress_diag l2-norm 0.803909 integrated value 3.35001e-05 3.06538e-05
+  Field index 10 name stress_off_diag l2-norm 0.346759 integrated value 1.32256e-05 0
+  Field index 11 name stress_principal l2-norm 0.941679 integrated value 0.0968597 -0.0967955
+  Field index 12 name Cel1 l2-norm 49067.3 integrated value 8751.69 8890.15
+  Field index 13 name Cel2 l2-norm 16562.6 integrated value 2907 2949.65
+  Field index 14 name Cel3 l2-norm 4596.78 integrated value 66.9775 -172.631
+  Field index 15 name eig1 l2-norm 5.88541 integrated value 1.06617 1.06617
+  Field index 16 name D1 l2-norm 0.109233 integrated value 0.0197882 0.0197882
+  Field index 17 name eig2 l2-norm 5.28225e-17 integrated value 5.67047e-20
+  Field index 18 name D2 l2-norm 1.07289e-18 integrated value 9.37024e-20
+
+ Linear solve final residual : 9.27897e-07 Linear steps: 0
+Total Current is:-3.07989e-16
+Cell potential is:3.77314
+Iteration 290000 Time 14.5
+  Field index 0 name c l2-norm 249.242 integrated value 96.9432
+  Field index 1 name u l2-norm 0.567761 integrated value -0.000550451 0.00097561
+  Field index 2 name mu l2-norm 34200.4 integrated value -13301.5
+  Field index 3 name psi l2-norm 145.095 integrated value 32.727
+  Field index 4 name rxn l2-norm 1.28293 integrated value -0.0935603
+  Field index 5 name particle_concentration l2-norm 137.639 integrated value 31.0434
+  Field index 6 name mu_chem l2-norm 884.103 integrated value 343.853
+  Field index 7 name mu_elastic l2-norm 0.0058033 integrated value 1.19496e-06
+  Field index 8 name overpotential l2-norm 93.2216 integrated value 33.4603
+  Field index 9 name stress_diag l2-norm 0.803396 integrated value 9.82443e-05 9.54857e-05
+  Field index 10 name stress_off_diag l2-norm 0.34655 integrated value 1.25168e-05 0
+  Field index 11 name stress_principal l2-norm 0.941087 integrated value 0.0968698 -0.0966761
+  Field index 12 name Cel1 l2-norm 49067.3 integrated value 8751.69 8890.15
+  Field index 13 name Cel2 l2-norm 16562.6 integrated value 2907 2949.65
+  Field index 14 name Cel3 l2-norm 4596.78 integrated value 66.9775 -172.631
+  Field index 15 name eig1 l2-norm 5.88541 integrated value 1.06617 1.06617
+  Field index 16 name D1 l2-norm 0.109233 integrated value 0.0197882 0.0197882
+  Field index 17 name eig2 l2-norm 5.28225e-17 integrated value 5.67047e-20
+  Field index 18 name D2 l2-norm 1.07289e-18 integrated value 9.37024e-20
+
+ Linear solve final residual : 6.06179e-07 Linear steps: 1
+Total Current is:-3.0799e-16
+Cell potential is:3.77486
+Iteration 300000 Time 15
+  Field index 0 name c l2-norm 249.068 integrated value 96.8733
+  Field index 1 name u l2-norm 0.587596 integrated value -0.000567384 0.00100893
+  Field index 2 name mu l2-norm 34210.5 integrated value -13305.3
+  Field index 3 name psi l2-norm 145.095 integrated value 32.727
+  Field index 4 name rxn l2-norm 1.28293 integrated value -0.0935604
+  Field index 5 name particle_concentration l2-norm 137.432 integrated value 30.9966
+  Field index 6 name mu_chem l2-norm 884.363 integrated value 343.952
+  Field index 7 name mu_elastic l2-norm 0.00579894 integrated value 7.93145e-07
+  Field index 8 name overpotential l2-norm 93.4882 integrated value 33.5341
+  Field index 9 name stress_diag l2-norm 0.802799 integrated value 6.4859e-05 6.37106e-05
+  Field index 10 name stress_off_diag l2-norm 0.346296 integrated value 1.4408e-05 0
+  Field index 11 name stress_principal l2-norm 0.94039 integrated value 0.09677 -0.0966414
+  Field index 12 name Cel1 l2-norm 49067.3 integrated value 8751.69 8890.15
+  Field index 13 name Cel2 l2-norm 16562.6 integrated value 2907 2949.65
+  Field index 14 name Cel3 l2-norm 4596.78 integrated value 66.9775 -172.631
+  Field index 15 name eig1 l2-norm 5.88541 integrated value 1.06617 1.06617
+  Field index 16 name D1 l2-norm 0.109233 integrated value 0.0197882 0.0197882
+  Field index 17 name eig2 l2-norm 5.28225e-17 integrated value 5.67047e-20
+  Field index 18 name D2 l2-norm 1.07289e-18 integrated value 9.37024e-20
+
+ Linear solve final residual : 8.21616e-07 Linear steps: 0
+Total Current is:-3.0799e-16
+Cell potential is:3.77649
+Iteration 310000 Time 15.5
+  Field index 0 name c l2-norm 248.894 integrated value 96.8035
+  Field index 1 name u l2-norm 0.607432 integrated value -0.000584308 0.00104227
+  Field index 2 name mu l2-norm 34220 integrated value -13309
+  Field index 3 name psi l2-norm 145.095 integrated value 32.727
+  Field index 4 name rxn l2-norm 1.28293 integrated value -0.0935606
+  Field index 5 name particle_concentration l2-norm 137.225 integrated value 30.9499
+  Field index 6 name mu_chem l2-norm 884.61 integrated value 344.046
+  Field index 7 name mu_elastic l2-norm 0.00579391 integrated value 1.19933e-06
+  Field index 8 name overpotential l2-norm 93.7388 integrated value 33.603
+  Field index 9 name stress_diag l2-norm 0.802108 integrated value 9.7507e-05 9.69286e-05
+  Field index 10 name stress_off_diag l2-norm 0.345999 integrated value 1.38396e-05 0
+  Field index 11 name stress_principal l2-norm 0.939581 integrated value 0.0967241 -0.0965297
+  Field index 12 name Cel1 l2-norm 49067.3 integrated value 8751.69 8890.15
+  Field index 13 name Cel2 l2-norm 16562.6 integrated value 2907 2949.65
+  Field index 14 name Cel3 l2-norm 4596.78 integrated value 66.9775 -172.631
+  Field index 15 name eig1 l2-norm 5.88541 integrated value 1.06617 1.06617
+  Field index 16 name D1 l2-norm 0.109233 integrated value 0.0197882 0.0197882
+  Field index 17 name eig2 l2-norm 5.28225e-17 integrated value 5.67047e-20
+  Field index 18 name D2 l2-norm 1.07289e-18 integrated value 9.37024e-20
+
+ Linear solve final residual : 8.95912e-07 Linear steps: 16
+Total Current is:-3.07991e-16
+Cell potential is:3.77802
+Iteration 320000 Time 16
+  Field index 0 name c l2-norm 248.72 integrated value 96.7336
+  Field index 1 name u l2-norm 0.627291 integrated value -0.000601246 0.0010757
+  Field index 2 name mu l2-norm 34229.2 integrated value -13312.4
+  Field index 3 name psi l2-norm 145.095 integrated value 32.727
+  Field index 4 name rxn l2-norm 1.28293 integrated value -0.0935608
+  Field index 5 name particle_concentration l2-norm 137.017 integrated value 30.9031
+  Field index 6 name mu_chem l2-norm 884.846 integrated value 344.135
+  Field index 7 name mu_elastic l2-norm 0.0057886 integrated value 4.09495e-07
+  Field index 8 name overpotential l2-norm 93.974 integrated value 33.6673
+  Field index 9 name stress_diag l2-norm 0.801359 integrated value 3.44268e-05 3.19271e-05
+  Field index 10 name stress_off_diag l2-norm 0.345647 integrated value 1.32984e-05 0
+  Field index 11 name stress_principal l2-norm 0.938683 integrated value 0.0965679 -0.0965016
+  Field index 12 name Cel1 l2-norm 49067.3 integrated value 8751.69 8890.15
+  Field index 13 name Cel2 l2-norm 16562.6 integrated value 2907 2949.65
+  Field index 14 name Cel3 l2-norm 4596.78 integrated value 66.9775 -172.631
+  Field index 15 name eig1 l2-norm 5.88541 integrated value 1.06617 1.06617
+  Field index 16 name D1 l2-norm 0.109233 integrated value 0.0197882 0.0197882
+  Field index 17 name eig2 l2-norm 5.28225e-17 integrated value 5.67047e-20
+  Field index 18 name D2 l2-norm 1.07289e-18 integrated value 9.37024e-20
+
+ Linear solve final residual : 8.04049e-07 Linear steps: 0
+Total Current is:-3.07991e-16
+Cell potential is:3.77947
+Iteration 330000 Time 16.5
+  Field index 0 name c l2-norm 248.546 integrated value 96.6636
+  Field index 1 name u l2-norm 0.647143 integrated value -0.000618164 0.00110912
+  Field index 2 name mu l2-norm 34237.8 integrated value -13315.7
+  Field index 3 name psi l2-norm 145.095 integrated value 32.727
+  Field index 4 name rxn l2-norm 1.28294 integrated value -0.0935609
+  Field index 5 name particle_concentration l2-norm 136.81 integrated value 30.8563
+  Field index 6 name mu_chem l2-norm 885.07 integrated value 344.22
+  Field index 7 name mu_elastic l2-norm 0.00578197 integrated value 1.17964e-06
+  Field index 8 name overpotential l2-norm 94.1947 integrated value 33.7272
+  Field index 9 name stress_diag l2-norm 0.800461 integrated value 9.63403e-05 9.48986e-05
+  Field index 10 name stress_off_diag l2-norm 0.345275 integrated value 1.36592e-05 0
+  Field index 11 name stress_principal l2-norm 0.937642 integrated value 0.0965306 -0.0963394
+  Field index 12 name Cel1 l2-norm 49067.3 integrated value 8751.69 8890.15
+  Field index 13 name Cel2 l2-norm 16562.6 integrated value 2907 2949.65
+  Field index 14 name Cel3 l2-norm 4596.78 integrated value 66.9775 -172.631
+  Field index 15 name eig1 l2-norm 5.88541 integrated value 1.06617 1.06617
+  Field index 16 name D1 l2-norm 0.109233 integrated value 0.0197882 0.0197882
+  Field index 17 name eig2 l2-norm 5.28225e-17 integrated value 5.67047e-20
+  Field index 18 name D2 l2-norm 1.07289e-18 integrated value 9.37024e-20
+
+ Linear solve final residual : 9.56729e-07 Linear steps: 16
+Total Current is:-3.07992e-16
+Cell potential is:3.78083
+Iteration 340000 Time 17
+  Field index 0 name c l2-norm 248.372 integrated value 96.5937
+  Field index 1 name u l2-norm 0.667004 integrated value -0.00063508 0.00114254
+  Field index 2 name mu l2-norm 34246 integrated value -13318.8
+  Field index 3 name psi l2-norm 145.095 integrated value 32.727
+  Field index 4 name rxn l2-norm 1.28294 integrated value -0.0935611
+  Field index 5 name particle_concentration l2-norm 136.602 integrated value 30.8095
+  Field index 6 name mu_chem l2-norm 885.282 integrated value 344.3
+  Field index 7 name mu_elastic l2-norm 0.00577538 integrated value 4.228e-07
+  Field index 8 name overpotential l2-norm 94.4018 integrated value 33.7831
+  Field index 9 name stress_diag l2-norm 0.799533 integrated value 3.50439e-05 3.34643e-05
+  Field index 10 name stress_off_diag l2-norm 0.344846 integrated value 1.36186e-05 0
+  Field index 11 name stress_principal l2-norm 0.936534 integrated value 0.0963547 -0.0962862
+  Field index 12 name Cel1 l2-norm 49067.3 integrated value 8751.69 8890.15
+  Field index 13 name Cel2 l2-norm 16562.6 integrated value 2907 2949.65
+  Field index 14 name Cel3 l2-norm 4596.78 integrated value 66.9775 -172.631
+  Field index 15 name eig1 l2-norm 5.88541 integrated value 1.06617 1.06617
+  Field index 16 name D1 l2-norm 0.109233 integrated value 0.0197882 0.0197882
+  Field index 17 name eig2 l2-norm 5.28225e-17 integrated value 5.67047e-20
+  Field index 18 name D2 l2-norm 1.07289e-18 integrated value 9.37024e-20
+
+ Linear solve final residual : 6.04901e-07 Linear steps: 1
+Total Current is:-3.07992e-16
+Cell potential is:3.78212
+Iteration 350000 Time 17.5
+  Field index 0 name c l2-norm 248.198 integrated value 96.5237
+  Field index 1 name u l2-norm 0.686874 integrated value -0.000652002 0.00117601
+  Field index 2 name mu l2-norm 34253.8 integrated value -13321.8
+  Field index 3 name psi l2-norm 145.095 integrated value 32.727
+  Field index 4 name rxn l2-norm 1.28294 integrated value -0.0935612
+  Field index 5 name particle_concentration l2-norm 136.395 integrated value 30.7627
+  Field index 6 name mu_chem l2-norm 885.484 integrated value 344.377
+  Field index 7 name mu_elastic l2-norm 0.00576768 integrated value 7.93397e-07
+  Field index 8 name overpotential l2-norm 94.5965 integrated value 33.8355
+  Field index 9 name stress_diag l2-norm 0.798482 integrated value 6.50894e-05 6.35131e-05
+  Field index 10 name stress_off_diag l2-norm 0.344396 integrated value 1.38932e-05 0
+  Field index 11 name stress_principal l2-norm 0.935305 integrated value 0.0962638 -0.0961352
+  Field index 12 name Cel1 l2-norm 49067.3 integrated value 8751.69 8890.15
+  Field index 13 name Cel2 l2-norm 16562.6 integrated value 2907 2949.65
+  Field index 14 name Cel3 l2-norm 4596.78 integrated value 66.9775 -172.631
+  Field index 15 name eig1 l2-norm 5.88541 integrated value 1.06617 1.06617
+  Field index 16 name D1 l2-norm 0.109233 integrated value 0.0197882 0.0197882
+  Field index 17 name eig2 l2-norm 5.28225e-17 integrated value 5.67047e-20
+  Field index 18 name D2 l2-norm 1.07289e-18 integrated value 9.37024e-20
+
+ Linear solve final residual : 9.27067e-07 Linear steps: 16
+Total Current is:-3.07993e-16
+Cell potential is:3.78334
+Iteration 360000 Time 18
+  Field index 0 name c l2-norm 248.025 integrated value 96.4537
+  Field index 1 name u l2-norm 0.706751 integrated value -0.000668924 0.00120948
+  Field index 2 name mu l2-norm 34261.2 integrated value -13324.6
+  Field index 3 name psi l2-norm 145.095 integrated value 32.727
+  Field index 4 name rxn l2-norm 1.28295 integrated value -0.0935613
+  Field index 5 name particle_concentration l2-norm 136.188 integrated value 30.716
+  Field index 6 name mu_chem l2-norm 885.675 integrated value 344.449
+  Field index 7 name mu_elastic l2-norm 0.00575989 integrated value 4.16847e-07
+  Field index 8 name overpotential l2-norm 94.7803 integrated value 33.8848
+  Field index 9 name stress_diag l2-norm 0.797395 integrated value 3.46552e-05 3.28844e-05
+  Field index 10 name stress_off_diag l2-norm 0.343908 integrated value 1.34306e-05 0
+  Field index 11 name stress_principal l2-norm 0.934018 integrated value 0.0961016 -0.0960341
+  Field index 12 name Cel1 l2-norm 49067.3 integrated value 8751.69 8890.15
+  Field index 13 name Cel2 l2-norm 16562.6 integrated value 2907 2949.65
+  Field index 14 name Cel3 l2-norm 4596.78 integrated value 66.9775 -172.631
+  Field index 15 name eig1 l2-norm 5.88541 integrated value 1.06617 1.06617
+  Field index 16 name D1 l2-norm 0.109233 integrated value 0.0197882 0.0197882
+  Field index 17 name eig2 l2-norm 5.28225e-17 integrated value 5.67047e-20
+  Field index 18 name D2 l2-norm 1.07289e-18 integrated value 9.37024e-20
+
+ Linear solve final residual : 5.89508e-07 Linear steps: 1
+Total Current is:-3.07993e-16
+Cell potential is:3.7845
+Iteration 370000 Time 18.5
+  Field index 0 name c l2-norm 247.851 integrated value 96.3836
+  Field index 1 name u l2-norm 0.726635 integrated value -0.000685859 0.00124298
+  Field index 2 name mu l2-norm 34268.3 integrated value -13327.2
+  Field index 3 name psi l2-norm 145.095 integrated value 32.727
+  Field index 4 name rxn l2-norm 1.28295 integrated value -0.0935615
+  Field index 5 name particle_concentration l2-norm 135.98 integrated value 30.6692
+  Field index 6 name mu_chem l2-norm 885.857 integrated value 344.518
+  Field index 7 name mu_elastic l2-norm 0.00575124 integrated value 8.01861e-07
+  Field index 8 name overpotential l2-norm 94.9546 integrated value 33.9316
+  Field index 9 name stress_diag l2-norm 0.796224 integrated value 6.59327e-05 6.40392e-05
+  Field index 10 name stress_off_diag l2-norm 0.343406 integrated value 1.43675e-05 0
+  Field index 11 name stress_principal l2-norm 0.932649 integrated value 0.095998 -0.095868
+  Field index 12 name Cel1 l2-norm 49067.3 integrated value 8751.69 8890.15
+  Field index 13 name Cel2 l2-norm 16562.6 integrated value 2907 2949.65
+  Field index 14 name Cel3 l2-norm 4596.78 integrated value 66.9775 -172.631
+  Field index 15 name eig1 l2-norm 5.88541 integrated value 1.06617 1.06617
+  Field index 16 name D1 l2-norm 0.109233 integrated value 0.0197882 0.0197882
+  Field index 17 name eig2 l2-norm 5.28225e-17 integrated value 5.67047e-20
+  Field index 18 name D2 l2-norm 1.07289e-18 integrated value 9.37024e-20
+
+ Linear solve final residual : 8.76081e-07 Linear steps: 0
+Total Current is:-3.07993e-16
+Cell potential is:3.7856
+Iteration 380000 Time 19
+  Field index 0 name c l2-norm 247.678 integrated value 96.3136
+  Field index 1 name u l2-norm 0.746519 integrated value -0.000702792 0.00127647
+  Field index 2 name mu l2-norm 34275 integrated value -13329.8
+  Field index 3 name psi l2-norm 145.095 integrated value 32.727
+  Field index 4 name rxn l2-norm 1.28296 integrated value -0.0935615
+  Field index 5 name particle_concentration l2-norm 135.773 integrated value 30.6224
+  Field index 6 name mu_chem l2-norm 886.031 integrated value 344.584
+  Field index 7 name mu_elastic l2-norm 0.00574291 integrated value 1.18756e-06
+  Field index 8 name overpotential l2-norm 95.1208 integrated value 33.9762
+  Field index 9 name stress_diag l2-norm 0.79506 integrated value 9.70031e-05 9.55121e-05
+  Field index 10 name stress_off_diag l2-norm 0.342888 integrated value 1.22044e-05 0
+  Field index 11 name stress_principal l2-norm 0.931273 integrated value 0.0958871 -0.0956946
+  Field index 12 name Cel1 l2-norm 49067.3 integrated value 8751.69 8890.15
+  Field index 13 name Cel2 l2-norm 16562.6 integrated value 2907 2949.65
+  Field index 14 name Cel3 l2-norm 4596.78 integrated value 66.9775 -172.631
+  Field index 15 name eig1 l2-norm 5.88541 integrated value 1.06617 1.06617
+  Field index 16 name D1 l2-norm 0.109233 integrated value 0.0197882 0.0197882
+  Field index 17 name eig2 l2-norm 5.28225e-17 integrated value 5.67047e-20
+  Field index 18 name D2 l2-norm 1.07289e-18 integrated value 9.37024e-20
+
